@@ -1,0 +1,29 @@
+---
+/**
+ * Fallback between daily rebuilds: hides upcoming-event cards whose end time has
+ * passed in the visitor's browser, and reveals the "no events" message if none remain.
+ * Wrap a list with [data-upcoming-list] and give the empty message [data-upcoming-empty].
+ */
+---
+
+<script>
+  const now = Date.now();
+  document.querySelectorAll<HTMLElement>('[data-upcoming-list]').forEach((list) => {
+    const cards = [...list.querySelectorAll<HTMLElement>('[data-event-end]')];
+    let visible = cards.length;
+    for (const card of cards) {
+      if (Date.parse(card.dataset.eventEnd!) < now) {
+        const item = card.closest('li') ?? card;
+        item.hidden = true;
+        item.dataset.expired = '1';
+        visible--;
+      }
+    }
+    if (visible === 0) {
+      list.hidden = true;
+      list.parentElement
+        ?.querySelector<HTMLElement>('[data-upcoming-empty]')
+        ?.removeAttribute('hidden');
+    }
+  });
+</script>

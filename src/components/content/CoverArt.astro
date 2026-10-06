@@ -1,0 +1,75 @@
+---
+/**
+ * Branded illustrated cover used when an entry has no photo yet:
+ * soft gradient, sunrise, waves and the category icon. Decorative.
+ */
+import CategoryIcon from './CategoryIcon.astro';
+import type { Category } from '@/lib/taxonomy';
+
+interface Props {
+  category: Category;
+  seed?: string;
+  class?: string;
+}
+const { category, seed = category, class: className = '' } = Astro.props;
+
+const palettes: Record<Category, [string, string]> = {
+  language: ['#DDF4F9', '#A9E3EF'],
+  arts: ['#FFF1D6', '#F6D58F'],
+  youth: ['#E4F6EF', '#A8DCC8'],
+  community: ['#FFF8EC', '#F2CD78'],
+  newcomers: ['#DDF4F9', '#FFF1D6'],
+  lectures: ['#E8EEF4', '#B9CCDC'],
+  music: ['#EAF2FB', '#A9C9EA'],
+  celebration: ['#FFF1D6', '#A9E3EF'],
+};
+const [c1, c2] = palettes[category];
+// Cheap deterministic variation so neighbouring cards don't look identical.
+const n = [...seed].reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 997, 7);
+const sunX = 70 + (n % 260);
+const waveShift = (n % 5) * 18;
+const uid = `cv${n}${category}`;
+---
+
+<div class:list={['cover-art relative overflow-hidden', className]} aria-hidden="true">
+  <svg
+    viewBox="0 0 400 240"
+    preserveAspectRatio="xMidYMid slice"
+    class="absolute inset-0 size-full"
+  >
+    <defs>
+      <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color={c1}></stop>
+        <stop offset="1" stop-color={c2}></stop>
+      </linearGradient>
+      <radialGradient id={`${uid}-halo`}>
+        <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.9"></stop>
+        <stop offset="1" stop-color="#FFF4D6" stop-opacity="0"></stop>
+      </radialGradient>
+      <linearGradient id={`${uid}-sun`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FBE3A6"></stop>
+        <stop offset="1" stop-color="#EDBE5C"></stop>
+      </linearGradient>
+    </defs>
+    <rect width="400" height="240" fill={`url(#${uid}-bg)`}></rect>
+    <circle cx={sunX} cy="168" r="110" fill={`url(#${uid}-halo)`}></circle>
+    <circle cx={sunX} cy="168" r="40" fill={`url(#${uid}-sun)`}></circle>
+    <path
+      d={`M0 ${170 - waveShift / 3} C 100 ${130 + waveShift} 220 ${210 - waveShift} 400 ${160} V240 H0Z`}
+      fill="#BDEAF3"
+    ></path>
+    <path
+      d={`M0 ${195} C 120 ${165 + waveShift / 2} 260 ${230 - waveShift / 2} 400 ${190} V240 H0Z`}
+      fill="#F4FBFD"
+    ></path>
+    <path
+      d={`M0 ${182} C 110 ${150 + waveShift / 2} 240 ${222 - waveShift / 2} 400 ${176}`}
+      fill="none"
+      stroke="#D9A441"
+      stroke-width="1.5"
+    ></path>
+  </svg>
+  <div class="absolute inset-0 grid place-items-center pb-[16%] text-primary/75">
+    <CategoryIcon category={category} size={56} strokeWidth={1.25} />
+  </div>
+</div>

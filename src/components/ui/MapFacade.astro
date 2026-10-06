@@ -1,0 +1,96 @@
+---
+/**
+ * Privacy-friendly map: a branded placeholder with a link to Google Maps.
+ * The interactive Google map (an iframe) only loads after an explicit click.
+ */
+import { MapPin, ExternalLink } from '@lucide/astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  address: string;
+}
+const { lang, address } = Astro.props;
+const t = useTranslations(lang);
+const q = encodeURIComponent(address);
+const embed = `https://www.google.com/maps?q=${q}&output=embed&hl=${lang}`;
+const link = `https://www.google.com/maps/search/?api=1&query=${q}`;
+---
+
+<div class="map" data-map={embed} data-map-title={t('contact.mapTitle')}>
+  <div class="map__placeholder">
+    <svg
+      class="absolute inset-0 size-full"
+      viewBox="0 0 400 260"
+      preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
+    >
+      <rect width="400" height="260" fill="#DDF4F9"></rect>
+      <g stroke="#ffffff" stroke-width="10" fill="none" opacity="0.9">
+        <path d="M-10 80 L410 120"></path>
+        <path d="M-10 190 L410 160"></path>
+        <path d="M120 -10 L150 270"></path>
+        <path d="M290 -10 L260 270"></path>
+      </g>
+      <path d="M0 230 C 120 200 260 260 400 215 V260 H0Z" fill="#6CCFE3" opacity="0.45"></path>
+    </svg>
+    <div class="relative flex flex-col items-center gap-4 p-6 text-center">
+      <span class="grid size-14 place-items-center rounded-full bg-primary text-gold-light shadow-lift">
+        <MapPin size={26} aria-hidden="true" />
+      </span>
+      <p class="font-semibold text-primary">{address}</p>
+      <div class="flex flex-wrap justify-center gap-2">
+        <button type="button" class="btn btn-primary !min-h-11 !px-5 text-sm" data-map-load>
+          {t('contact.mapLoad')}
+        </button>
+        <a
+          href={link}
+          class="btn btn-outline !min-h-11 bg-white !px-5 text-sm"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t('contact.mapOpen')}
+          <ExternalLink size={16} aria-hidden="true" />
+          <span class="sr-only">{t('a11y.externalLink')}</span>
+        </a>
+      </div>
+      <p class="max-w-sm text-xs text-muted">{t('contact.mapNotice')}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((map) => {
+    map.querySelector('[data-map-load]')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = map.dataset.map!;
+      iframe.title = map.dataset.mapTitle ?? 'Map';
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      map.replaceChildren(iframe);
+    });
+  });
+</script>
+
+<style>
+  .map {
+    position: relative;
+    min-height: 20rem;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+  }
+  .map__placeholder {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 20rem;
+  }
+  .map :global(iframe) {
+    width: 100%;
+    height: 22rem;
+    border: 0;
+    display: block;
+  }
+</style>

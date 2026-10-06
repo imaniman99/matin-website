@@ -1,0 +1,247 @@
+---
+import { Menu, X, Heart } from '@lucide/astro';
+import Lockup from '@/components/brand/Lockup.astro';
+import LangToggle from './LangToggle.astro';
+import { path, type Lang, type RouteKey } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  donateUrl: string;
+}
+const { lang, alternates, donateUrl } = Astro.props;
+const t = useTranslations(lang);
+
+const items: RouteKey[] = [
+  'about',
+  'programs',
+  'events',
+  'news',
+  'gallery',
+  'getInvolved',
+  'contact',
+];
+const links = items.map((key) => ({ key, href: path(key, lang), label: t(`nav.${key}`) }));
+const current = Astro.url.pathname;
+const isActive = (href: string) => current.startsWith(href);
+---
+
+<header class="site-header" data-header>
+  <div class="container-site flex h-[4.75rem] items-center justify-between gap-4">
+    <Lockup lang={lang} />
+
+    <nav aria-label={t('a11y.mainNav')} class="hidden xl:block">
+      <ul class="flex items-center gap-0.5">
+        {links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class:list={['nav-link', isActive(l.href) && 'is-active']}
+              aria-current={isActive(l.href) ? 'page' : undefined}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <div class="hidden sm:block">
+        <LangToggle lang={lang} alternates={alternates} />
+      </div>
+      <a
+        href={donateUrl}
+        class="btn btn-gold hidden !min-h-11 !px-5 whitespace-nowrap sm:inline-flex"
+        rel="noopener"
+      >
+        <Heart size={18} aria-hidden="true" />
+        {t('nav.donate')}
+      </a>
+      <button
+        type="button"
+        class="menu-btn xl:hidden"
+        aria-haspopup="dialog"
+        aria-controls="mobile-menu"
+        data-menu-open
+      >
+        <Menu size={26} aria-hidden="true" />
+        <span class="sr-only">{t('a11y.openMenu')}</span>
+      </button>
+    </div>
+  </div>
+
+  <dialog id="mobile-menu" class="mobile-menu" aria-label={t('a11y.mainNav')}>
+    <div class="flex h-[4.75rem] items-center justify-between px-5">
+      <Lockup lang={lang} variant="light" />
+      <button type="button" class="menu-btn menu-btn--light" data-menu-close>
+        <X size={28} aria-hidden="true" />
+        <span class="sr-only">{t('a11y.closeMenu')}</span>
+      </button>
+    </div>
+    <nav aria-label={t('a11y.mainNav')} class="px-5 pt-4 pb-10">
+      <ul class="space-y-1">
+        <li>
+          <a href={path('home', lang)} class="mobile-link">
+            {t('nav.home')}
+          </a>
+        </li>
+        {links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class="mobile-link"
+              aria-current={isActive(l.href) ? 'page' : undefined}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-8 flex flex-wrap items-center gap-5">
+        <a href={donateUrl} class="btn btn-gold" rel="noopener">
+          <Heart size={18} aria-hidden="true" />
+          {t('nav.donate')}
+        </a>
+        <LangToggle lang={lang} alternates={alternates} light />
+      </div>
+    </nav>
+  </dialog>
+</header>
+
+<script>
+  const dialog = document.getElementById('mobile-menu') as HTMLDialogElement | null;
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]');
+  openBtn?.addEventListener('click', () => {
+    dialog?.showModal();
+    document.documentElement.style.overflow = 'hidden';
+  });
+  dialog?.querySelector('[data-menu-close]')?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('close', () => {
+    document.documentElement.style.overflow = '';
+    openBtn?.focus();
+  });
+  // Close when a link inside is used (same-page anchors) or the backdrop is clicked.
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+
+  // Subtle shadow once the page is scrolled.
+  const header = document.querySelector('[data-header]');
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgb(255 255 255 / 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition:
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+  .site-header.is-scrolled {
+    border-bottom-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
+    box-shadow: 0 6px 24px -14px rgb(6 34 56 / 0.35);
+  }
+  .nav-link {
+    position: relative;
+    display: block;
+    padding: 0.55rem 0.62rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    border-radius: 999px;
+    transition:
+      color 0.2s,
+      background 0.2s;
+  }
+  .nav-link:hover {
+    background: var(--color-aqua-light);
+    color: var(--color-primary);
+  }
+  .nav-link.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0.62rem;
+    right: 0.62rem;
+    bottom: 0.2rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-gold);
+  }
+  .menu-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 999px;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  @media (min-width: 80rem) {
+    .menu-btn[data-menu-open] {
+      display: none;
+    }
+  }
+  .menu-btn:hover {
+    background: var(--color-aqua-light);
+  }
+  .menu-btn--light {
+    color: white;
+  }
+  .menu-btn--light:hover {
+    background: rgb(255 255 255 / 0.12);
+  }
+  .mobile-menu {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    padding: 0;
+    color: white;
+    background:
+      radial-gradient(120% 60% at 100% 0%, rgb(108 207 227 / 0.22), transparent 60%),
+      radial-gradient(80% 50% at 0% 100%, rgb(217 164 65 / 0.18), transparent 60%),
+      var(--color-primary-dark);
+  }
+  .mobile-menu::backdrop {
+    background: rgb(6 34 56 / 0.5);
+  }
+  .mobile-menu[open] {
+    animation: menu-in 0.25s ease-out;
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+  .mobile-link {
+    display: block;
+    padding: 0.7rem 0;
+    font-family: var(--font-display);
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .mobile-link:hover,
+  .mobile-link[aria-current='page'] {
+    color: var(--color-gold-light);
+  }
+  .mobile-menu :focus-visible {
+    outline-color: var(--color-gold-light);
+  }
+</style>

@@ -1,0 +1,46 @@
+placeholder: true
+membershipIntro:
+  fr: "[PLACEHOLDER] Devenir membre, c'est soutenir la mission de Matin et participer à sa vie démocratique."
+  en: "[PLACEHOLDER] Becoming a member means supporting Matin's mission and taking part in its democratic life."
+membershipUrl: https://www.zeffy.com/
+tiers:
+  - name: { fr: "Étudiant·e", en: "Student" }
+    price: { fr: "[PLACEHOLDER] 10 $", en: "[PLACEHOLDER] $10" }
+    benefits:
+      - { fr: "Tarifs réduits aux activités", en: "Reduced activity fees" }
+      - { fr: "Infolettre des membres", en: "Members' newsletter" }
+  - name: { fr: "Individuel", en: "Individual" }
+    price: { fr: "[PLACEHOLDER] 25 $", en: "[PLACEHOLDER] $25" }
+    featured: true
+    benefits:
+      - { fr: "Tarifs réduits aux activités", en: "Reduced activity fees" }
+      - { fr: "Droit de vote à l'assemblée générale", en: "Vote at the annual general meeting" }
+      - { fr: "Invitations aux soirées des membres", en: "Invitations to members' evenings" }
+  - name: { fr: "Famille", en: "Family" }
+    price: { fr: "[PLACEHOLDER] 40 $", en: "[PLACEHOLDER] $40" }
+    benefits:
+      - { fr: "Tous les avantages pour le foyer", en: "All benefits for the household" }
+      - { fr: "Activités jeunesse prioritaires", en: "Priority access to youth activities" }
+volunteerIntro:
+  fr: "[PLACEHOLDER] Nos bénévoles sont le cœur de Matin. Quelques heures par mois suffisent pour faire une différence."
+  en: "[PLACEHOLDER] Volunteers are the heart of Matin. A few hours a month are enough to make a difference."
+roles:
+  - title: { fr: "Accueil et événements", en: "Welcome & events" }
+    text: { fr: "Accueillir le public, aider à l'installation et à l'animation.", en: "Welcome visitors and help with setup and hosting." }
+  - title: { fr: "Jumelage linguistique", en: "Language buddy" }
+    text: { fr: "Accompagner une personne nouvellement arrivée dans sa pratique du français.", en: "Help a newcomer practise their French." }
+  - title: { fr: "Communication", en: "Communications" }
+    text: { fr: "Photo, rédaction, réseaux sociaux, traduction.", en: "Photography, writing, social media, translation." }
+partnersText:
+  fr: "[PLACEHOLDER] Entreprises, fondations, institutions : associez votre nom à un projet porteur de sens et rejoignez une communauté diversifiée."
+  en: "[PLACEHOLDER] Businesses, foundations, institutions: link your name to a meaningful project and reach a diverse community."
+donateText:
+  fr: "[PLACEHOLDER] Vos dons permettent de garder nos activités accessibles, gratuites ou à faible coût, pour toutes et tous."
+  en: "[PLACEHOLDER] Your donations keep our activities accessible, free or low-cost, for everyone."
+impactExamples:
+  - amount: 25
+    text: { fr: "[PLACEHOLDER] offre le matériel d'un atelier d'art", en: "[PLACEHOLDER] provides materials for an art workshop" }
+  - amount: 50
+    text: { fr: "[PLACEHOLDER] finance une séance de conversation pour 10 personnes", en: "[PLACEHOLDER] funds a conversation session for 10 people" }
+  - amount: 100
+    text: { fr: "[PLACEHOLDER] soutient une famille nouvellement arrivée pendant un mois", en: "[PLACEHOLDER] supports a newly arrived family for a month" }

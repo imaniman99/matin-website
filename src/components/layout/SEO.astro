@@ -1,0 +1,61 @@
+---
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  alternates: Record<Lang, string>;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article' | 'event';
+  noindex?: boolean;
+  jsonLd?: object[];
+}
+
+const {
+  lang,
+  title,
+  description,
+  alternates,
+  image = '/og-default.jpg',
+  imageAlt,
+  type = 'website',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+const t = useTranslations(lang);
+const site = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(alternates[lang], site).href;
+const imageUrl = new URL(image, site).href;
+// JSON in a <script> must not be able to close the tag.
+const ld = (obj: object) => JSON.stringify(obj).replace(/</g, '\\u003c');
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<link rel="alternate" hreflang="fr-CA" href={new URL(alternates.fr, site).href} />
+<link rel="alternate" hreflang="en-CA" href={new URL(alternates.en, site).href} />
+<link rel="alternate" hreflang="x-default" href={new URL(alternates.fr, site).href} />
+
+<meta property="og:type" content={type === 'event' ? 'website' : type} />
+<meta property="og:site_name" content={t('meta.siteName')} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={t('meta.locale')} />
+<meta property="og:locale:alternate" content={lang === 'fr' ? 'en_CA' : 'fr_CA'} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={imageAlt ?? t('meta.siteName')} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+{jsonLd.map((obj) => (
+  <script type="application/ld+json" is:inline set:html={ld(obj)} />
+))}

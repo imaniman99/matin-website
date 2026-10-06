@@ -1,0 +1,19 @@
+placeholder: true
+date: 2026-09-28
+author: "[PLACEHOLDER] Équipe Matin"
+categories: [community]
+tags: [rentrée]
+urlSlug:
+  fr: programmation-automne-2026
+  en: fall-2026-program
+title:
+  fr: "[PLACEHOLDER] Notre programmation d'automne est en ligne"
+  en: "[PLACEHOLDER] Our fall program is now online"
+excerpt:
+  fr: "Ateliers, conférences et soirées : découvrez tout ce qui vous attend cet automne chez Matin."
+  en: "Workshops, lectures and evenings: discover everything Matin has in store this fall."
+body:
+  fr: |
+    [PLACEHOLDER] Texte de l'article.
+  en: |
+    [PLACEHOLDER] Article text.

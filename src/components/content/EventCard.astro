@@ -1,0 +1,84 @@
+---
+import { Picture } from 'astro:assets';
+import { Clock, MapPin, Ticket } from '@lucide/astro';
+import CoverArt from './CoverArt.astro';
+import type { EventEntry } from '@/lib/content';
+import { slugOf } from '@/lib/content';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { dateBadge, formatLongDate, formatTimeRange } from '@/lib/dates';
+
+interface Props {
+  event: EventEntry;
+  lang: Lang;
+  headingLevel?: 'h2' | 'h3';
+}
+const { event, lang, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const d = event.data;
+const href = path('events', lang, slugOf(event, lang));
+const badge = dateBadge(event.startDate, lang);
+const Heading = headingLevel;
+const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
+---
+
+<article
+  class="card group relative flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+  data-event-end={event.endDate.toISOString()}
+>
+  <div class="relative aspect-[16/9]">
+    {d.image ? (
+      <Picture
+        src={d.image}
+        alt={pick(d.imageAlt, lang) ?? ''}
+        formats={['avif', 'webp']}
+        widths={[400, 640, 800]}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+        class="size-full object-cover"
+      />
+    ) : (
+      <CoverArt category={d.category} seed={event.id} class="size-full" />
+    )}
+    <div class="absolute top-4 left-4 flex min-w-[4.25rem] flex-col items-center rounded-2xl bg-white/95 px-3 py-2 text-center shadow-soft ring-1 ring-gold/40">
+      <span class="font-display text-[1.75rem] leading-none font-bold text-primary">
+        {badge.day}
+      </span>
+      <span class="mt-1 text-[0.7rem] font-bold tracking-[0.14em] text-gold-text uppercase">
+        {badge.month.replace('.', '')}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex flex-1 flex-col p-6">
+    <p class="eyebrow mb-2">{t(`categories.${d.category}`)}</p>
+    <Heading class="mb-3 text-xl font-bold">
+      <a
+        href={href}
+        class="text-primary no-underline after:absolute after:inset-0 after:content-['']"
+      >
+        {pick(d.title, lang)}
+      </a>
+    </Heading>
+    <p class="mb-5 text-[0.95rem] text-muted">{pick(d.summary, lang)}</p>
+    <ul class="mt-auto space-y-1.5 text-sm text-ink">
+      <li class="flex items-start gap-2">
+        <Clock size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+        <span>
+          <span>{formatLongDate(event.startDate, lang)}</span>
+          {' · '}
+          {formatTimeRange(event.startDate, d.end ? event.endDate : undefined, lang)}
+        </span>
+      </li>
+      <li class="flex items-start gap-2">
+        <MapPin size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+        <span>{d.location.name}</span>
+      </li>
+      {price && (
+        <li class="flex items-start gap-2">
+          <Ticket size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+          <span class="font-semibold">{price}</span>
+        </li>
+      )}
+    </ul>
+  </div>
+</article>

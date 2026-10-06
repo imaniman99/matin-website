@@ -1,0 +1,103 @@
+---
+/**
+ * Horizontal header lockup: "Matin" | maple-leaf rule | "Institut interculturel".
+ * Built in HTML/CSS so it stays crisp at small sizes (the raster circle logo does not).
+ */
+import MapleLeaf from './MapleLeaf.astro';
+import { useTranslations } from '@/i18n/ui';
+import { path, type Lang } from '@/i18n/routes';
+
+interface Props {
+  lang: Lang;
+  variant?: 'dark' | 'light';
+}
+const { lang, variant = 'dark' } = Astro.props;
+const t = useTranslations(lang);
+const [line1, ...rest] = t('brand.institute').split(' ');
+---
+
+<a
+  href={path('home', lang)}
+  class:list={['lockup', variant === 'light' && 'lockup--light']}
+  aria-label={t('a11y.homeLink')}
+>
+  <span class="lockup__word" aria-hidden="true">
+    Matin
+  </span>
+  <span class="lockup__rule" aria-hidden="true">
+    <MapleLeaf size={11} class="lockup__leaf" />
+  </span>
+  <span class="lockup__inst" aria-hidden="true">
+    <span>{line1}</span>
+    <span>{rest.join(' ')}</span>
+  </span>
+</a>
+
+<style>
+  .lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .lockup__word {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 2.1rem;
+    letter-spacing: -0.01em;
+    background: linear-gradient(180deg, #1a6e93 0%, #0b3d5c 45%, #041a2e 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-bottom: 0.08em;
+  }
+  .lockup__rule {
+    position: relative;
+    align-self: stretch;
+    width: 2px;
+    margin-block: 0.2rem;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      var(--color-gold) 20%,
+      var(--color-gold) 80%,
+      transparent
+    );
+  }
+  .lockup__rule :global(.lockup__leaf) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--color-teal);
+    background: var(--lockup-bg, white);
+    padding: 2px 0;
+    width: 13px;
+    height: 15px;
+  }
+  .lockup__inst {
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--color-primary-dark);
+  }
+  .lockup--light .lockup__word {
+    background: linear-gradient(180deg, #ffffff, #ddf4f9);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .lockup--light .lockup__inst {
+    color: white;
+  }
+  .lockup--light {
+    --lockup-bg: var(--color-primary-dark);
+  }
+  .lockup--light .lockup__rule :global(.lockup__leaf) {
+    color: var(--color-gold-light);
+  }
+</style>

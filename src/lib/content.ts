@@ -1,0 +1,136 @@
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import { marked } from 'marked';
+import type { Lang } from '@/i18n/routes';
+import { typo } from './frenchTypo';
+import { montrealTime } from './dates';
+import { categories, type Category } from '@/lib/taxonomy';
+
+/** URL slug of an entry in a given language (falls back to the file name). */
+export function slugOf(
+  entry: { id: string; data: { urlSlug?: { fr: string; en: string } } },
+  lang: Lang,
+) {
+  return entry.data.urlSlug?.[lang] ?? entry.id;
+}
+
+/** Markdown from the CMS → HTML, with Québec typography applied to French. */
+export function renderMarkdown(source: string, lang: Lang): string {
+  return marked.parse(typo(source, lang), { async: false, gfm: true, breaks: false });
+}
+
+export async function getSettings() {
+  const entry = await getEntry('settings', 'site');
+  if (!entry) throw new Error('Missing src/content/settings/site.yaml');
+  return entry.data;
+}
+
+export type EventEntry = CollectionEntry<'events'> & { startDate: Date; endDate: Date };
+
+/** All events with real Date objects; an event without an end lasts 2 h by default. */
+export async function getEvents(): Promise<EventEntry[]> {
+  const events = await getCollection('events');
+  return events.map((e) => {
+    const startDate = montrealTime(e.data.start);
+    const endDate = e.data.end
+      ? montrealTime(e.data.end)
+      : new Date(startDate.getTime() + 2 * 3600_000);
+    return Object.assign(e, { startDate, endDate });
+  });
+}
+
+/**
+ * Upcoming = not yet ended at build time. The site rebuilds daily (scheduled
+ * function) and a small client script hides anything that ends between builds.
+ */
+export async function getUpcomingEvents(limit?: number, now = new Date()) {
+  const list = (await getEvents())
+    .filter((e) => e.endDate >= now)
+    .sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+  return limit ? list.slice(0, limit) : list;
+}
+
+export async function getPastEvents(now = new Date()) {
+  return (await getEvents())
+    .filter((e) => e.endDate < now)
+    .sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+}
+
+export async function getPrograms() {
+  return (await getCollection('programs')).sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getNews(limit?: number) {
+  const list = (await getCollection('news')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
+  return limit ? list.slice(0, limit) : list;
+}
+
+export const NEWS_PAGE_SIZE = 6;
+
+/** Categories used by at least one post, in the canonical order. */
+export function newsCategories(posts: CollectionEntry<'news'>[]): Category[] {
+  const used = new Set(posts.flatMap((p) => p.data.categories));
+  return categories.filter((c) => used.has(c));
+}
+
+export async function getTestimonials() {
+  return (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getPartners() {
+  return (await getCollection('partners')).sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getTeam() {
+  const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
+  return {
+    staff: team.filter((m) => m.data.group === 'staff'),
+    board: team.filter((m) => m.data.group === 'board'),
+  };
+}
+
+export async function getSingleton<C extends 'about' | 'involvement'>(collection: C) {
+  const [entry] = await getCollection(collection);
+  if (!entry) throw new Error(`Missing content in src/content/${collection}/`);
+  return entry.data as CollectionEntry<C>['data'];
+}
+
+export async function getDocuments() {
+  return (await getCollection('documents')).sort(
+    (a, b) => a.data.order - b.data.order || b.data.year - a.data.year,
+  );
+}
+
+export async function getAlbums() {
+  return (await getCollection('gallery')).sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  );
+}
+
+export async function getFaq() {
+  return (await getCollection('faq')).sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getResources() {
+  return (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
+}
+
+export async function getLegal(id: 'privacy' | 'terms' | 'accessibility') {
+  const entry = await getEntry('legal', id);
+  if (!entry) throw new Error(`Missing src/content/legal/${id}.yaml`);
+  return entry.data;
+}
+
+/** Initials for avatar placeholders when a team member has no photo. */
+export const initials = (name: string) =>
+  name
+    .replace(/\[[^\]]*\]/g, '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .join('') || 'M';
+
+/** True if any visible text still contains the placeholder marker. */
+export const isPlaceholderText = (text: string | undefined) => !!text?.includes('[PLACEHOLDER]');

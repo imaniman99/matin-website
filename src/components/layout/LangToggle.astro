@@ -1,0 +1,86 @@
+---
+/** FR | EN switch — always links to the equivalent page in the other language. */
+import { languages, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+  light?: boolean;
+}
+const { lang, alternates, light = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<nav
+  aria-label={t('a11y.languageSwitcher')}
+  class:list={['lang-toggle', light && 'lang-toggle--light']}
+>
+  {languages.map((l, i) => (
+    <>
+      {i > 0 && (
+        <span class="sep" aria-hidden="true">
+          |
+        </span>
+      )}
+      {l === lang ? (
+        <span class="current" aria-current="true">
+          <abbr title={l === 'fr' ? 'Français' : 'English'}>{l.toUpperCase()}</abbr>
+        </span>
+      ) : (
+        <a
+          href={alternates[l]}
+          hreflang={l}
+          lang={l}
+          aria-label={t('a11y.switchTo')}
+          data-lang-switch={l}
+        >
+          {l.toUpperCase()}
+        </a>
+      )}
+    </>
+  ))}
+</nav>
+
+<style>
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+  .lang-toggle abbr {
+    text-decoration: none;
+  }
+  .current {
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-gold);
+    padding: 0.35rem 0.2rem 0.15rem;
+  }
+  .sep {
+    color: var(--color-line);
+  }
+  a {
+    color: var(--color-muted);
+    text-decoration: none;
+    padding: 0.35rem 0.25rem;
+    border-radius: 4px;
+    min-width: 2rem;
+    text-align: center;
+  }
+  a:hover {
+    color: var(--color-primary);
+    background: var(--color-aqua-light);
+  }
+  .lang-toggle--light .current {
+    color: white;
+  }
+  .lang-toggle--light a {
+    color: var(--color-aqua-light);
+  }
+  .lang-toggle--light a:hover {
+    color: var(--color-primary-dark);
+  }
+</style>

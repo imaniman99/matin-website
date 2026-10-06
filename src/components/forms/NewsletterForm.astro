@@ -1,0 +1,141 @@
+---
+/**
+ * Newsletter sign-up.
+ * PUBLIC_NEWSLETTER_MODE=brevo → sent to /api/newsletter (Brevo, double opt-in).
+ * Otherwise (default) → stored in Netlify Forms ("newsletter"), to export later.
+ */
+import { PUBLIC_NEWSLETTER_MODE } from 'astro:env/client';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  compact?: boolean;
+  id: string;
+}
+const { lang, compact = false, id } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<form
+  class:list={['newsletter', compact && 'newsletter--compact']}
+  name="newsletter"
+  method="post"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-newsletter
+  data-mode={PUBLIC_NEWSLETTER_MODE}
+  data-msg-email={t('form.errEmail')}
+  data-msg-consent={t('form.errConsent')}
+  data-msg-success={
+    PUBLIC_NEWSLETTER_MODE === 'brevo' ? t('newsletter.success') : t('newsletter.successDirect')
+  }
+  data-msg-error={t('newsletter.error')}
+  data-msg-sending={t('form.sending')}
+>
+  <input type="hidden" name="form-name" value="newsletter" />
+  <input type="hidden" name="lang" value={lang} />
+  <p class="hidden" aria-hidden="true">
+    <label>
+      Ne pas remplir / Do not fill <input name="bot-field" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div class="newsletter__row">
+    <label for={`${id}-email`} class:list={[compact ? 'sr-only' : 'newsletter__label']}>
+      {t('newsletter.emailLabel')}
+    </label>
+    <input
+      id={`${id}-email`}
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder={t('newsletter.emailPlaceholder')}
+      class="newsletter__input"
+    />
+    <button type="submit" class="btn btn-gold shrink-0">
+      {t('newsletter.submit')}
+    </button>
+  </div>
+  <div class="newsletter__consent">
+    <input id={`${id}-consent`} type="checkbox" name="consent" required />
+    <label for={`${id}-consent`}>
+      {t('newsletter.consent')} <a href={path('privacy', lang)}>{t('newsletter.privacyLink')}</a>.
+    </label>
+  </div>
+  <p class="newsletter__status" role="status" aria-live="polite" tabindex="-1"></p>
+</form>
+
+<script>
+  import { enhanceNewsletters } from '@/scripts/forms';
+  enhanceNewsletters();
+</script>
+
+<style>
+  .newsletter {
+    container-type: inline-size;
+  }
+  .newsletter__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  @container (min-width: 400px) {
+    .newsletter__row {
+      grid-template-columns: 1fr auto;
+    }
+    .newsletter__label {
+      grid-column: 1 / -1;
+    }
+  }
+  .newsletter__label {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .newsletter__input {
+    min-height: 3rem;
+    width: 100%;
+    border-radius: 999px;
+    padding: 0 1.25rem;
+    background: white;
+    color: var(--color-ink);
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+  }
+  .newsletter__input::placeholder {
+    color: #6b7a84;
+  }
+  .newsletter__input:focus-visible {
+    border-color: var(--color-gold);
+  }
+  .newsletter__consent {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .newsletter__consent input {
+    margin-top: 0.2rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    accent-color: var(--color-primary);
+  }
+  .newsletter__consent a {
+    color: inherit;
+    font-weight: 600;
+    margin-left: 0.25rem;
+  }
+  .newsletter__status:not(:empty) {
+    margin-top: 0.75rem;
+    font-weight: 600;
+  }
+  .newsletter--compact .newsletter__consent {
+    color: rgb(255 255 255 / 0.85);
+  }
+  .newsletter--compact .newsletter__consent input {
+    accent-color: var(--color-gold);
+  }
+</style>

@@ -1,0 +1,244 @@
+---
+/**
+ * Consent banner + preferences dialog.
+ * The banner only appears when an analytics provider is configured, because
+ * otherwise the site sets no optional cookies at all and there is nothing to ask.
+ * The preferences dialog is always reachable from the footer ("Manage cookies").
+ */
+import { Cookie, X } from '@lucide/astro';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div
+  class="consent-banner on-dark"
+  role="region"
+  aria-labelledby="consent-title"
+  hidden
+  data-consent-banner
+>
+  <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-8">
+    <div class="flex gap-4">
+      <Cookie size={28} class="mt-1 hidden shrink-0 text-gold-light sm:block" aria-hidden="true" />
+      <div>
+        <h2 id="consent-title" class="mb-1 font-sans text-base font-bold !text-white">
+          {t('consent.title')}
+        </h2>
+        <p class="text-sm text-white/85">
+          {t('consent.text')}{' '}
+          <a href={path('privacy', lang)} class="font-semibold text-gold-light">
+            {t('consent.policyLink')}
+          </a>
+        </p>
+      </div>
+    </div>
+    <!-- Refuse and accept are equally prominent (Law 25: no nudging). -->
+    <div class="flex shrink-0 flex-wrap gap-2">
+      <button
+        type="button"
+        class="btn btn-ghost-light !min-h-11 !px-5 text-sm"
+        data-consent="refuse"
+      >
+        {t('consent.refuse')}
+      </button>
+      <button type="button" class="btn btn-ghost-light !min-h-11 !px-5 text-sm" data-consent-open>
+        {t('consent.customize')}
+      </button>
+      <button
+        type="button"
+        class="btn btn-ghost-light !min-h-11 !px-5 text-sm"
+        data-consent="accept"
+      >
+        {t('consent.accept')}
+      </button>
+    </div>
+  </div>
+</div>
+
+<dialog class="consent-dialog" aria-labelledby="consent-prefs-title" data-consent-dialog>
+  <form method="dialog" class="p-6 sm:p-8">
+    <div class="mb-5 flex items-start justify-between gap-4">
+      <h2 id="consent-prefs-title" class="text-2xl font-bold">
+        {t('consent.prefsTitle')}
+      </h2>
+      <button type="submit" value="cancel" class="close-btn" formnovalidate>
+        <X size={22} aria-hidden="true" />
+        <span class="sr-only">{t('consent.close')}</span>
+      </button>
+    </div>
+
+    <ul class="space-y-3">
+      <li class="pref">
+        <div>
+          <p class="font-semibold text-primary">{t('consent.necessary')}</p>
+          <p class="text-sm text-muted">{t('consent.necessaryText')}</p>
+        </div>
+        <span class="shrink-0 text-xs font-bold text-teal">{t('consent.alwaysOn')}</span>
+      </li>
+      <li class="pref" data-consent-analytics-row>
+        <div>
+          <label for="consent-analytics" class="font-semibold text-primary">
+            {t('consent.analytics')}
+          </label>
+          <p class="text-sm text-muted" id="consent-analytics-desc">
+            {t('consent.analyticsText')}
+          </p>
+        </div>
+        <input
+          id="consent-analytics"
+          type="checkbox"
+          role="switch"
+          class="switch"
+          aria-describedby="consent-analytics-desc"
+          data-consent-analytics
+        />
+      </li>
+      <li class="pref">
+        <div>
+          <p class="font-semibold text-primary">{t('consent.media')}</p>
+          <p class="text-sm text-muted">{t('consent.mediaText')}</p>
+        </div>
+      </li>
+    </ul>
+
+    <p class="mt-4 text-sm font-semibold text-teal" role="status" data-consent-status></p>
+
+    <div class="mt-6 flex flex-wrap justify-end gap-2">
+      <button type="button" class="btn btn-outline !min-h-11 text-sm" data-consent="refuse">
+        {t('consent.refuse')}
+      </button>
+      <button type="button" class="btn btn-primary !min-h-11 text-sm" data-consent="save">
+        {t('consent.save')}
+      </button>
+    </div>
+    <p class="sr-only" data-consent-saved-msg>
+      {t('consent.saved')}
+    </p>
+  </form>
+</dialog>
+
+<script>
+  import { analyticsEnabled, applyConsent, readConsent, saveConsent } from '@/scripts/consent';
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]')!;
+  const dialog = document.querySelector<HTMLDialogElement>('[data-consent-dialog]')!;
+  const toggle = dialog.querySelector<HTMLInputElement>('[data-consent-analytics]')!;
+  const status = dialog.querySelector<HTMLElement>('[data-consent-status]')!;
+  const savedMsg = dialog.querySelector<HTMLElement>('[data-consent-saved-msg]')!.textContent ?? '';
+
+  const current = readConsent();
+  applyConsent(current);
+  // Without an analytics tool there is nothing optional to consent to.
+  if (!analyticsEnabled) dialog.querySelector('[data-consent-analytics-row]')?.remove();
+  if (analyticsEnabled && !current) banner.hidden = false;
+
+  const decide = (analytics: boolean) => {
+    saveConsent(analytics);
+    banner.hidden = true;
+    if (dialog.open) {
+      status.textContent = savedMsg;
+      setTimeout(() => dialog.close(), 700);
+    }
+  };
+
+  document.addEventListener('click', (e) => {
+    const target = (e.target as HTMLElement).closest<HTMLElement>(
+      '[data-consent], [data-consent-open]',
+    );
+    if (!target) return;
+    if (target.hasAttribute('data-consent-open')) {
+      status.textContent = '';
+      toggle.checked = readConsent()?.analytics ?? false;
+      dialog.showModal();
+      return;
+    }
+    const action = target.dataset.consent;
+    if (action === 'accept') decide(true);
+    else if (action === 'refuse') decide(false);
+    else if (action === 'save') decide(toggle.checked);
+  });
+</script>
+
+<style>
+  .consent-banner {
+    position: fixed;
+    z-index: 45;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.25rem;
+    color: white;
+    background: var(--color-primary-dark);
+    box-shadow: 0 20px 50px -10px rgb(6 34 56 / 0.5);
+    border: 1px solid rgb(242 205 120 / 0.35);
+  }
+  .consent-dialog {
+    width: min(36rem, calc(100% - 2rem));
+    margin: auto;
+    border: 0;
+    border-radius: 1.25rem;
+    padding: 0;
+    box-shadow: var(--shadow-lift);
+  }
+  .consent-dialog::backdrop {
+    background: rgb(6 34 56 / 0.55);
+  }
+  .pref {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 0.9rem;
+    background: var(--color-cream);
+  }
+  .close-btn {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  .close-btn:hover {
+    background: var(--color-aqua-light);
+  }
+  .switch {
+    appearance: none;
+    flex-shrink: 0;
+    position: relative;
+    width: 3rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: #9aa7b0;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: white;
+    transition: transform 0.2s;
+  }
+  .switch:checked {
+    background: var(--color-primary);
+  }
+  .switch:checked::after {
+    transform: translateX(1.25rem);
+  }
+</style>

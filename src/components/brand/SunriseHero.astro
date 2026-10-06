@@ -1,0 +1,168 @@
+---
+/**
+ * Homepage hero, echoing the vertical logo: a sun rising behind the "Matin"
+ * wordmark ("matin" = morning), with soft aqua-and-gold waves below.
+ * All decoration is inline SVG/CSS (no image requests).
+ */
+import { ArrowRight, CalendarDays } from '@lucide/astro';
+import Wordmark from './Wordmark.astro';
+import MapleLeaf from './MapleLeaf.astro';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+// Rays fan across the upper half-circle, like the logo's sunrise.
+const rays = Array.from({ length: 15 }, (_, i) => -168 + i * 11.14);
+---
+
+<section class="hero relative isolate overflow-hidden" aria-labelledby="hero-title">
+  <!-- Waves -->
+  <svg
+    class="absolute inset-x-0 bottom-0 -z-10 h-[30%] min-h-36 w-full"
+    viewBox="0 0 1440 280"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M0 120 C 260 40 470 200 760 130 S 1220 60 1440 110 V280 H0Z"
+      fill="#6CCFE3"
+      opacity="0.18"
+    ></path>
+    <path
+      d="M0 170 C 300 90 520 250 820 175 S 1240 120 1440 160 V280 H0Z"
+      fill="#6CCFE3"
+      opacity="0.28"
+    ></path>
+    <path
+      d="M0 150 C 280 70 500 230 790 155 S 1230 90 1440 135"
+      fill="none"
+      stroke="#D9A441"
+      stroke-width="2"
+      vector-effect="non-scaling-stroke"
+    ></path>
+    <path d="M0 205 C 320 140 560 270 860 205 S 1260 160 1440 195 V282 H0Z" fill="#ffffff"></path>
+    <path
+      d="M0 195 C 320 128 560 262 860 196 S 1260 150 1440 186"
+      fill="none"
+      stroke="#E8C979"
+      stroke-width="1.4"
+      opacity="0.8"
+      vector-effect="non-scaling-stroke"
+    ></path>
+  </svg>
+
+  <div class="container-site flex min-h-[min(90vh,54rem)] flex-col items-center justify-center pt-24 pb-36 text-center sm:pt-28 sm:pb-44">
+    <h1 id="hero-title" class="relative w-full max-w-[38rem] animate-rise">
+      <span class="sr-only">{t('meta.siteName')}</span>
+      <!-- Sunrise behind the wordmark -->
+      <svg
+        class="hero__sun pointer-events-none absolute bottom-[42%] left-1/2 -z-10 w-[150%] max-w-none -translate-x-1/2"
+        viewBox="0 0 800 400"
+        overflow="visible"
+        aria-hidden="true"
+      >
+        <defs>
+          <radialGradient id="sun-halo" cx="400" cy="400" r="340" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#F7D888" stop-opacity="0.55"></stop>
+            <stop offset="0.45" stop-color="#F7D888" stop-opacity="0.18"></stop>
+            <stop offset="1" stop-color="#F7D888" stop-opacity="0"></stop>
+          </radialGradient>
+          <radialGradient id="sun-disc" cx="400" cy="400" r="104" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#FFF7E0"></stop>
+            <stop offset="0.7" stop-color="#F7D888"></stop>
+            <stop offset="1" stop-color="#E8B653"></stop>
+          </radialGradient>
+          <clipPath id="sun-horizon">
+            <rect x="0" y="0" width="800" height="400"></rect>
+          </clipPath>
+          <linearGradient id="sun-ray" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#E0A93F" stop-opacity="0.95"></stop>
+            <stop offset="1" stop-color="#E0A93F" stop-opacity="0"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="400" cy="400" r="340" fill="url(#sun-halo)"></circle>
+        <g class="hero__rays">
+          {rays.map((deg) => (
+            <path
+              d="M-3.5 -128 L0 -330 L3.5 -128Z"
+              fill="url(#sun-ray)"
+              transform={`translate(400 400) rotate(${deg + 90})`}
+            />
+          ))}
+        </g>
+        <circle
+          cx="400"
+          cy="400"
+          r="104"
+          fill="url(#sun-disc)"
+          opacity="0.9"
+          clip-path="url(#sun-horizon)"
+        ></circle>
+      </svg>
+      <Wordmark class="mx-auto w-[min(86vw,36rem)]" />
+    </h1>
+
+    <div
+      class="mt-1 flex w-full max-w-[34rem] animate-rise items-center gap-3 text-teal [animation-delay:120ms]"
+      aria-hidden="true"
+    >
+      <span class="h-[3px] flex-1 rounded bg-gradient-to-r from-transparent via-gold to-gold"></span>
+      <MapleLeaf size={22} />
+      <span class="h-[3px] flex-1 rounded bg-gradient-to-l from-transparent via-gold to-gold"></span>
+    </div>
+
+    <p
+      class="mt-4 animate-rise font-sans text-xl font-bold tracking-tight text-primary-dark [animation-delay:180ms] sm:text-3xl"
+      aria-hidden="true"
+    >
+      {t('brand.institute')}
+    </p>
+
+    <p class="script mt-6 animate-rise text-[2.6rem] text-primary [animation-delay:260ms] sm:text-6xl">
+      {t('brand.tagline')}
+    </p>
+
+    <p class="mt-6 max-w-xl animate-rise text-lg text-ink/85 [animation-delay:340ms] sm:text-xl">
+      {t('home.heroMission')}
+    </p>
+
+    <div class="mt-9 flex animate-rise flex-col gap-3 [animation-delay:420ms] sm:flex-row">
+      <a href={path('programs', lang)} class="btn btn-primary">
+        {t('home.heroCtaPrograms')}
+        <ArrowRight size={18} aria-hidden="true" />
+      </a>
+      <a href={path('events', lang)} class="btn btn-outline bg-white/70">
+        <CalendarDays size={18} aria-hidden="true" />
+        {t('home.heroCtaEvents')}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background:
+      radial-gradient(70% 55% at 50% 30%, rgb(255 244 214 / 0.9), transparent 70%),
+      linear-gradient(180deg, #ffffff 0%, var(--color-cream) 55%, #fdf0d8 100%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__rays {
+      transform-origin: 400px 400px;
+      animation: rays 9s ease-in-out infinite alternate;
+    }
+  }
+  @keyframes rays {
+    from {
+      opacity: 0.7;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+  }
+</style>

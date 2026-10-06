@@ -1,0 +1,134 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { ArrowLeft } from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import CoverArt from '@/components/content/CoverArt.astro';
+import PostCard from '@/components/content/PostCard.astro';
+import Prose from '@/components/ui/Prose.astro';
+import ShareButtons from '@/components/ui/ShareButtons.astro';
+import { categorySegment, categorySlugs, path, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getNews, renderMarkdown, slugOf } from '@/lib/content';
+import { formatDate } from '@/lib/dates';
+
+interface Props {
+  lang: Lang;
+  post: CollectionEntry<'news'>;
+}
+const { lang, post } = Astro.props;
+const t = useTranslations(lang);
+const d = post.data;
+const title = pick(d.title, lang)!;
+const alternates = {
+  fr: path('news', 'fr', slugOf(post, 'fr')),
+  en: path('news', 'en', slugOf(post, 'en')),
+};
+const site = Astro.site ?? new URL(Astro.url.origin);
+const url = new URL(alternates[lang], site).href;
+const category = d.categories[0] ?? 'community';
+
+// Related: same category first, then most recent.
+const all = (await getNews()).filter((p) => p.id !== post.id);
+const related = [
+  ...all.filter((p) => p.data.categories.some((c) => d.categories.includes(c))),
+  ...all.filter((p) => !p.data.categories.some((c) => d.categories.includes(c))),
+].slice(0, 3);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: title,
+  description: pick(d.excerpt, lang),
+  datePublished: d.date.toISOString(),
+  inLanguage: lang === 'fr' ? 'fr-CA' : 'en-CA',
+  author: { '@type': 'Person', name: d.author },
+  publisher: { '@id': new URL('/#organization', site).href },
+  image: [new URL('/og-default.jpg', site).href],
+  mainEntityOfPage: url,
+};
+---
+
+<PageLayout
+  lang={lang}
+  title={title}
+  lede={pick(d.excerpt, lang)}
+  alternates={alternates}
+  crumbs={[{ label: t('news.title'), href: path('news', lang) }]}
+  type="article"
+  jsonLd={[jsonLd]}
+  footerWaveFrom={related.length ? 'var(--color-cream)' : 'white'}
+>
+  <p slot="hero" class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+    <span>
+      {t('news.publishedOn')}{' '}
+      <time datetime={d.date.toISOString().slice(0, 10)} class="font-semibold text-ink">
+        {formatDate(d.date, lang)}
+      </time>
+    </span>
+    <span aria-hidden="true" class="text-gold">
+      •
+    </span>
+    <span>
+      {t('news.by')} <span class="font-semibold text-ink">{d.author}</span>
+    </span>
+    {d.categories.map((c) => (
+      <a
+        href={path('news', lang, categorySegment[lang], categorySlugs[c][lang])}
+        class="rounded-full bg-aqua-light px-3 py-1 text-xs font-bold text-primary no-underline hover:bg-primary hover:text-white"
+      >
+        {t(`categories.${c}`)}
+      </a>
+    ))}
+  </p>
+
+  <article class="container-site max-w-4xl pt-6 pb-20">
+    <div class="mb-12 aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] shadow-soft">
+      {d.image ? (
+        <Picture
+          src={d.image}
+          alt={pick(d.imageAlt, lang) ?? ''}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280]}
+          sizes="(min-width: 896px) 56rem, 100vw"
+          class="size-full object-cover"
+          loading="eager"
+        />
+      ) : (
+        <CoverArt category={category} seed={post.id} class="size-full" />
+      )}
+    </div>
+    <Prose html={renderMarkdown(d.body[lang], lang)} class="mx-auto max-w-2xl text-lg" />
+    {d.tags.length > 0 && (
+      <ul class="mx-auto mt-10 flex max-w-2xl flex-wrap gap-2" aria-label={t('news.tags')}>
+        {d.tags.map((tag) => (
+          <li class="rounded-full border border-line px-3 py-1 text-sm text-muted">#{tag}</li>
+        ))}
+      </ul>
+    )}
+    <div class="mx-auto mt-10 flex max-w-2xl flex-col gap-6 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+      <ShareButtons lang={lang} url={url} title={title} />
+      <a href={path('news', lang)} class="link-arrow text-sm">
+        <ArrowLeft size={18} aria-hidden="true" />
+        {t('news.backToNews')}
+      </a>
+    </div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="bg-cream py-20" aria-labelledby="related-title">
+      <div class="container-site">
+        <h2 id="related-title" class="section-title mb-12">
+          {t('news.related')}
+        </h2>
+        <ul class="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {related.map((p) => (
+            <li>
+              <PostCard post={p} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</PageLayout>

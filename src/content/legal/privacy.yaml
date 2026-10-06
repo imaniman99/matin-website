@@ -1,0 +1,112 @@
+# Politique de confidentialité — ébauche conforme à la Loi 25 (Québec).
+# [PLACEHOLDER] À faire valider par la personne responsable et, idéalement, par un conseiller juridique.
+placeholder: true
+updated: 2026-10-04
+title:
+  fr: Politique de confidentialité
+  en: Privacy Policy
+body:
+  fr: |
+    > [PLACEHOLDER] Ébauche à faire valider avant la mise en ligne.
+
+    Matin – Institut interculturel (« Matin », « nous ») accorde une grande importance à la protection de vos renseignements personnels. Cette politique explique quels renseignements nous recueillons, pourquoi, comment nous les protégeons et quels sont vos droits, conformément à la *Loi sur la protection des renseignements personnels dans le secteur privé* du Québec, telle que modifiée par la Loi 25.
+
+    ## Personne responsable de la protection des renseignements personnels
+
+    {{privacyOfficer}}
+
+    ## Renseignements recueillis et fins
+
+    Nous recueillons uniquement les renseignements nécessaires aux fins suivantes :
+
+    - **Formulaire de contact** : nom, courriel, objet et message, pour répondre à votre demande.
+    - **Candidature bénévole** : nom, courriel, téléphone (facultatif), disponibilités, langues et motivation, pour évaluer votre candidature et vous joindre.
+    - **Infolettre** : adresse courriel, pour vous envoyer nos nouvelles. Vous pouvez vous désabonner en tout temps grâce au lien présent dans chaque envoi.
+    - **Statistiques de visite** (seulement avec votre consentement) : données de navigation agrégées et anonymisées, pour améliorer le site.
+
+    Nous ne vendons ni ne louons jamais vos renseignements personnels.
+
+    ## Fournisseurs et communication hors Québec
+
+    Pour exploiter le site, nous faisons appel aux fournisseurs suivants, qui peuvent traiter vos renseignements à l'extérieur du Québec :
+
+    - **Netlify, Inc.** (hébergement du site et traitement des formulaires de contact et de bénévolat) : les soumissions de formulaires sont stockées sur des serveurs situés principalement aux **États-Unis**.
+    - **[PLACEHOLDER] Brevo** (envoi de l'infolettre) : serveurs situés dans l'Union européenne.
+    - **[PLACEHOLDER] Zeffy** (dons et adhésions en ligne) : plateforme externe régie par sa propre politique de confidentialité.
+    - **Cloudflare, Inc.** (si la protection anti-robot Turnstile est activée sur les formulaires) : vérifie que l’envoi provient d’une personne; serveurs situés notamment aux États-Unis.
+
+    Avant de communiquer des renseignements à l'extérieur du Québec, nous avons évalué que ces fournisseurs offrent une protection adéquate, notamment par des engagements contractuels de confidentialité et de sécurité.
+
+    ## Témoins (cookies) et traceurs
+
+    Le site n'utilise aucun témoin non essentiel avant votre consentement. Les outils de statistiques, les vidéos YouTube et les cartes Google ne sont chargés qu'après votre accord ou un clic explicite de votre part. Vous pouvez modifier vos choix en tout temps grâce au lien « Gérer les témoins » au bas de chaque page.
+
+    ## Conservation et sécurité
+
+    Les messages de contact sont conservés au plus 2 ans, les candidatures bénévoles au plus 3 ans, puis détruits de façon sécuritaire. L'accès aux renseignements est limité aux personnes qui en ont besoin dans le cadre de leurs fonctions.
+
+    ## Vos droits
+
+    Vous pouvez en tout temps demander d'accéder à vos renseignements, de les faire rectifier, de retirer votre consentement ou de demander la portabilité de vos données, en écrivant à la personne responsable ci-dessus. Nous répondrons dans un délai de 30 jours.
+
+    Si vous n'êtes pas satisfait de notre réponse, vous pouvez porter plainte auprès de la [Commission d'accès à l'information du Québec](https://www.cai.gouv.qc.ca/).
+
+    ## Incidents de confidentialité
+
+    En cas d'incident présentant un risque de préjudice sérieux, nous aviserons les personnes concernées et la Commission d'accès à l'information, et tiendrons un registre des incidents.
+
+    ## Modifications
+
+    Toute modification de cette politique sera publiée sur cette page avec sa date de mise à jour.
+  en: |
+    > [PLACEHOLDER] Draft to be validated before going live.
+
+    Matin – Intercultural Institute ("Matin", "we") takes the protection of your personal information seriously. This policy explains what information we collect, why, how we protect it and what your rights are, in accordance with Québec's *Act respecting the protection of personal information in the private sector*, as amended by Law 25.
+
+    ## Person in charge of the protection of personal information
+
+    {{privacyOfficer}}
+
+    ## Information collected and purposes
+
+    We only collect the information needed for the following purposes:
+
+    - **Contact form**: name, email, subject and message, to answer your request.
+    - **Volunteer application**: name, email, phone (optional), availability, languages and motivation, to review your application and contact you.
+    - **Newsletter**: email address, to send you our news. You can unsubscribe at any time using the link in every email.
+    - **Visit statistics** (only with your consent): aggregated, anonymized browsing data, to improve the site.
+
+    We never sell or rent your personal information.
+
+    ## Service providers and transfers outside Québec
+
+    To run the site, we use the following providers, which may process your information outside Québec:
+
+    - **Netlify, Inc.** (website hosting and processing of the contact and volunteer forms): form submissions are stored on servers located mainly in the **United States**.
+    - **[PLACEHOLDER] Brevo** (newsletter delivery): servers located in the European Union.
+    - **[PLACEHOLDER] Zeffy** (online donations and memberships): an external platform governed by its own privacy policy.
+    - **Cloudflare, Inc.** (if Turnstile anti-robot protection is enabled on the forms): checks that a submission comes from a person; servers located notably in the United States.
+
+    Before communicating information outside Québec, we assessed that these providers offer adequate protection, including through contractual confidentiality and security commitments.
+
+    ## Cookies and trackers
+
+    The site uses no non-essential cookies before you consent. Analytics tools, YouTube videos and Google Maps only load after your consent or an explicit click. You can change your choices at any time using the "Manage cookies" link at the bottom of every page.
+
+    ## Retention and security
+
+    Contact messages are kept for at most 2 years and volunteer applications for at most 3 years, then securely destroyed. Access to information is limited to people who need it to do their work.
+
+    ## Your rights
+
+    You may at any time request access to your information, have it corrected, withdraw your consent or request data portability by writing to the person in charge above. We will respond within 30 days.
+
+    If you are not satisfied with our answer, you may file a complaint with the [Commission d'accès à l'information du Québec](https://www.cai.gouv.qc.ca/).
+
+    ## Confidentiality incidents
+
+    If an incident presents a risk of serious injury, we will notify the people concerned and the Commission d'accès à l'information, and keep a register of incidents.
+
+    ## Changes
+
+    Any change to this policy will be published on this page with its update date.

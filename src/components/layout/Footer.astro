@@ -1,0 +1,174 @@
+---
+import { Image } from 'astro:assets';
+import { MapPin, Phone, Mail, Clock } from '@lucide/astro';
+import logoCircle from '@/assets/brand/logo-circle.png';
+import WaveDivider from '@/components/brand/WaveDivider.astro';
+import LeafRule from '@/components/brand/LeafRule.astro';
+import SocialLinks from '@/components/ui/SocialLinks.astro';
+import NewsletterForm from '@/components/forms/NewsletterForm.astro';
+import { path, type Lang, type RouteKey } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getSettings } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+  showNewsletter?: boolean;
+  waveFrom?: string;
+}
+const { lang, showNewsletter = true, waveFrom = 'white' } = Astro.props;
+const t = useTranslations(lang);
+const s = await getSettings();
+
+const explore: RouteKey[] = [
+  'about',
+  'programs',
+  'events',
+  'news',
+  'gallery',
+  'getInvolved',
+  'resources',
+  'faq',
+  'contact',
+];
+const legal: RouteKey[] = ['privacy', 'terms', 'accessibility'];
+const year = new Date().getFullYear();
+const fullAddress = `${s.address.street}, ${s.address.city} (${s.address.region}) ${s.address.postalCode}`;
+const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+---
+
+<footer class="on-dark bg-primary-dark text-white/90">
+  <WaveDivider from={waveFrom} to="var(--color-primary-dark)" />
+  <div class="container-site grid gap-12 pt-10 pb-12 md:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Image
+        src={logoCircle}
+        alt={t('meta.siteName')}
+        width={120}
+        height={120}
+        class="mb-5 size-[120px] drop-shadow-[0_8px_24px_rgba(108,207,227,0.25)]"
+        loading="lazy"
+      />
+      <p class="script mb-2 text-3xl text-gold-light">{t('brand.tagline')}</p>
+      <p class="max-w-sm text-[0.95rem] leading-relaxed text-white/80">{pick(s.mission, lang)}</p>
+      <SocialLinks lang={lang} social={s.social} class="mt-6" />
+    </div>
+
+    <nav aria-label={t('a11y.footerNav')} class="lg:col-span-2">
+      <h2 class="footer-title">{t('footer.linksTitle')}</h2>
+      <ul class="space-y-1.5">
+        {explore.map((key) => (
+          <li>
+            <a href={path(key, lang)} class="footer-link">
+              {t(`nav.${key}`)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="lg:col-span-3">
+      <h2 class="footer-title">{t('footer.contactTitle')}</h2>
+      <address class="space-y-3 text-[0.95rem] not-italic">
+        <p class="flex gap-3">
+          <MapPin size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
+          <a href={mapsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">
+            {s.address.street}
+            <br />
+            {s.address.city} ({s.address.region}) {s.address.postalCode}
+            <span class="sr-only">{t('a11y.externalLink')}</span>
+          </a>
+        </p>
+        <p class="flex gap-3">
+          <Phone size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
+          <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="footer-link">
+            {s.phone}
+          </a>
+        </p>
+        <p class="flex gap-3">
+          <Mail size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
+          <a href={`mailto:${s.email}`} class="footer-link break-all">
+            {s.email}
+          </a>
+        </p>
+      </address>
+      {showNewsletter && (
+        <>
+          <h2 class="footer-title mt-8">{t('footer.hoursTitle')}</h2>
+          <p class="flex gap-3 text-[0.95rem] whitespace-pre-line text-white/80">
+            <Clock size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
+            <span>{pick(s.hours, lang)}</span>
+          </p>
+        </>
+      )}
+    </div>
+
+    {!showNewsletter && (
+      <div class="lg:col-span-3">
+        <h2 class="footer-title">{t('footer.hoursTitle')}</h2>
+        <p class="flex gap-3 text-[0.95rem] whitespace-pre-line text-white/80">
+          <Clock size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
+          <span>{pick(s.hours, lang)}</span>
+        </p>
+      </div>
+    )}
+
+    {showNewsletter && (
+      <div class="md:col-span-2 lg:col-span-3">
+        <h2 class="footer-title">{t('footer.newsletterTitle')}</h2>
+        <p class="mb-4 text-[0.95rem] text-white/80">{t('newsletter.text')}</p>
+        <NewsletterForm lang={lang} compact id="footer-newsletter" />
+      </div>
+    )}
+  </div>
+
+  <div class="container-site">
+    <LeafRule light class="mx-auto max-w-none opacity-70" />
+  </div>
+  <div class="container-site flex flex-col gap-4 py-7 text-sm text-white/70 md:flex-row md:items-center md:justify-between">
+    <p>
+      © {year} {t('meta.siteName')}. {t('footer.rights')}
+      {s.charityNumber && (
+        <span class="block md:inline">
+          {t('footer.charity')} {s.charityNumber}
+        </span>
+      )}
+    </p>
+    <nav aria-label={t('a11y.legalNav')}>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2">
+        {legal.map((key) => (
+          <li>
+            <a href={path(key, lang)} class="footer-link">
+              {t(`nav.${key}`)}
+            </a>
+          </li>
+        ))}
+        <li>
+          <button type="button" class="footer-link cursor-pointer" data-consent-open>
+            {t('consent.manage')}
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer-title {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+    margin-bottom: 1rem;
+  }
+  .footer-link {
+    color: rgb(255 255 255 / 0.85);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-link:hover {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+  }
+</style>

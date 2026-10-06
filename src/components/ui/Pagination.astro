@@ -1,0 +1,73 @@
+---
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  current: number;
+  last: number;
+  /** URL of page n. */
+  href: (n: number) => string;
+}
+const { lang, current, last, href } = Astro.props;
+const t = useTranslations(lang);
+const pages = Array.from({ length: last }, (_, i) => i + 1);
+---
+
+{last > 1 && (
+  <nav aria-label={t('pagination.label')} class="mt-14 flex justify-center">
+    <ul class="flex flex-wrap items-center gap-2">
+      {current > 1 && (
+        <li>
+          <a href={href(current - 1)} class="page-link" rel="prev">
+            <ChevronLeft size={18} aria-hidden="true" />
+            <span class="sr-only">{t('pagination.previous')}</span>
+          </a>
+        </li>
+      )}
+      {pages.map((n) => (
+        <li>
+          <a
+            href={href(n)}
+            class:list={['page-link', n === current && 'is-current']}
+            aria-current={n === current ? 'page' : undefined}
+            aria-label={t('pagination.page', { n })}
+          >
+            {n}
+          </a>
+        </li>
+      ))}
+      {current < last && (
+        <li>
+          <a href={href(current + 1)} class="page-link" rel="next">
+            <ChevronRight size={18} aria-hidden="true" />
+            <span class="sr-only">{t('pagination.next')}</span>
+          </a>
+        </li>
+      )}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .page-link {
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .page-link:hover {
+    border-color: var(--color-primary);
+  }
+  .page-link.is-current {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+</style>

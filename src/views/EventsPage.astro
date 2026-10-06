@@ -1,0 +1,231 @@
+---
+import { CalendarDays, List } from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import EventCard from '@/components/content/EventCard.astro';
+import EventCalendar from '@/components/content/EventCalendar.astro';
+import ExpireEvents from '@/components/content/ExpireEvents.astro';
+import { alternatesFor, path, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getUpcomingEvents, getPastEvents, slugOf } from '@/lib/content';
+import { formatDate } from '@/lib/dates';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [upcoming, past] = await Promise.all([getUpcomingEvents(), getPastEvents()]);
+const categories = [...new Set(upcoming.map((e) => e.data.category))];
+const loc = lang === 'fr' ? 'fr-CA' : 'en-CA';
+const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((key) => {
+  const [y, m] = key.split('-').map(Number);
+  const label = new Intl.DateTimeFormat(loc, {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(new Date(Date.UTC(y, m - 1, 15)));
+  return { key, label: label.charAt(0).toUpperCase() + label.slice(1) };
+});
+---
+
+<PageLayout
+  lang={lang}
+  title={t('events.title')}
+  lede={t('events.lede')}
+  alternates={alternatesFor('events')}
+  footerWaveFrom="var(--color-aqua-light)"
+>
+  <section class="container-site pt-4 pb-20" aria-labelledby="upcoming-title">
+    <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <h2 id="upcoming-title" class="section-title">
+        {t('events.upcoming')}
+      </h2>
+
+      {upcoming.length > 0 && (
+        <div class="hidden flex-wrap items-end gap-4" data-events-toolbar>
+          <div class="flex flex-col gap-1.5">
+            <label
+              for="filter-category"
+              class="text-xs font-bold tracking-wider text-muted uppercase"
+            >
+              {t('events.filterCategory')}
+            </label>
+            <select id="filter-category" class="select" data-filter-category>
+              <option value="">{t('events.allCategories')}</option>
+              {categories.map((c) => (
+                <option value={c}>{t(`categories.${c}`)}</option>
+              ))}
+            </select>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="filter-month" class="text-xs font-bold tracking-wider text-muted uppercase">
+              {t('events.filterMonth')}
+            </label>
+            <select id="filter-month" class="select" data-filter-month>
+              <option value="">{t('events.allMonths')}</option>
+              {months.map((m) => (
+                <option value={m.key}>{m.label}</option>
+              ))}
+            </select>
+          </div>
+          <div role="group" aria-label={t('events.viewLabel')} class="view-toggle">
+            <button type="button" aria-pressed="true" data-view="list">
+              <List size={18} aria-hidden="true" />
+              {t('events.listView')}
+            </button>
+            <button type="button" aria-pressed="false" data-view="calendar">
+              <CalendarDays size={18} aria-hidden="true" />
+              {t('events.calendarView')}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div data-view-panel="list">
+      {upcoming.length > 0 && (
+        <ul id="event-list" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" data-upcoming-list>
+          {upcoming.map((event) => (
+            <li data-category={event.data.category} data-month={event.data.start.slice(0, 7)}>
+              <EventCard event={event} lang={lang} headingLevel="h3" />
+            </li>
+          ))}
+        </ul>
+      )}
+      <p
+        class="card p-8 text-center text-lg text-muted"
+        data-upcoming-empty
+        hidden={upcoming.length > 0}
+      >
+        {t('home.eventsEmpty')}
+      </p>
+      <p class="card p-8 text-center text-muted" data-events-noresults hidden>
+        {t('events.noResults')}
+      </p>
+    </div>
+
+    {upcoming.length > 0 && (
+      <div data-view-panel="calendar" hidden>
+        <EventCalendar lang={lang} events={upcoming} />
+      </div>
+    )}
+  </section>
+  <ExpireEvents />
+
+  <section class="bg-aqua-light pt-16 pb-24" aria-labelledby="past-title">
+    <div class="container-site">
+      <h2 id="past-title" class="section-title mb-10">
+        {t('events.past')}
+      </h2>
+      {past.length > 0 ? (
+        <ul class="divide-y divide-primary/10 overflow-hidden rounded-[var(--radius-card)] bg-white shadow-soft">
+          {past.map((e) => (
+            <li class="relative flex flex-col gap-1 px-6 py-5 transition hover:bg-cream sm:flex-row sm:items-center sm:gap-6">
+              <time
+                datetime={e.data.start.slice(0, 10)}
+                class="w-44 shrink-0 text-sm font-semibold text-gold-text"
+              >
+                {formatDate(e.startDate, lang, false)}
+              </time>
+              <a
+                href={path('events', lang, slugOf(e, lang))}
+                class="font-display text-lg font-bold text-primary no-underline after:absolute after:inset-0 hover:text-teal"
+              >
+                {pick(e.data.title, lang)}
+              </a>
+              <span class="text-sm text-muted sm:ml-auto">
+                {t(`categories.${e.data.category}`)}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted">{t('events.noPast')}</p>
+      )}
+    </div>
+  </section>
+</PageLayout>
+
+<script>
+  const toolbar = document.querySelector<HTMLElement>('[data-events-toolbar]');
+  if (toolbar) {
+    toolbar.classList.remove('hidden');
+    toolbar.classList.add('flex');
+    const list = document.getElementById('event-list');
+    const noResults = document.querySelector<HTMLElement>('[data-events-noresults]');
+    const cat = toolbar.querySelector<HTMLSelectElement>('[data-filter-category]')!;
+    const month = toolbar.querySelector<HTMLSelectElement>('[data-filter-month]')!;
+    const calendar = document.querySelector<HTMLElement>('[data-calendar]');
+
+    const filter = () => {
+      let shown = 0;
+      list?.querySelectorAll<HTMLElement>(':scope > li').forEach((li) => {
+        // Items already hidden because they ended stay hidden.
+        if (li.dataset.expired) return;
+        const ok =
+          (!cat.value || li.dataset.category === cat.value) &&
+          (!month.value || li.dataset.month === month.value);
+        li.hidden = !ok;
+        if (ok) shown++;
+      });
+      if (noResults) noResults.hidden = shown > 0;
+      calendar?.querySelectorAll<HTMLElement>('li[data-category]').forEach((li) => {
+        li.hidden = !!cat.value && li.dataset.category !== cat.value;
+      });
+      if (month.value)
+        calendar?.dispatchEvent(new CustomEvent('calendar:goto', { detail: month.value }));
+    };
+    cat.addEventListener('change', filter);
+    month.addEventListener('change', filter);
+
+    const buttons = toolbar.querySelectorAll<HTMLButtonElement>('[data-view]');
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view!;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        document.querySelectorAll<HTMLElement>('[data-view-panel]').forEach((p) => {
+          p.hidden = p.dataset.viewPanel !== view;
+        });
+      }),
+    );
+  }
+</script>
+
+<style>
+  .select {
+    min-height: 2.75rem;
+    min-width: 11rem;
+    padding: 0 2.25rem 0 1rem;
+    border-radius: 999px;
+    border: 1.5px solid rgb(11 61 92 / 0.22);
+    background: white
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%230B3D5C' stroke-width='2'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E")
+      no-repeat right 0.9rem center;
+    appearance: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+  }
+  .view-toggle {
+    display: inline-flex;
+    padding: 4px;
+    border-radius: 999px;
+    background: var(--color-aqua-light);
+  }
+  .view-toggle button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 2.5rem;
+    padding: 0 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  .view-toggle button[aria-pressed='true'] {
+    background: var(--color-primary);
+    color: white;
+  }
+</style>

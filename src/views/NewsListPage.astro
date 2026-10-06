@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Rss } from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import PostCard from '@/components/content/PostCard.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+import { categorySegment, categorySlugs, path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+import type { Category } from '@/lib/taxonomy';
+
+interface Props {
+  lang: Lang;
+  posts: CollectionEntry<'news'>[];
+  /** All categories that have at least one post (for the chips). */
+  categories: Category[];
+  current?: number;
+  last?: number;
+  category?: Category;
+}
+const { lang, posts, categories, current = 1, last = 1, category } = Astro.props;
+const t = useTranslations(lang);
+
+const pageHref = (l: Lang, n: number) => (n === 1 ? path('news', l) : path('news', l, 'page', n));
+const catHref = (l: Lang, c: Category) => path('news', l, categorySegment[l], categorySlugs[c][l]);
+const alternates = category
+  ? { fr: catHref('fr', category), en: catHref('en', category) }
+  : { fr: pageHref('fr', current), en: pageHref('en', current) };
+
+const title = category
+  ? t('news.categoryTitle', { category: t(`categories.${category}`) })
+  : t('news.title');
+const metaTitle =
+  !category && current > 1 ? `${title} — ${t('pagination.page', { n: current })}` : title;
+---
+
+<PageLayout
+  lang={lang}
+  title={title}
+  metaTitle={metaTitle}
+  lede={t('news.lede')}
+  alternates={alternates}
+  crumbs={category ? [{ label: t('news.title'), href: path('news', lang) }] : []}
+>
+  <section class="container-site pt-4 pb-24" aria-label={title}>
+    <div class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <nav aria-label={t('news.categories')}>
+        <ul class="flex flex-wrap gap-2">
+          <li>
+            <a
+              href={path('news', lang)}
+              class="chip-link"
+              aria-current={!category ? 'page' : undefined}
+            >
+              {t('news.allCategories')}
+            </a>
+          </li>
+          {categories.map((c) => (
+            <li>
+              <a
+                href={catHref(lang, c)}
+                class="chip-link"
+                aria-current={category === c ? 'page' : undefined}
+              >
+                {t(`categories.${c}`)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <a href={`/${lang}/rss.xml`} class="link-arrow shrink-0 text-sm">
+        <Rss size={18} class="text-gold-text" aria-hidden="true" />
+        {t('news.rss')}
+      </a>
+    </div>
+
+    {posts.length > 0 ? (
+      <ul class="grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <li>
+            <PostCard post={post} lang={lang} headingLevel="h2" />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="card p-8 text-center text-muted">{t('news.empty')}</p>
+    )}
+
+    <Pagination lang={lang} current={current} last={last} href={(n) => pageHref(lang, n)} />
+  </section>
+</PageLayout>
+
+<style>
+  .chip-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.4rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    background: white;
+    border: 1.5px solid rgb(11 61 92 / 0.2);
+  }
+  .chip-link:hover {
+    border-color: var(--color-primary);
+  }
+  .chip-link[aria-current='page'] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+</style>

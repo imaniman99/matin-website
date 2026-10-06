@@ -1,0 +1,15 @@
+---
+import NewsListPage from '@/views/NewsListPage.astro';
+import { getNews, newsCategories, NEWS_PAGE_SIZE } from '@/lib/content';
+
+const posts = await getNews();
+const last = Math.max(1, Math.ceil(posts.length / NEWS_PAGE_SIZE));
+---
+
+<NewsListPage
+  lang="fr"
+  posts={posts.slice(0, NEWS_PAGE_SIZE)}
+  categories={newsCategories(posts)}
+  current={1}
+  last={last}
+/>

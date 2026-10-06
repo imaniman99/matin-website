@@ -1,0 +1,35 @@
+# Netlify configuration — build, functions and security headers.
+[build]
+  command = "npm run build"   # also runs scripts/optimize-images.mjs first (prebuild)
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+
+# Security headers for every page. The Content-Security-Policy itself is generated
+# per page by Astro (security.csp in astro.config.mjs) as a <meta> tag; the
+# directives below are the ones a <meta> tag cannot carry.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy = "frame-ancestors 'none'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+# Fingerprinted build assets never change: cache them for a year.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/ics/*"
+  [headers.values]
+    Content-Type = "text/calendar; charset=utf-8"

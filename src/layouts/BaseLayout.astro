@@ -1,0 +1,119 @@
+---
+import '@/styles/global.css';
+import playfair800 from '@fontsource/playfair-display/files/playfair-display-latin-800-normal.woff2?url';
+import montserrat400 from '@fontsource/montserrat/files/montserrat-latin-400-normal.woff2?url';
+import SEO from '@/components/layout/SEO.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import CookieBanner from '@/components/layout/CookieBanner.astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+import { getSettings } from '@/lib/content';
+import { organizationJsonLd } from '@/lib/seo';
+
+interface Props {
+  lang: Lang;
+  /** Page title without the site name (omit on the home page). */
+  title?: string;
+  description?: string;
+  /** Equivalent URL of this page in each language (toggle + hreflang). */
+  alternates: Record<Lang, string>;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article' | 'event';
+  noindex?: boolean;
+  jsonLd?: object[];
+  /** Hide the footer newsletter when the page already has one. */
+  footerNewsletter?: boolean;
+  /** Background colour of the last section, so the footer wave blends in. */
+  footerWaveFrom?: string;
+}
+
+const {
+  lang,
+  title,
+  description,
+  alternates,
+  image,
+  imageAlt,
+  type,
+  noindex,
+  jsonLd = [],
+  footerNewsletter = true,
+  footerWaveFrom,
+} = Astro.props;
+const t = useTranslations(lang);
+const settings = await getSettings();
+const fullTitle = title ? `${title} | ${t('meta.siteName')}` : t('meta.homeTitle');
+const site = Astro.site ?? new URL(Astro.url.origin);
+---
+
+<!doctype html>
+<html lang={lang === 'fr' ? 'fr-CA' : 'en-CA'} dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0B3D5C" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="preload" href={playfair800} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={montserrat400} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${t('meta.siteName')} — ${t('nav.news')}`}
+      href={`/${lang}/rss.xml`}
+    />
+    <SEO
+      lang={lang}
+      title={fullTitle}
+      description={description ?? t('meta.defaultDescription')}
+      alternates={alternates}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+      noindex={noindex}
+      jsonLd={[organizationJsonLd(settings, lang, site), ...jsonLd]}
+    />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="sr-only-focusable fixed top-3 left-3 z-50 rounded-full bg-primary px-5 py-3 font-semibold text-white no-underline shadow-lift"
+    >
+      {t('a11y.skipToContent')}
+    </a>
+    <Header lang={lang} alternates={alternates} donateUrl={settings.donateUrl} />
+    <main id="main" tabindex="-1" class="outline-none">
+      <slot />
+    </main>
+    <!-- On short pages, fill the remaining height with the last section's colour so the footer wave blends in. -->
+    <div class="flex-1" style={`background:${footerWaveFrom ?? 'white'}`} aria-hidden="true"></div>
+    <Footer lang={lang} showNewsletter={footerNewsletter} waveFrom={footerWaveFrom} />
+    <CookieBanner lang={lang} />
+
+    <script>
+      // Gentle fade-in on scroll. Content is visible by default; only animated when
+      // the visitor allows motion and IntersectionObserver exists.
+      const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+      if (motionOk && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('reveal-ready');
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

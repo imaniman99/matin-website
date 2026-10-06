@@ -1,0 +1,36 @@
+# Coordonnées et réglages généraux du site / Site-wide details.
+# Tout ce qui est entre [PLACEHOLDER] doit être remplacé (voir CONTENT_TODO.md).
+placeholder: true
+mission:
+  fr: "[PLACEHOLDER] Matin favorise le dialogue, la compréhension mutuelle et les échanges entre les cultures au Québec et au Canada, en offrant un espace accueillant où chacun peut apprendre, créer et partager."
+  en: "[PLACEHOLDER] Matin fosters dialogue, mutual understanding and exchange between cultures in Québec and Canada, offering a welcoming space where everyone can learn, create and share."
+founded: 2020
+address:
+  street: "[PLACEHOLDER] 1234, rue Exemple"
+  city: Montréal
+  region: QC
+  postalCode: "H0H 0H0"
+  country: CA
+phone: "[PLACEHOLDER] 514 000-0000"
+email: "info@matin-institut.example"
+hours:
+  fr: "[PLACEHOLDER] Lundi au vendredi : 10 h – 18 h\nSamedi : 10 h – 16 h\nDimanche : fermé"
+  en: "[PLACEHOLDER] Monday to Friday: 10 a.m. – 6 p.m.\nSaturday: 10 a.m. – 4 p.m.\nSunday: closed"
+social:
+  facebook: https://www.facebook.com/
+  instagram: https://www.instagram.com/
+  youtube: https://www.youtube.com/
+  linkedin: https://www.linkedin.com/
+charityNumber: ""
+donateUrl: https://www.zeffy.com/
+impact:
+  years: 6
+  cultures: 40
+  participants: 2500
+  events: 180
+privacyOfficer:
+  name: "[PLACEHOLDER] Nom de la personne responsable"
+  title:
+    fr: "[PLACEHOLDER] Directrice générale ou directeur général"
+    en: "[PLACEHOLDER] Executive Director"
+  email: "confidentialite@matin-institut.example"

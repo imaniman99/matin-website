@@ -1,0 +1,10 @@
+placeholder: true
+group: staff
+order: 2
+name: "[PLACEHOLDER] Prénom Nom"
+role:
+  fr: "Coordination des programmes"
+  en: "Program Coordinator"
+bio:
+  fr: "[PLACEHOLDER] Courte biographie."
+  en: "[PLACEHOLDER] Short bio."

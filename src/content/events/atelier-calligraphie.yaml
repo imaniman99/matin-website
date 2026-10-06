@@ -1,0 +1,26 @@
+placeholder: true
+category: arts
+urlSlug:
+  fr: atelier-calligraphies-du-monde
+  en: world-calligraphy-workshop
+title:
+  fr: "[PLACEHOLDER] Atelier : calligraphies du monde"
+  en: "[PLACEHOLDER] Workshop: World Calligraphy"
+summary:
+  fr: "Initiation aux écritures arabe, chinoise, latine et persane."
+  en: "An introduction to Arabic, Chinese, Latin and Persian scripts."
+body:
+  fr: |
+    [PLACEHOLDER] Description de l'atelier.
+  en: |
+    [PLACEHOLDER] Workshop description.
+start: "2026-09-12T13:00"
+end: "2026-09-12T16:00"
+location:
+  name: "Locaux de Matin"
+  address: "[PLACEHOLDER] 1234, rue Exemple, Montréal, QC"
+price:
+  free: false
+  label:
+    fr: "10 $"
+    en: "$10"

@@ -1,0 +1,54 @@
+placeholder: true
+updated: 2026-10-04
+title:
+  fr: Déclaration d'accessibilité
+  en: Accessibility Statement
+body:
+  fr: |
+    Matin – Institut interculturel s'engage à rendre son site accessible au plus grand nombre, y compris aux personnes en situation de handicap.
+
+    ## Norme visée
+
+    Le site vise la conformité au niveau **AA** des *Règles pour l'accessibilité des contenus Web* (WCAG) 2.1, qui servent aussi de référence au standard québécois SGQRI 008.
+
+    ## Mesures prises
+
+    - Structure sémantique claire, titres hiérarchisés et lien d'évitement vers le contenu principal;
+    - navigation complète au clavier et indicateur de focus visible;
+    - contrastes de couleurs vérifiés;
+    - textes de remplacement pour les images;
+    - formulaires avec étiquettes et messages d'erreur explicites, en français et en anglais;
+    - respect du réglage « réduire les animations » de votre appareil;
+    - carrousel de témoignages pouvant être mis en pause.
+
+    ## Limites connues
+
+    [PLACEHOLDER] Certains documents PDF anciens pourraient ne pas être entièrement accessibles. Nous pouvons vous les fournir dans un autre format sur demande.
+
+    ## Nous joindre
+
+    Vous éprouvez une difficulté? Écrivez-nous par la page Contact ou à l'adresse indiquée au bas de la page. Nous répondrons dans un délai de 5 jours ouvrables.
+  en: |
+    Matin – Intercultural Institute is committed to making its website accessible to as many people as possible, including people with disabilities.
+
+    ## Target standard
+
+    The site aims to conform to level **AA** of the *Web Content Accessibility Guidelines* (WCAG) 2.1, which is also the reference for Québec's SGQRI 008 standard.
+
+    ## Measures taken
+
+    - Clear semantic structure, ordered headings and a skip link to the main content;
+    - full keyboard navigation with a visible focus indicator;
+    - verified colour contrast;
+    - text alternatives for images;
+    - forms with labels and clear error messages, in French and English;
+    - respect for your device's "reduce motion" setting;
+    - a testimonials carousel that can be paused.
+
+    ## Known limitations
+
+    [PLACEHOLDER] Some older PDF documents may not be fully accessible. We can provide them in another format on request.
+
+    ## Contact us
+
+    Having trouble? Write to us through the Contact page or at the address at the bottom of the page. We will respond within 5 business days.

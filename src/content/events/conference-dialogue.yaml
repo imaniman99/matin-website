@@ -1,0 +1,23 @@
+placeholder: true
+category: lectures
+urlSlug:
+  fr: conference-vivre-ensemble
+  en: living-together-lecture
+title:
+  fr: "[PLACEHOLDER] Conférence : vivre ensemble au Québec"
+  en: "[PLACEHOLDER] Lecture: Living Together in Québec"
+summary:
+  fr: "Une table ronde sur l'interculturalisme, suivie d'un échange avec le public."
+  en: "A panel on interculturalism, followed by an open discussion with the audience."
+body:
+  fr: |
+    [PLACEHOLDER] Présentation des intervenants et du thème.
+  en: |
+    [PLACEHOLDER] Speakers and topic overview.
+start: "2026-11-14T14:00"
+end: "2026-11-14T16:30"
+location:
+  name: "[PLACEHOLDER] Bibliothèque de quartier"
+  address: "[PLACEHOLDER] 5678, avenue Exemple, Montréal, QC"
+price:
+  free: true

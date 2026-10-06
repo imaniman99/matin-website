@@ -1,0 +1,10 @@
+---
+/** Renders CMS Markdown (already converted to HTML) with the site's typography. */
+interface Props {
+  html: string;
+  class?: string;
+}
+const { html, class: className = '' } = Astro.props;
+---
+
+<div class:list={['prose-matin', className]} set:html={html} />

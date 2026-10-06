@@ -1,0 +1,27 @@
+placeholder: true
+category: music
+urlSlug:
+  fr: soiree-musiques-du-monde
+  en: world-music-night
+title:
+  fr: "[PLACEHOLDER] Soirée musiques du monde"
+  en: "[PLACEHOLDER] World Music Night"
+summary:
+  fr: "Une soirée de concerts et de rencontres avec des musiciens de quatre continents."
+  en: "An evening of concerts and conversation with musicians from four continents."
+body:
+  fr: |
+    [PLACEHOLDER] Programme détaillé de la soirée, artistes, accessibilité du lieu.
+  en: |
+    [PLACEHOLDER] Detailed program, performers, venue accessibility.
+start: "2026-10-24T19:00"
+end: "2026-10-24T22:00"
+location:
+  name: "[PLACEHOLDER] Salle communautaire"
+  address: "[PLACEHOLDER] 1234, rue Exemple, Montréal, QC"
+price:
+  free: false
+  label:
+    fr: "15 $ · 10 $ étudiants"
+    en: "$15 · $10 students"
+registrationUrl: https://www.zeffy.com/

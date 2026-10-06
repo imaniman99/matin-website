@@ -1,0 +1,97 @@
+---
+/**
+ * Shared wrapper for Netlify Forms: honeypot, bilingual validation messages,
+ * error summary, consent checkbox and status region. Fields go in the slot.
+ * Netlify detects the form at deploy time from the static HTML (data-netlify).
+ */
+import { Send } from '@lucide/astro';
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  name: string; // Netlify form name, e.g. "contact"
+  id: string;
+  submitLabel?: string;
+}
+const { lang, name, id, submitLabel } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<form
+  name={name}
+  method="post"
+  action={`${path('contact', lang)}?sent=1`}
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-enhanced-form
+  data-msg-required={t('form.errRequired')}
+  data-msg-email={t('form.errEmail')}
+  data-msg-consent={t('form.errConsent')}
+  data-msg-intro={t('form.errorsIntro')}
+  data-msg-success={t('form.success')}
+  data-msg-error={t('form.error')}
+  data-msg-sending={t('form.sending')}
+  data-msg-captcha={t('form.errCaptcha')}
+  class="space-y-5"
+>
+  <input type="hidden" name="form-name" value={name} />
+  <input type="hidden" name="lang" value={lang} />
+  <p class="hidden" aria-hidden="true" data-honeypot>
+    <label>
+      Ne pas remplir / Do not fill <input name="bot-field" tabindex="-1" autocomplete="off" />
+    </label>
+  </p>
+
+  <div class="error-summary" tabindex="-1" role="alert" hidden data-error-summary></div>
+
+  <slot />
+
+  <div class="field">
+    <div class="flex items-start gap-3">
+      <input
+        id={`${id}-consent`}
+        type="checkbox"
+        name="consent"
+        value="oui"
+        required
+        class="mt-1 size-5 shrink-0 accent-primary"
+        aria-describedby={`${id}-consent-error`}
+      />
+      {/* One line on purpose: keeps the period glued to the link. */}
+      <!-- prettier-ignore -->
+      <label for={`${id}-consent`} class="text-sm leading-relaxed" data-short={t('form.consentContact').split(',')[0]}>{t('form.consentContact')} <a href={path('privacy', lang)}>{t('newsletter.privacyLink')}</a>. <span class="text-muted">({t('form.required')})</span></label>
+    </div>
+    <p id={`${id}-consent-error`} class="field-error" hidden></p>
+  </div>
+
+  {PUBLIC_TURNSTILE_SITE_KEY && (
+    <div>
+      {/* Declared in the HTML so Netlify Forms keeps it; filled by the Turnstile callback. */}
+      <input type="hidden" name="cf-turnstile-response" value="" data-turnstile-token />
+      <div
+        class="cf-turnstile"
+        data-sitekey={PUBLIC_TURNSTILE_SITE_KEY}
+        data-language={lang}
+        data-theme="light"
+        data-response-field="false"
+        data-callback="matinTurnstileDone"
+        data-expired-callback="matinTurnstileExpired"
+      />
+    </div>
+  )}
+
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+    <button type="submit" class="btn btn-primary self-start">
+      <Send size={18} aria-hidden="true" />
+      {submitLabel ?? t('form.send')}
+    </button>
+  </div>
+  <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-form-status></p>
+</form>
+
+<script>
+  import { enhanceForms } from '@/scripts/forms';
+  enhanceForms();
+</script>

@@ -1,0 +1,142 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import {
+  ArrowLeft,
+  CalendarClock,
+  MapPin,
+  Users,
+  Wallet,
+  UserRound,
+  ExternalLink,
+  Mail,
+} from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import CoverArt from '@/components/content/CoverArt.astro';
+import ProgramCard from '@/components/content/ProgramCard.astro';
+import Prose from '@/components/ui/Prose.astro';
+import ShareButtons from '@/components/ui/ShareButtons.astro';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getPrograms, renderMarkdown, slugOf } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+  program: CollectionEntry<'programs'>;
+}
+const { lang, program } = Astro.props;
+const t = useTranslations(lang);
+const d = program.data;
+const title = pick(d.title, lang)!;
+const alternates = {
+  fr: path('programs', 'fr', slugOf(program, 'fr')),
+  en: path('programs', 'en', slugOf(program, 'en')),
+};
+const others = (await getPrograms()).filter((p) => p.id !== program.id).slice(0, 3);
+const url = new URL(alternates[lang], Astro.site ?? Astro.url.origin).href;
+const facts = [
+  { icon: Users, label: t('programs.audience'), value: pick(d.audience, lang) },
+  { icon: CalendarClock, label: t('programs.schedule'), value: pick(d.schedule, lang) },
+  { icon: MapPin, label: t('programs.location'), value: pick(d.location, lang) },
+  { icon: Wallet, label: t('programs.fees'), value: pick(d.fees, lang) },
+  ...(d.instructor
+    ? [{ icon: UserRound, label: t('programs.instructor'), value: d.instructor }]
+    : []),
+];
+---
+
+<PageLayout
+  lang={lang}
+  title={title}
+  eyebrow={t(`categories.${d.category}`)}
+  lede={pick(d.summary, lang)}
+  alternates={alternates}
+  crumbs={[{ label: t('programs.title'), href: path('programs', lang) }]}
+  footerWaveFrom={others.length ? 'var(--color-aqua-light)' : 'white'}
+>
+  <div class="container-site grid gap-12 pt-6 pb-20 lg:grid-cols-[1fr_22rem]">
+    <article>
+      <div class="mb-10 aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] shadow-soft">
+        {d.image ? (
+          <Picture
+            src={d.image}
+            alt={pick(d.imageAlt, lang) ?? ''}
+            formats={['avif', 'webp']}
+            widths={[640, 960, 1280]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="size-full object-cover"
+            loading="eager"
+          />
+        ) : (
+          <CoverArt category={d.category} seed={program.id} class="size-full" />
+        )}
+      </div>
+      <Prose html={renderMarkdown(d.body[lang], lang)} class="text-lg" />
+      <div class="mt-12 border-t border-line pt-6">
+        <ShareButtons lang={lang} url={url} title={title} />
+      </div>
+    </article>
+
+    <aside class="lg:sticky lg:top-28 lg:self-start" aria-labelledby="facts-title">
+      <div class="card overflow-hidden">
+        <h2
+          id="facts-title"
+          class="bg-primary px-6 py-4 font-sans text-sm font-bold tracking-[0.18em] text-gold-light uppercase"
+        >
+          {t('programs.details')}
+        </h2>
+        <dl class="divide-y divide-line/70 px-6">
+          {facts.map((f) => (
+            <div class="flex gap-3 py-4">
+              <f.icon size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+              <div>
+                <dt class="text-xs font-bold tracking-wider text-muted uppercase">{f.label}</dt>
+                <dd class="mt-0.5 font-semibold text-ink">{f.value}</dd>
+              </div>
+            </div>
+          ))}
+        </dl>
+        <div class="p-6 pt-2">
+          {d.registrationUrl ? (
+            <a
+              href={d.registrationUrl}
+              class="btn btn-gold w-full"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('programs.register')}
+              <ExternalLink size={16} aria-hidden="true" />
+              <span class="sr-only">{t('a11y.externalLink')}</span>
+            </a>
+          ) : (
+            <a href={path('contact', lang)} class="btn btn-gold w-full">
+              <Mail size={18} aria-hidden="true" />
+              {t('programs.registerContact')}
+            </a>
+          )}
+        </div>
+      </div>
+      <a href={path('programs', lang)} class="link-arrow mt-6">
+        <ArrowLeft size={18} aria-hidden="true" />
+        {t('programs.backToPrograms')}
+      </a>
+    </aside>
+  </div>
+
+  {others.length > 0 && (
+    <section class="bg-aqua-light py-20" aria-labelledby="others-title">
+      <div class="container-site">
+        <h2 id="others-title" class="section-title mb-12">
+          {t('programs.otherPrograms')}
+        </h2>
+        <ul class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {others.map((p) => (
+            <li>
+              <ProgramCard program={p} lang={lang} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</PageLayout>

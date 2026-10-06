@@ -1,0 +1,15 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ArticlePage from '@/views/ArticlePage.astro';
+import { getNews, slugOf } from '@/lib/content';
+
+export const getStaticPaths = (async () =>
+  (await getNews()).map((post) => ({
+    params: { slug: slugOf(post, 'fr') },
+    props: { post },
+  }))) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+---
+
+<ArticlePage lang="fr" post={post} />

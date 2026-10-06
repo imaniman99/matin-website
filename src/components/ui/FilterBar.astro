@@ -1,0 +1,83 @@
+---
+/**
+ * Category filter buttons (aria-pressed toggles) for a list rendered on the page.
+ * Items in the target list need `data-category`. The chosen filter is kept in
+ * the URL (?cat=…) so it can be shared. Without JS, all items stay visible.
+ */
+interface Props {
+  target: string; // id of the list to filter
+  label: string;
+  allLabel: string;
+  options: { value: string; label: string }[];
+}
+const { target, label, allLabel, options } = Astro.props;
+---
+
+<div
+  class="filter-bar mb-10 hidden flex-wrap items-center gap-2"
+  role="group"
+  aria-label={label}
+  data-filter-bar={target}
+>
+  <button type="button" class="chip" aria-pressed="true" data-filter="">
+    {allLabel}
+  </button>
+  {options.map((o) => (
+    <button type="button" class="chip" aria-pressed="false" data-filter={o.value}>
+      {o.label}
+    </button>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-filter-bar]').forEach((bar) => {
+    const list = document.getElementById(bar.dataset.filterBar!);
+    if (!list) return;
+    const empty = document.querySelector<HTMLElement>(`[data-filter-empty="${list.id}"]`);
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+    bar.classList.remove('hidden');
+    bar.classList.add('flex');
+
+    const apply = (value: string) => {
+      let shown = 0;
+      for (const item of list.querySelectorAll<HTMLElement>(':scope > [data-category]')) {
+        const match = !value || item.dataset.category === value;
+        item.hidden = !match;
+        if (match) shown++;
+      }
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === value)));
+      if (empty) empty.hidden = shown > 0;
+      const url = new URL(location.href);
+      if (value) url.searchParams.set('cat', value);
+      else url.searchParams.delete('cat');
+      history.replaceState(null, '', url);
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? '')));
+    const initial = new URL(location.href).searchParams.get('cat') ?? '';
+    if (buttons.some((b) => b.dataset.filter === initial)) apply(initial);
+  });
+</script>
+
+<style>
+  .chip {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    background: white;
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .chip:hover {
+    border-color: var(--color-primary);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+</style>

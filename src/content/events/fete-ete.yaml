@@ -1,0 +1,23 @@
+placeholder: true
+category: celebration
+urlSlug:
+  fr: fete-interculturelle-ete-2026
+  en: summer-intercultural-festival-2026
+title:
+  fr: "[PLACEHOLDER] Fête interculturelle de l'été"
+  en: "[PLACEHOLDER] Summer Intercultural Festival"
+summary:
+  fr: "Cuisine, musique et jeux pour toute la famille au parc du quartier."
+  en: "Food, music and games for the whole family at the neighbourhood park."
+body:
+  fr: |
+    [PLACEHOLDER] Retour sur la fête.
+  en: |
+    [PLACEHOLDER] Festival recap.
+start: "2026-06-20T12:00"
+end: "2026-06-20T18:00"
+location:
+  name: "[PLACEHOLDER] Parc du quartier"
+  address: "[PLACEHOLDER] Montréal, QC"
+price:
+  free: true

@@ -1,0 +1,64 @@
+placeholder: true
+vision:
+  fr: "[PLACEHOLDER] Un Québec où chaque culture se sent chez elle et où la diversité est vécue comme une richesse partagée."
+  en: "[PLACEHOLDER] A Québec where every culture feels at home and diversity is experienced as a shared wealth."
+values:
+  - icon: dialogue
+    title: { fr: "Dialogue", en: "Dialogue" }
+    text:
+      fr: "Écouter, se raconter et apprendre les uns des autres."
+      en: "Listening, sharing our stories and learning from one another."
+  - icon: respect
+    title: { fr: "Respect", en: "Respect" }
+    text:
+      fr: "Accueillir chaque personne avec dignité, dans toute sa singularité."
+      en: "Welcoming every person with dignity, in all their uniqueness."
+  - icon: openness
+    title: { fr: "Ouverture", en: "Openness" }
+    text:
+      fr: "Cultiver la curiosité et la découverte de l'autre."
+      en: "Nurturing curiosity and discovery of others."
+  - icon: creativity
+    title: { fr: "Créativité", en: "Creativity" }
+    text:
+      fr: "Faire de l'art et de la culture des ponts entre les gens."
+      en: "Making art and culture into bridges between people."
+  - icon: community
+    title: { fr: "Communauté", en: "Community" }
+    text:
+      fr: "Bâtir ensemble des liens durables, ici, à Montréal."
+      en: "Building lasting connections together, here in Montréal."
+  - icon: equity
+    title: { fr: "Équité", en: "Equity" }
+    text:
+      fr: "Rendre nos activités accessibles au plus grand nombre."
+      en: "Making our activities accessible to as many people as possible."
+history:
+  - year: "2020"
+    title: { fr: "[PLACEHOLDER] Fondation", en: "[PLACEHOLDER] Founding" }
+    text:
+      fr: "[PLACEHOLDER] Naissance de Matin autour d'un petit groupe de bénévoles."
+      en: "[PLACEHOLDER] Matin is born around a small group of volunteers."
+  - year: "2022"
+    title: { fr: "[PLACEHOLDER] Premiers programmes", en: "[PLACEHOLDER] First programs" }
+    text:
+      fr: "[PLACEHOLDER] Lancement des ateliers de francisation et des soirées culturelles."
+      en: "[PLACEHOLDER] Launch of French workshops and cultural evenings."
+  - year: "2024"
+    title: { fr: "[PLACEHOLDER] Nouveaux locaux", en: "[PLACEHOLDER] New premises" }
+    text:
+      fr: "[PLACEHOLDER] Installation dans nos locaux actuels."
+      en: "[PLACEHOLDER] Move to our current premises."
+  - year: "2026"
+    title: { fr: "[PLACEHOLDER] Aujourd'hui", en: "[PLACEHOLDER] Today" }
+    text:
+      fr: "[PLACEHOLDER] Plus de 40 cultures représentées et des centaines de participants chaque année."
+      en: "[PLACEHOLDER] More than 40 cultures represented and hundreds of participants every year."
+director:
+  name: "[PLACEHOLDER] Prénom Nom"
+  title:
+    fr: "[PLACEHOLDER] Fondation et direction générale"
+    en: "[PLACEHOLDER] Founder and Executive Director"
+  message:
+    fr: "[PLACEHOLDER] Matin est né d'une conviction simple : lorsque les cultures se parlent, tout le monde grandit. Bienvenue chez vous."
+    en: "[PLACEHOLDER] Matin was born from a simple conviction: when cultures talk to each other, everyone grows. Welcome home."

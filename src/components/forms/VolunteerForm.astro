@@ -1,0 +1,61 @@
+---
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  roles: string[];
+}
+const { lang, roles } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<FormShell lang={lang} name="benevolat" id="volunteer" submitLabel={t('involved.volunteerForm')}>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <Field
+      lang={lang}
+      id="vol-name"
+      name="name"
+      label={t('form.name')}
+      required
+      autocomplete="name"
+    />
+    <Field
+      lang={lang}
+      id="vol-email"
+      name="email"
+      type="email"
+      label={t('form.email')}
+      required
+      autocomplete="email"
+    />
+    <Field
+      lang={lang}
+      id="vol-phone"
+      name="phone"
+      type="tel"
+      label={t('form.phone')}
+      autocomplete="tel"
+    />
+    <Field
+      lang={lang}
+      id="vol-role"
+      name="role"
+      as="select"
+      label={t('form.roles')}
+      options={[t('form.any'), ...roles]}
+    />
+    <Field lang={lang} id="vol-availability" name="availability" label={t('form.availability')} />
+    <Field lang={lang} id="vol-languages" name="languages" label={t('form.languages')} />
+  </div>
+  <Field
+    lang={lang}
+    id="vol-motivation"
+    name="motivation"
+    as="textarea"
+    label={t('form.motivation')}
+    required
+  />
+</FormShell>

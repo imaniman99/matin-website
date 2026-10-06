@@ -1,0 +1,103 @@
+---
+/**
+ * Plain share links — no third-party scripts or trackers load on the page.
+ * "Copy link" uses the Clipboard API (or the native share sheet on phones).
+ */
+import { Link2, Mail } from '@lucide/astro';
+import { siFacebook } from 'simple-icons';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  url: string;
+  title: string;
+}
+const { lang, url, title } = Astro.props;
+const t = useTranslations(lang);
+const u = encodeURIComponent(url);
+const linkedinPath =
+  'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z';
+---
+
+<div class="flex flex-wrap items-center gap-2">
+  <span class="mr-1 text-sm font-semibold text-ink">{t('share.title')}</span>
+  <a
+    class="share"
+    href={`https://www.facebook.com/sharer/sharer.php?u=${u}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+      <path d={siFacebook.path}></path>
+    </svg>
+    <span class="sr-only">
+      {t('share.facebook')} {t('a11y.externalLink')}
+    </span>
+  </a>
+  <a
+    class="share"
+    href={`https://www.linkedin.com/sharing/share-offsite/?url=${u}`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true">
+      <path d={linkedinPath}></path>
+    </svg>
+    <span class="sr-only">
+      {t('share.linkedin')} {t('a11y.externalLink')}
+    </span>
+  </a>
+  <a
+    class="share"
+    href={`mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(`${title}\n${url}`)}`}
+  >
+    <Mail size={17} aria-hidden="true" />
+    <span class="sr-only">{t('share.email')}</span>
+  </a>
+  <button
+    type="button"
+    class="share"
+    data-copy-link={url}
+    data-copied={t('share.copied')}
+    data-title={title}
+  >
+    <Link2 size={17} aria-hidden="true" />
+    <span class="sr-only">{t('share.copy')}</span>
+  </button>
+  <span class="text-sm font-semibold text-teal" role="status" data-copy-status></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const url = btn.dataset.copyLink!;
+      const status = btn.parentElement?.querySelector<HTMLElement>('[data-copy-status]');
+      try {
+        await navigator.clipboard.writeText(url);
+        if (status) status.textContent = btn.dataset.copied ?? '';
+        setTimeout(() => status && (status.textContent = ''), 3000);
+      } catch {
+        if (navigator.share) navigator.share({ title: btn.dataset.title, url }).catch(() => {});
+      }
+    });
+  });
+</script>
+
+<style>
+  .share {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    color: var(--color-primary);
+    background: var(--color-aqua-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .share:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+</style>

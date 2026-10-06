@@ -1,0 +1,37 @@
+---
+/** Accessible accordion built on native <details>/<summary> (keyboard + screen readers for free). */
+import { ChevronDown } from '@lucide/astro';
+
+interface Props {
+  items: { id: string; question: string; answerHtml: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="space-y-3">
+  {items.map((item) => (
+    <details class="acc card group" id={item.id}>
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:px-7">
+        <span class="font-display text-lg font-bold text-primary sm:text-xl">{item.question}</span>
+        <ChevronDown
+          size={22}
+          class="shrink-0 text-gold-text transition-transform duration-300 group-open:rotate-180"
+          aria-hidden="true"
+        />
+      </summary>
+      <div class="prose-matin px-5 pb-6 sm:px-7" set:html={item.answerHtml} />
+    </details>
+  ))}
+</div>
+
+<style>
+  .acc summary::-webkit-details-marker {
+    display: none;
+  }
+  .acc[open] {
+    box-shadow: var(--shadow-lift);
+  }
+  .acc summary:focus-visible {
+    outline-offset: -3px;
+  }
+</style>

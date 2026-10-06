@@ -1,0 +1,48 @@
+---
+/**
+ * Large "Matin" wordmark as SVG: deep teal-navy gradient fill with a gold rim,
+ * faithful to the logo. Decorative — the accessible name is provided by the parent.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+const uid = 'wm' + Math.random().toString(36).slice(2, 8);
+const fillUrl = `url(#${uid}-fill)`;
+const goldUrl = `url(#${uid}-gold)`;
+---
+
+<svg
+  class:list={['wordmark', className]}
+  viewBox="0 0 620 180"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <linearGradient id={`${uid}-fill`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A6E93"></stop>
+      <stop offset="0.45" stop-color="#0B3D5C"></stop>
+      <stop offset="1" stop-color="#041A2E"></stop>
+    </linearGradient>
+    <linearGradient id={`${uid}-gold`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F7DC93"></stop>
+      <stop offset="0.5" stop-color="#D9A441"></stop>
+      <stop offset="1" stop-color="#B07E22"></stop>
+    </linearGradient>
+  </defs>
+  <!-- prettier-ignore -->
+  <text x="310" y="142" text-anchor="middle" textLength="580" lengthAdjust="spacingAndGlyphs" fill={fillUrl} stroke={goldUrl} stroke-width="4" paint-order="stroke" stroke-linejoin="round">Matin</text>
+</svg>
+
+<style>
+  .wordmark text {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 168px;
+    letter-spacing: -0.01em;
+  }
+  .wordmark {
+    filter: drop-shadow(0 6px 14px rgb(6 34 56 / 0.18));
+    overflow: visible;
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+import { Clock, Mail, MapPin, Phone } from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import ContactForm from '@/components/forms/ContactForm.astro';
+import MapFacade from '@/components/ui/MapFacade.astro';
+import SocialLinks from '@/components/ui/SocialLinks.astro';
+import { alternatesFor, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getSettings } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const s = await getSettings();
+const address = `${s.address.street}, ${s.address.city} (${s.address.region}) ${s.address.postalCode}`;
+---
+
+<PageLayout
+  lang={lang}
+  title={t('contact.title')}
+  lede={t('contact.lede')}
+  alternates={alternatesFor('contact')}
+>
+  <div class="container-site grid gap-10 pt-4 pb-24 lg:grid-cols-[1.25fr_1fr]">
+    <section class="card p-6 sm:p-10" aria-labelledby="form-title">
+      <h2 id="form-title" class="mb-6 text-3xl font-bold">
+        {t('contact.formTitle')}
+      </h2>
+      <ContactForm lang={lang} />
+    </section>
+
+    <div class="space-y-8">
+      <section
+        class="on-dark rounded-[var(--radius-card)] bg-primary p-8 text-white shadow-soft"
+        aria-labelledby="info-title"
+      >
+        <h2 id="info-title" class="mb-6 text-2xl font-bold !text-white">
+          {t('contact.infoTitle')}
+        </h2>
+        <dl class="space-y-5">
+          <div class="flex gap-4">
+            <MapPin size={22} class="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-gold-light uppercase">
+                {t('contact.address')}
+              </dt>
+              <dd>
+                {s.address.street}
+                <br />
+                {s.address.city} ({s.address.region}) {s.address.postalCode}
+              </dd>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <Phone size={22} class="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-gold-light uppercase">
+                {t('contact.phone')}
+              </dt>
+              <dd>
+                <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="text-white">
+                  {s.phone}
+                </a>
+              </dd>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <Mail size={22} class="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-gold-light uppercase">
+                {t('contact.email')}
+              </dt>
+              <dd>
+                <a href={`mailto:${s.email}`} class="break-all text-white">
+                  {s.email}
+                </a>
+              </dd>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <Clock size={22} class="mt-0.5 shrink-0 text-gold" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-gold-light uppercase">
+                {t('contact.hours')}
+              </dt>
+              <dd class="whitespace-pre-line">{pick(s.hours, lang)}</dd>
+            </div>
+          </div>
+        </dl>
+        <h3 class="mt-8 mb-3 font-sans text-xs font-bold tracking-wider text-gold-light uppercase">
+          {t('contact.follow')}
+        </h3>
+        <SocialLinks lang={lang} social={s.social} />
+      </section>
+
+      <section aria-labelledby="map-title">
+        <h2 id="map-title" class="sr-only">
+          {t('contact.mapTitle')}
+        </h2>
+        <MapFacade lang={lang} address={address} />
+      </section>
+    </div>
+  </div>
+</PageLayout>

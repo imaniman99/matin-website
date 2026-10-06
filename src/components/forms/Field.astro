@@ -1,0 +1,63 @@
+---
+/** Labelled form field with an associated (initially hidden) error message. */
+import type { HTMLAttributes } from 'astro/types';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  id: string;
+  name: string;
+  label: string;
+  as?: 'input' | 'textarea' | 'select';
+  type?: HTMLAttributes<'input'>['type'];
+  required?: boolean;
+  autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+  options?: string[];
+  placeholderOption?: string;
+  class?: string;
+}
+const {
+  lang,
+  id,
+  name,
+  label,
+  as = 'input',
+  type = 'text',
+  required = false,
+  autocomplete,
+  options = [],
+  placeholderOption,
+  class: className = '',
+} = Astro.props;
+const t = useTranslations(lang);
+const errorId = `${id}-error`;
+---
+
+<div class:list={['field', className]}>
+  <label for={id} class="field-label" data-short={label}>
+    {label}
+    {required && <span class="req"> ({t('form.required')})</span>}
+  </label>
+  {as === 'textarea' ? (
+    <textarea id={id} name={name} class="input" required={required} aria-describedby={errorId} />
+  ) : as === 'select' ? (
+    <select id={id} name={name} class="input" required={required} aria-describedby={errorId}>
+      {placeholderOption !== undefined && <option value="">{placeholderOption}</option>}
+      {options.map((o) => (
+        <option value={o}>{o}</option>
+      ))}
+    </select>
+  ) : (
+    <input
+      id={id}
+      name={name}
+      type={type}
+      class="input"
+      required={required}
+      autocomplete={autocomplete}
+      aria-describedby={errorId}
+    />
+  )}
+  <p id={errorId} class="field-error" hidden></p>
+</div>

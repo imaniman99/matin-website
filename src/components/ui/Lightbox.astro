@@ -1,0 +1,175 @@
+---
+/**
+ * One accessible lightbox per page, built on <dialog> (focus trap + Escape for free).
+ * Any <a data-lightbox="group" href="large.webp" data-alt="…" data-caption="…"> opens it;
+ * without JS the link simply opens the large image.
+ */
+import { ChevronLeft, ChevronRight, X } from '@lucide/astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const t = useTranslations(Astro.props.lang);
+---
+
+<dialog
+  class="lightbox"
+  aria-label={t('gallery.title')}
+  data-lightbox-dialog
+  data-counter={t('gallery.counter', { n: '{n}', total: '{total}' })}
+>
+  <div class="lightbox__inner">
+    <figure class="lightbox__figure">
+      <img alt="" data-lb-img />
+      <figcaption class="lightbox__caption">
+        <span data-lb-caption></span>
+        <span class="lightbox__count" data-lb-count></span>
+      </figcaption>
+    </figure>
+    <button type="button" class="lb-btn lb-close" data-lb-close>
+      <X size={24} aria-hidden="true" />
+      <span class="sr-only">{t('gallery.close')}</span>
+    </button>
+    <button type="button" class="lb-btn lb-prev" data-lb-prev>
+      <ChevronLeft size={28} aria-hidden="true" />
+      <span class="sr-only">{t('gallery.previous')}</span>
+    </button>
+    <button type="button" class="lb-btn lb-next" data-lb-next>
+      <ChevronRight size={28} aria-hidden="true" />
+      <span class="sr-only">{t('gallery.next')}</span>
+    </button>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox-dialog]');
+  if (dialog) {
+    const img = dialog.querySelector<HTMLImageElement>('[data-lb-img]')!;
+    const caption = dialog.querySelector<HTMLElement>('[data-lb-caption]')!;
+    const count = dialog.querySelector<HTMLElement>('[data-lb-count]')!;
+    let items: HTMLAnchorElement[] = [];
+    let index = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      index = (i + items.length) % items.length;
+      const a = items[index];
+      img.src = a.href;
+      img.alt = a.dataset.alt ?? '';
+      caption.textContent = a.dataset.caption || a.dataset.alt || '';
+      count.textContent = dialog.dataset
+        .counter!.replace('{n}', String(index + 1))
+        .replace('{total}', String(items.length));
+      const multi = items.length > 1;
+      dialog.querySelectorAll<HTMLElement>('[data-lb-prev],[data-lb-next]').forEach((b) => {
+        b.hidden = !multi;
+      });
+    };
+
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-lightbox]');
+      if (!a) return;
+      e.preventDefault();
+      opener = a;
+      items = [
+        ...document.querySelectorAll<HTMLAnchorElement>(`a[data-lightbox="${a.dataset.lightbox}"]`),
+      ];
+      show(items.indexOf(a));
+      dialog.showModal();
+    });
+    dialog.querySelector('[data-lb-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lb-prev]')?.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('[data-lb-next]')?.addEventListener('click', () => show(index + 1));
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') show(index - 1);
+      if (e.key === 'ArrowRight') show(index + 1);
+    });
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+  }
+</script>
+
+<style>
+  .lightbox {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(4 20 34 / 0.94);
+    color: white;
+  }
+  .lightbox::backdrop {
+    background: rgb(4 20 34 / 0.6);
+  }
+  .lightbox__inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 100%;
+    padding: 4.5rem 1rem 1.5rem;
+  }
+  .lightbox__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: min(1400px, 100%);
+  }
+  .lightbox__figure img {
+    max-height: calc(100dvh - 10rem);
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
+  }
+  .lightbox__caption {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.95rem;
+    color: rgb(255 255 255 / 0.9);
+    text-align: center;
+  }
+  .lightbox__count {
+    color: var(--color-gold-light);
+    white-space: nowrap;
+  }
+  .lb-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    color: white;
+    background: rgb(255 255 255 / 0.12);
+    cursor: pointer;
+  }
+  .lb-btn:hover {
+    background: var(--color-gold);
+    color: var(--color-primary-dark);
+  }
+  .lb-btn:focus-visible {
+    outline-color: var(--color-gold-light);
+  }
+  .lb-close {
+    top: 1rem;
+    right: 1rem;
+  }
+  .lb-prev {
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb-next {
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+</style>

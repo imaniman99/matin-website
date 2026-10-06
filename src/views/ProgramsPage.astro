@@ -1,0 +1,44 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import FilterBar from '@/components/ui/FilterBar.astro';
+import ProgramCard from '@/components/content/ProgramCard.astro';
+import { alternatesFor, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+import { getPrograms } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const programs = await getPrograms();
+const present = [...new Set(programs.map((p) => p.data.category))];
+---
+
+<PageLayout
+  lang={lang}
+  title={t('programs.title')}
+  lede={t('programs.lede')}
+  alternates={alternatesFor('programs')}
+>
+  <section class="container-site pt-6 pb-24" aria-label={t('programs.title')}>
+    {present.length > 1 && (
+      <FilterBar
+        target="program-list"
+        label={t('programs.filterLabel')}
+        allLabel={t('programs.all')}
+        options={present.map((c) => ({ value: c, label: t(`categories.${c}`) }))}
+      />
+    )}
+    <ul id="program-list" class="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+      {programs.map((program) => (
+        <li data-category={program.data.category}>
+          <ProgramCard program={program} lang={lang} headingLevel="h2" />
+        </li>
+      ))}
+    </ul>
+    <p class="card p-8 text-center text-muted" data-filter-empty="program-list" hidden>
+      {t('programs.noResults')}
+    </p>
+  </section>
+</PageLayout>

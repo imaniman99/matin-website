@@ -1,0 +1,204 @@
+---
+import { Picture } from 'astro:assets';
+import {
+  ArrowLeft,
+  CalendarPlus,
+  Clock,
+  Download,
+  ExternalLink,
+  MapPin,
+  Ticket,
+} from '@lucide/astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import CoverArt from '@/components/content/CoverArt.astro';
+import Prose from '@/components/ui/Prose.astro';
+import ShareButtons from '@/components/ui/ShareButtons.astro';
+import { path, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { renderMarkdown, slugOf, type EventEntry } from '@/lib/content';
+import { formatLongDate, formatTimeRange } from '@/lib/dates';
+import { googleCalendarUrl, mapUrl } from '@/lib/calendar';
+
+interface Props {
+  lang: Lang;
+  event: EventEntry;
+}
+const { lang, event } = Astro.props;
+const t = useTranslations(lang);
+const d = event.data;
+const title = pick(d.title, lang)!;
+const alternates = {
+  fr: path('events', 'fr', slugOf(event, 'fr')),
+  en: path('events', 'en', slugOf(event, 'en')),
+};
+const site = Astro.site ?? new URL(Astro.url.origin);
+const url = new URL(alternates[lang], site).href;
+const ended = event.endDate < new Date();
+const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
+const icsHref = `/ics/${event.id}-${lang}.ics`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: title,
+  description: pick(d.summary, lang),
+  startDate: event.startDate.toISOString(),
+  endDate: event.endDate.toISOString(),
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  inLanguage: lang === 'fr' ? 'fr-CA' : 'en-CA',
+  url,
+  image: [new URL('/og-default.jpg', site).href],
+  location: {
+    '@type': 'Place',
+    name: d.location.name,
+    address: { '@type': 'PostalAddress', streetAddress: d.location.address, addressCountry: 'CA' },
+  },
+  organizer: { '@id': new URL('/#organization', site).href },
+  offers: {
+    '@type': 'Offer',
+    price: d.price.free ? 0 : undefined,
+    priceCurrency: 'CAD',
+    availability: 'https://schema.org/InStock',
+    url: d.registrationUrl ?? url,
+  },
+  isAccessibleForFree: d.price.free,
+};
+---
+
+<PageLayout
+  lang={lang}
+  title={title}
+  eyebrow={t(`categories.${d.category}`)}
+  lede={pick(d.summary, lang)}
+  alternates={alternates}
+  crumbs={[{ label: t('events.title'), href: path('events', lang) }]}
+  type="event"
+  jsonLd={[jsonLd]}
+>
+  <div class="container-site grid gap-12 pt-6 pb-24 lg:grid-cols-[1fr_23rem]">
+    <article>
+      <div class="relative mb-10 aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] shadow-soft">
+        {d.image ? (
+          <Picture
+            src={d.image}
+            alt={pick(d.imageAlt, lang) ?? ''}
+            formats={['avif', 'webp']}
+            widths={[640, 960, 1280]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="size-full object-cover"
+            loading="eager"
+          />
+        ) : (
+          <CoverArt category={d.category} seed={event.id} class="size-full" />
+        )}
+        {ended && (
+          <span class="absolute top-4 left-4 rounded-full bg-primary-dark px-4 py-1.5 text-sm font-bold text-white">
+            {t('events.ended')}
+          </span>
+        )}
+      </div>
+      <Prose html={renderMarkdown(d.body[lang], lang)} class="text-lg" />
+      <div class="mt-12 border-t border-line pt-6">
+        <ShareButtons lang={lang} url={url} title={title} />
+      </div>
+    </article>
+
+    <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+      <div class="card overflow-hidden">
+        <dl class="divide-y divide-line/70 px-6">
+          <div class="flex gap-3 py-5">
+            <Clock size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-muted uppercase">
+                {t('events.when')}
+              </dt>
+              <dd class="mt-0.5 font-semibold text-ink">
+                <time datetime={event.startDate.toISOString()} class="block">
+                  {formatLongDate(event.startDate, lang)}
+                </time>
+                {formatTimeRange(event.startDate, d.end ? event.endDate : undefined, lang)}
+              </dd>
+            </div>
+          </div>
+          <div class="flex gap-3 py-5">
+            <MapPin size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <div>
+              <dt class="text-xs font-bold tracking-wider text-muted uppercase">
+                {t('events.where')}
+              </dt>
+              <dd class="mt-0.5 text-ink">
+                <span class="block font-semibold">{d.location.name}</span>
+                <span class="block text-sm">{d.location.address}</span>
+                <a
+                  href={mapUrl(d.location)}
+                  class="mt-1 inline-block text-sm font-semibold"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('events.viewMap')}
+                  <span class="sr-only">{t('a11y.externalLink')}</span>
+                </a>
+              </dd>
+            </div>
+          </div>
+          {price && (
+            <div class="flex gap-3 py-5">
+              <Ticket size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+              <div>
+                <dt class="text-xs font-bold tracking-wider text-muted uppercase">
+                  {t('events.price')}
+                </dt>
+                <dd class="mt-0.5 font-semibold text-ink">{price}</dd>
+              </div>
+            </div>
+          )}
+        </dl>
+        {!ended && d.registrationUrl && (
+          <div class="px-6 pb-6">
+            <a
+              href={d.registrationUrl}
+              class="btn btn-gold w-full"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('events.register')}
+              <ExternalLink size={16} aria-hidden="true" />
+              <span class="sr-only">{t('a11y.externalLink')}</span>
+            </a>
+          </div>
+        )}
+      </div>
+
+      {!ended && (
+        <div class="card p-6">
+          <h2 class="mb-4 flex items-center gap-2 font-sans text-sm font-bold tracking-[0.15em] text-primary uppercase">
+            <CalendarPlus size={18} class="text-gold-text" aria-hidden="true" />
+            {t('events.addToCalendar')}
+          </h2>
+          <div class="flex flex-col gap-2">
+            <a href={icsHref} class="btn btn-outline !min-h-11 text-sm" download>
+              <Download size={16} aria-hidden="true" />
+              {t('events.icsDownload')}
+            </a>
+            <a
+              href={googleCalendarUrl(event, lang, url)}
+              class="btn btn-outline !min-h-11 text-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('events.googleCalendar')}
+              <ExternalLink size={16} aria-hidden="true" />
+              <span class="sr-only">{t('a11y.externalLink')}</span>
+            </a>
+          </div>
+        </div>
+      )}
+
+      <a href={path('events', lang)} class="link-arrow">
+        <ArrowLeft size={18} aria-hidden="true" />
+        {t('events.backToEvents')}
+      </a>
+    </aside>
+  </div>
+</PageLayout>

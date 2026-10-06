@@ -1,0 +1,312 @@
+---
+import { Image } from 'astro:assets';
+import {
+  MessagesSquare,
+  HeartHandshake,
+  DoorOpen,
+  Palette,
+  Users,
+  Scale,
+  Target,
+  Eye,
+  FileText,
+  Download,
+  Quote,
+} from '@lucide/astro';
+import type { CollectionEntry } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+import WaveDivider from '@/components/brand/WaveDivider.astro';
+import SectionHeader from '@/components/ui/SectionHeader.astro';
+import { alternatesFor, type Lang } from '@/i18n/routes';
+import { useTranslations, pick } from '@/i18n/ui';
+import { getSettings, getSingleton, getTeam, getDocuments, initials } from '@/lib/content';
+import { NBSP } from '@/lib/frenchTypo';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [settings, about, team, documents] = await Promise.all([
+  getSettings(),
+  getSingleton('about'),
+  getTeam(),
+  getDocuments(),
+]);
+const icons = {
+  dialogue: MessagesSquare,
+  respect: HeartHandshake,
+  openness: DoorOpen,
+  creativity: Palette,
+  community: Users,
+  equity: Scale,
+};
+const quoted = (q: string) => (lang === 'fr' ? `«${NBSP}${q}${NBSP}»` : `“${q}”`);
+type Member = CollectionEntry<'team'>;
+const groups: { id: string; title: string; members: Member[] }[] = [
+  { id: 'team-title', title: t('about.team'), members: team.staff },
+  { id: 'board-title', title: t('about.board'), members: team.board },
+];
+---
+
+<PageLayout
+  lang={lang}
+  title={t('about.title')}
+  lede={t('about.lede')}
+  alternates={alternatesFor('about')}
+  footerWaveFrom="var(--color-aqua-light)"
+>
+  <!-- Mission & vision -->
+  <section
+    class="container-site grid gap-8 pt-4 pb-20 md:grid-cols-2"
+    aria-label={`${t('about.mission')} / ${t('about.vision')}`}
+  >
+    {[
+      { icon: Target, title: t('about.mission'), text: pick(settings.mission, lang) },
+      { icon: Eye, title: t('about.vision'), text: pick(about.vision, lang) },
+    ].map((b, i) => (
+      <article
+        class="card relative overflow-hidden p-8 sm:p-10"
+        data-reveal
+        style={`--reveal-delay:${i * 100}ms`}
+      >
+        <span class="mb-6 grid size-14 place-items-center rounded-full bg-primary text-gold-light">
+          <b.icon size={26} aria-hidden="true" />
+        </span>
+        <h2 class="mb-4 text-3xl font-bold">{b.title}</h2>
+        <p class="text-lg">{b.text}</p>
+      </article>
+    ))}
+  </section>
+
+  <!-- Values -->
+  <section class="bg-cream py-20" aria-labelledby="values-title">
+    <div class="container-site">
+      <SectionHeader id="values-title" title={t('about.values')} align="center" />
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {about.values.map((v, i) => {
+          const Icon = icons[v.icon];
+          return (
+            <li class="card p-7" data-reveal style={`--reveal-delay:${(i % 3) * 90}ms`}>
+              <Icon size={30} class="mb-4 text-gold-text" stroke-width={1.6} aria-hidden="true" />
+              <h3 class="mb-2 text-xl font-bold">{pick(v.title, lang)}</h3>
+              <p class="text-muted">{pick(v.text, lang)}</p>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+  <WaveDivider from="var(--color-cream)" to="white" />
+
+  <!-- History timeline -->
+  <section class="container-site pt-10 pb-20" aria-labelledby="history-title">
+    <SectionHeader id="history-title" title={t('about.history')} />
+    <ol class="timeline">
+      {about.history.map((h) => (
+        <li class="timeline__item" data-reveal>
+          <span class="timeline__year">{h.year}</span>
+          <div class="card p-6">
+            <h3 class="mb-2 text-xl font-bold">{pick(h.title, lang)}</h3>
+            <p class="text-muted">{pick(h.text, lang)}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Director's message -->
+  <section
+    class="on-dark relative isolate overflow-hidden bg-primary py-20 text-white"
+    aria-labelledby="director-title"
+  >
+    <div class="director-glow absolute inset-0 -z-10" aria-hidden="true"></div>
+    <div class="container-site grid items-center gap-12 md:grid-cols-[16rem_1fr]">
+      <div class="mx-auto">
+        {about.director.photo ? (
+          <Image
+            src={about.director.photo}
+            alt={about.director.name}
+            width={256}
+            height={256}
+            class="size-64 rounded-full object-cover ring-4 ring-gold/70"
+          />
+        ) : (
+          <span class="avatar size-56 text-6xl ring-4 ring-gold/70" aria-hidden="true">
+            {initials(about.director.name)}
+          </span>
+        )}
+      </div>
+      <figure>
+        <p class="eyebrow mb-4" id="director-title">
+          {t('about.founderTitle')}
+        </p>
+        <Quote size={44} class="mb-4 text-gold" stroke-width={1.25} aria-hidden="true" />
+        <blockquote class="font-display text-2xl leading-snug italic sm:text-3xl">
+          <p>{quoted(pick(about.director.message, lang)!)}</p>
+        </blockquote>
+        <figcaption class="mt-6">
+          <span class="block font-semibold text-gold-light">{about.director.name}</span>
+          <span class="text-sm text-aqua-light">{pick(about.director.title, lang)}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- Team & board -->
+  {groups
+    .filter((g) => g.members.length)
+    .map((g, gi) => (
+      <section
+        class:list={['pt-20', gi === groups.length - 1 ? 'pb-10' : 'pb-4']}
+        aria-labelledby={g.id}
+      >
+        <div class="container-site">
+          <SectionHeader id={g.id} title={g.title} />
+          <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {g.members.map((member) => (
+              <li class="card p-6 text-center" data-reveal>
+                {member.data.photo ? (
+                  <Image
+                    src={member.data.photo}
+                    alt={member.data.name}
+                    width={160}
+                    height={160}
+                    class="mx-auto mb-5 size-32 rounded-full object-cover ring-4 ring-aqua-light"
+                  />
+                ) : (
+                  <span
+                    class="avatar mx-auto mb-5 size-32 text-3xl ring-4 ring-aqua-light"
+                    aria-hidden="true"
+                  >
+                    {initials(member.data.name)}
+                  </span>
+                )}
+                <h3 class="text-lg font-bold">{member.data.name}</h3>
+                <p class="mb-3 text-sm font-semibold text-gold-text">
+                  {pick(member.data.role, lang)}
+                </p>
+                <p class="text-sm text-muted">{pick(member.data.bio, lang)}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))}
+
+  <WaveDivider from="white" to="var(--color-aqua-light)" />
+
+  <!-- Governance documents -->
+  <section class="bg-aqua-light pt-8 pb-20" aria-labelledby="docs-title">
+    <div class="container-site">
+      <SectionHeader id="docs-title" title={t('about.documents')} lede={t('about.documentsLede')} />
+      <ul class="grid gap-4 md:grid-cols-2">
+        {documents.map((doc) => (
+          <li class="card flex items-center gap-4 p-5">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-cream text-gold-text">
+              <FileText size={24} aria-hidden="true" />
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="font-semibold text-primary">{pick(doc.data.title, lang)}</p>
+              <p class="text-sm text-muted">
+                {doc.data.year}
+                {doc.data.file && ' · PDF'}
+              </p>
+            </div>
+            {doc.data.file ? (
+              <a
+                href={doc.data.file}
+                class="btn btn-outline !min-h-11 shrink-0 !px-4 text-sm"
+                download
+              >
+                <Download size={16} aria-hidden="true" />
+                {t('about.download')}
+                <span class="sr-only">: {pick(doc.data.title, lang)}</span>
+              </a>
+            ) : (
+              <span class="shrink-0 text-sm text-muted italic">{t('about.comingSoon')}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .avatar {
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-cream), var(--color-gold-light));
+  }
+  .director-glow {
+    background:
+      radial-gradient(40% 70% at 10% 50%, rgb(242 205 120 / 0.22), transparent 70%),
+      radial-gradient(40% 80% at 100% 0%, rgb(108 207 227 / 0.18), transparent 70%);
+  }
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    padding-left: 2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--color-gold), var(--color-aqua));
+  }
+  .timeline__item {
+    position: relative;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: var(--color-gold);
+    box-shadow:
+      0 0 0 4px white,
+      0 0 0 6px var(--color-gold-light);
+  }
+  .timeline__year {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1;
+  }
+  @media (min-width: 768px) {
+    .timeline {
+      padding-left: 0;
+      gap: 0;
+    }
+    .timeline::before {
+      left: 9rem;
+    }
+    .timeline__item {
+      grid-template-columns: 7rem 1fr;
+      gap: 4rem;
+      padding-block: 1rem;
+    }
+    .timeline__item::before {
+      left: calc(9rem - 0.45rem);
+    }
+    .timeline__year {
+      text-align: right;
+      padding-top: 0.15rem;
+    }
+  }
+</style>

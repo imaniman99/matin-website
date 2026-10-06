@@ -1,0 +1,52 @@
+---
+import FormShell from './FormShell.astro';
+import Field from './Field.astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<FormShell lang={lang} name="contact" id="contact">
+  <div class="grid gap-5 sm:grid-cols-2">
+    <Field
+      lang={lang}
+      id="contact-name"
+      name="name"
+      label={t('form.name')}
+      required
+      autocomplete="name"
+    />
+    <Field
+      lang={lang}
+      id="contact-email"
+      name="email"
+      type="email"
+      label={t('form.email')}
+      required
+      autocomplete="email"
+    />
+  </div>
+  <Field
+    lang={lang}
+    id="contact-subject"
+    name="subject"
+    as="select"
+    label={t('form.subject')}
+    required
+    placeholderOption="—"
+    options={t('form.subjects').split(',')}
+  />
+  <Field
+    lang={lang}
+    id="contact-message"
+    name="message"
+    as="textarea"
+    label={t('form.message')}
+    required
+  />
+</FormShell>

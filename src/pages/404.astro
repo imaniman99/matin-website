@@ -1,0 +1,73 @@
+---
+/**
+ * Bilingual 404 (Netlify serves /404.html for every unknown URL, in any language).
+ * French first, English second, each block with its own lang attribute.
+ */
+import { ArrowRight, House } from '@lucide/astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Wordmark from '@/components/brand/Wordmark.astro';
+import LeafRule from '@/components/brand/LeafRule.astro';
+import { languages, path, type RouteKey } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+const links: RouteKey[] = ['programs', 'events', 'news', 'contact'];
+---
+
+<BaseLayout
+  lang="fr"
+  title="Page introuvable · Page not found"
+  alternates={{ fr: '/fr/', en: '/en/' }}
+  noindex
+  footerWaveFrom="var(--color-cream)"
+>
+  <section class="nf relative isolate overflow-hidden py-20" aria-labelledby="nf-title">
+    <div class="container-site flex flex-col items-center text-center">
+      <p
+        class="font-display text-[7rem] leading-none font-extrabold text-gold/80 sm:text-[10rem]"
+        aria-hidden="true"
+      >
+        404
+      </p>
+      <Wordmark class="mt-2 w-56" />
+      <LeafRule class="mx-auto mt-4 w-48" />
+      <h1 id="nf-title" class="sr-only">
+        Page introuvable · Page not found
+      </h1>
+
+      <div class="mt-12 grid w-full max-w-4xl gap-8 md:grid-cols-2">
+        {languages.map((lang) => {
+          const t = useTranslations(lang);
+          return (
+            <div lang={lang === 'fr' ? 'fr-CA' : 'en-CA'} class="card p-8 text-left">
+              <h2 class="mb-3 text-2xl font-bold">{t('notFound.title')}</h2>
+              <p class="mb-6 text-muted">{t('notFound.text')}</p>
+              <a href={path('home', lang)} class="btn btn-primary mb-6">
+                <House size={18} aria-hidden="true" />
+                {t('notFound.home')}
+              </a>
+              <p class="mb-2 text-sm font-semibold">{t('notFound.suggestions')}</p>
+              <ul class="space-y-1.5">
+                {links.map((key) => (
+                  <li>
+                    <a href={path(key, lang)} class="link-arrow text-sm">
+                      {t(`nav.${key}`)}
+                      <ArrowRight size={16} aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    background:
+      radial-gradient(50% 50% at 50% 10%, rgb(255 244 214 / 0.9), transparent 70%),
+      linear-gradient(180deg, #fff, var(--color-cream));
+  }
+</style>

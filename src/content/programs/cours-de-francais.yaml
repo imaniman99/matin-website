@@ -1,0 +1,38 @@
+placeholder: true
+order: 1
+category: language
+urlSlug:
+  fr: francisation-et-conversation
+  en: french-conversation
+title:
+  fr: "[PLACEHOLDER] Francisation et conversation"
+  en: "[PLACEHOLDER] French Language & Conversation"
+summary:
+  fr: "Des ateliers conviviaux pour pratiquer le français du quotidien et découvrir la culture québécoise."
+  en: "Friendly workshops to practise everyday French and discover Québec culture."
+body:
+  fr: |
+    [PLACEHOLDER] Description complète du programme : objectifs, déroulement des séances, niveau requis.
+
+    - Petits groupes de 8 à 12 personnes
+    - Animation par des bénévoles formés
+    - Activités culturelles intégrées
+  en: |
+    [PLACEHOLDER] Full program description: goals, how sessions work, required level.
+
+    - Small groups of 8 to 12 people
+    - Led by trained volunteers
+    - Cultural activities included
+audience:
+  fr: "Adultes, tous niveaux"
+  en: "Adults, all levels"
+schedule:
+  fr: "[PLACEHOLDER] Mardis et jeudis, 18 h 30 – 20 h"
+  en: "[PLACEHOLDER] Tuesdays and Thursdays, 6:30 – 8 p.m."
+location:
+  fr: "Locaux de Matin"
+  en: "Matin premises"
+fees:
+  fr: "[PLACEHOLDER] Gratuit pour les membres"
+  en: "[PLACEHOLDER] Free for members"
+instructor: "[PLACEHOLDER] Nom de l'animatrice"

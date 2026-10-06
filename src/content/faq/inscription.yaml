@@ -1,0 +1,9 @@
+placeholder: true
+topic: programs
+order: 1
+question:
+  fr: "Comment m'inscrire à un programme ?"
+  en: "How do I register for a program?"
+answer:
+  fr: "[PLACEHOLDER] Cliquez sur « S'inscrire » dans la page du programme, ou écrivez-nous par le formulaire de contact."
+  en: "[PLACEHOLDER] Click “Register” on the program page, or write to us through the contact form."

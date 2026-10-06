@@ -1,0 +1,92 @@
+---
+/**
+ * Click-to-play YouTube facade: nothing is requested from YouTube until the
+ * visitor clicks (privacy + performance). Uses the youtube-nocookie domain.
+ */
+import { Play } from '@lucide/astro';
+import type { Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+  youtubeId: string;
+  title: string;
+}
+const { lang, youtubeId, title } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<figure class="video">
+  <div class="video__frame" data-video={youtubeId} data-video-title={title}>
+    <button type="button" class="video__btn" data-video-play>
+      <span class="video__play" aria-hidden="true">
+        <Play size={30} fill="currentColor" />
+      </span>
+      <span class="sr-only">{t('gallery.play', { title })}</span>
+    </button>
+  </div>
+  <figcaption class="mt-3">
+    <span class="block font-semibold text-primary">{title}</span>
+    <span class="text-xs text-muted">{t('gallery.videoNotice')}</span>
+  </figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((frame) => {
+    frame.querySelector('[data-video-play]')?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${frame.dataset.video}?autoplay=1&rel=0`;
+      iframe.title = frame.dataset.videoTitle ?? 'YouTube';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      frame.replaceChildren(iframe);
+      iframe.focus();
+    });
+  });
+</script>
+
+<style>
+  .video__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background:
+      radial-gradient(40% 60% at 50% 70%, rgb(242 205 120 / 0.45), transparent 70%),
+      linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    box-shadow: var(--shadow-soft);
+  }
+  .video__frame :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .video__btn {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+  .video__play {
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding-left: 4px;
+    border-radius: 999px;
+    color: var(--color-primary-dark);
+    background: var(--color-gold);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+    transition: transform 0.2s;
+  }
+  .video__btn:hover .video__play {
+    transform: scale(1.08);
+  }
+  .video__btn:focus-visible {
+    outline-color: var(--color-gold-light);
+    outline-offset: -6px;
+  }
+</style>
