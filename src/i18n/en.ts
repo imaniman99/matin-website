@@ -22,7 +22,6 @@ const en: Dictionary = {
     legalNav: 'Legal links',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
-    homeLink: 'Matin – Intercultural Institute, home',
     languageSwitcher: 'Language',
     switchTo: 'Lire cette page en français',
     externalLink: '(opens in a new tab)',
@@ -44,6 +43,12 @@ const en: Dictionary = {
     terms: 'Terms of Use',
     accessibility: 'Accessibility Statement',
     donate: 'Donate',
+    search: 'Search',
+  },
+  search: {
+    title: 'Search',
+    lede: 'Find a program, an event or a news story.',
+    devNotice: 'Search works once the site is built (npm run build, then npm run preview).',
   },
   home: {
     heroMission:
@@ -89,6 +94,7 @@ const en: Dictionary = {
     privacyLink: 'privacy policy',
     submit: 'Subscribe',
     success: 'Thank you! Check your inbox to confirm your subscription.',
+    confirmed: 'Your newsletter subscription is confirmed. Thank you and welcome!',
     successDirect: 'Thank you! You are now signed up for the newsletter.',
     error: 'Something went wrong. Please try again later.',
   },
@@ -334,7 +340,7 @@ const en: Dictionary = {
     media: 'External content',
     mediaText: 'YouTube videos and Google maps only load when you click on them.',
     manage: 'Manage cookies',
-    policyLink: 'Learn more',
+    policyLink: 'Read our privacy policy',
     saved: 'Your choices have been saved.',
   },
   common: {

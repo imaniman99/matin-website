@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig, envField } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import placeholderReport from './integrations/placeholder-report.mjs';
 
@@ -62,6 +61,8 @@ export default defineConfig({
       scriptDirective: {
         resources: [
           "'self'",
+          // Pagefind (site search) runs a small WebAssembly module.
+          "'wasm-unsafe-eval'",
           'https://plausible.io',
           'https://www.googletagmanager.com',
           'https://challenges.cloudflare.com',
@@ -73,14 +74,7 @@ export default defineConfig({
     },
   },
 
-  integrations: [
-    sitemap({
-      // hreflang alternates for every page: /fr/... <-> /en/...
-      i18n: { defaultLocale: 'fr', locales: { fr: 'fr-CA', en: 'en-CA' } },
-      filter: (page) => !page.endsWith('/404/'),
-    }),
-    placeholderReport(),
-  ],
+  integrations: [placeholderReport()],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -33,6 +33,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
   title={t('events.title')}
   lede={t('events.lede')}
   alternates={alternatesFor('events')}
+  searchable={false}
   footerWaveFrom="var(--color-aqua-light)"
 >
   <section class="container-site pt-4 pb-20" aria-labelledby="upcoming-title">
@@ -42,7 +43,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
       </h2>
 
       {upcoming.length > 0 && (
-        <div class="hidden flex-wrap items-end gap-4" data-events-toolbar>
+        <div class="invisible flex flex-wrap items-end gap-4" data-events-toolbar>
           <div class="flex flex-col gap-1.5">
             <label
               for="filter-category"
@@ -149,8 +150,8 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
 <script>
   const toolbar = document.querySelector<HTMLElement>('[data-events-toolbar]');
   if (toolbar) {
-    toolbar.classList.remove('hidden');
-    toolbar.classList.add('flex');
+    // Visible only once JS can make the controls work; space was reserved to avoid a layout shift.
+    toolbar.classList.remove('invisible');
     const list = document.getElementById('event-list');
     const noResults = document.querySelector<HTMLElement>('[data-events-noresults]');
     const cat = toolbar.querySelector<HTMLSelectElement>('[data-filter-category]')!;

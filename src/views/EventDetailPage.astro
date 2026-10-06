@@ -106,28 +106,28 @@ const jsonLd = {
 
     <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
       <div class="card overflow-hidden">
-        <dl class="divide-y divide-line/70 px-6">
-          <div class="flex gap-3 py-5">
+        <ul class="divide-y divide-line/70 px-6">
+          <li class="flex gap-3 py-5">
             <Clock size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
             <div>
-              <dt class="text-xs font-bold tracking-wider text-muted uppercase">
+              <p class="text-xs font-bold tracking-wider text-muted uppercase">
                 {t('events.when')}
-              </dt>
-              <dd class="mt-0.5 font-semibold text-ink">
+              </p>
+              <div class="mt-0.5 font-semibold text-ink">
                 <time datetime={event.startDate.toISOString()} class="block">
                   {formatLongDate(event.startDate, lang)}
                 </time>
                 {formatTimeRange(event.startDate, d.end ? event.endDate : undefined, lang)}
-              </dd>
+              </div>
             </div>
-          </div>
-          <div class="flex gap-3 py-5">
+          </li>
+          <li class="flex gap-3 py-5">
             <MapPin size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
             <div>
-              <dt class="text-xs font-bold tracking-wider text-muted uppercase">
+              <p class="text-xs font-bold tracking-wider text-muted uppercase">
                 {t('events.where')}
-              </dt>
-              <dd class="mt-0.5 text-ink">
+              </p>
+              <div class="mt-0.5 text-ink">
                 <span class="block font-semibold">{d.location.name}</span>
                 <span class="block text-sm">{d.location.address}</span>
                 <a
@@ -139,21 +139,21 @@ const jsonLd = {
                   {t('events.viewMap')}
                   <span class="sr-only">{t('a11y.externalLink')}</span>
                 </a>
-              </dd>
-            </div>
-          </div>
-          {price && (
-            <div class="flex gap-3 py-5">
-              <Ticket size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
-              <div>
-                <dt class="text-xs font-bold tracking-wider text-muted uppercase">
-                  {t('events.price')}
-                </dt>
-                <dd class="mt-0.5 font-semibold text-ink">{price}</dd>
               </div>
             </div>
+          </li>
+          {price && (
+            <li class="flex gap-3 py-5">
+              <Ticket size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+              <div>
+                <p class="text-xs font-bold tracking-wider text-muted uppercase">
+                  {t('events.price')}
+                </p>
+                <div class="mt-0.5 font-semibold text-ink">{price}</div>
+              </div>
+            </li>
           )}
-        </dl>
+        </ul>
         {!ended && d.registrationUrl && (
           <div class="px-6 pb-6">
             <a

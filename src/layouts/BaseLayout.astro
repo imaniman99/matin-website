@@ -1,7 +1,6 @@
 ---
 import '@/styles/global.css';
 import playfair800 from '@fontsource/playfair-display/files/playfair-display-latin-800-normal.woff2?url';
-import montserrat400 from '@fontsource/montserrat/files/montserrat-latin-400-normal.woff2?url';
 import SEO from '@/components/layout/SEO.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
@@ -27,6 +26,8 @@ interface Props {
   footerNewsletter?: boolean;
   /** Background colour of the last section, so the footer wave blends in. */
   footerWaveFrom?: string;
+  /** Include this page in the site search index (Pagefind). */
+  searchable?: boolean;
 }
 
 const {
@@ -41,6 +42,7 @@ const {
   jsonLd = [],
   footerNewsletter = true,
   footerWaveFrom,
+  searchable = true,
 } = Astro.props;
 const t = useTranslations(lang);
 const settings = await getSettings();
@@ -56,7 +58,6 @@ const site = Astro.site ?? new URL(Astro.url.origin);
     <meta name="theme-color" content="#0B3D5C" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="preload" href={playfair800} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={montserrat400} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -87,7 +88,12 @@ const site = Astro.site ?? new URL(Astro.url.origin);
       {t('a11y.skipToContent')}
     </a>
     <Header lang={lang} alternates={alternates} donateUrl={settings.donateUrl} />
-    <main id="main" tabindex="-1" class="outline-none">
+    <main
+      id="main"
+      tabindex="-1"
+      class="outline-none"
+      data-pagefind-body={searchable ? '' : undefined}
+    >
       <slot />
     </main>
     <!-- On short pages, fill the remaining height with the last section's colour so the footer wave blends in. -->

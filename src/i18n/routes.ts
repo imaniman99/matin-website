@@ -22,6 +22,7 @@ export const routes = {
   privacy: { fr: 'confidentialite', en: 'privacy' },
   terms: { fr: 'conditions-utilisation', en: 'terms-of-use' },
   accessibility: { fr: 'accessibilite', en: 'accessibility' },
+  search: { fr: 'recherche', en: 'search' },
 } as const satisfies Record<string, Record<Lang, string>>;
 
 export type RouteKey = keyof typeof routes;

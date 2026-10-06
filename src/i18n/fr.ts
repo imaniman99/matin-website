@@ -23,7 +23,6 @@ const fr = {
     legalNav: 'Liens juridiques',
     openMenu: 'Ouvrir le menu',
     closeMenu: 'Fermer le menu',
-    homeLink: 'Matin – Institut interculturel, accueil',
     languageSwitcher: 'Choix de la langue',
     switchTo: 'Read this page in English',
     externalLink: '(ouvre un nouvel onglet)',
@@ -45,6 +44,13 @@ const fr = {
     terms: "Conditions d'utilisation",
     accessibility: "Déclaration d'accessibilité",
     donate: 'Faire un don',
+    search: 'Rechercher',
+  },
+  search: {
+    title: 'Rechercher',
+    lede: 'Trouvez un programme, un événement ou une actualité.',
+    devNotice:
+      'La recherche fonctionne une fois le site construit (npm run build, puis npm run preview).',
   },
   home: {
     heroMission:
@@ -91,6 +97,7 @@ const fr = {
     privacyLink: 'politique de confidentialité',
     submit: "S'abonner",
     success: 'Merci ! Vérifiez votre boîte courriel pour confirmer votre abonnement.',
+    confirmed: 'Votre abonnement à l’infolettre est confirmé. Merci et bienvenue!',
     successDirect: 'Merci ! Votre inscription à l’infolettre est enregistrée.',
     error: 'Une erreur est survenue. Veuillez réessayer plus tard.',
   },
@@ -337,7 +344,7 @@ const fr = {
     mediaText:
       'Les vidéos YouTube et les cartes Google ne se chargent que lorsque vous cliquez dessus.',
     manage: 'Gérer les témoins',
-    policyLink: 'En savoir plus',
+    policyLink: 'Lire notre politique de confidentialité',
     saved: 'Vos choix ont été enregistrés.',
   },
   common: {

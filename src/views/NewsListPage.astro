@@ -39,9 +39,10 @@ const metaTitle =
   metaTitle={metaTitle}
   lede={t('news.lede')}
   alternates={alternates}
+  searchable={false}
   crumbs={category ? [{ label: t('news.title'), href: path('news', lang) }] : []}
 >
-  <section class="container-site pt-4 pb-24" aria-label={title}>
+  <section class="container-site pt-4 pb-24">
     <div class="mb-12 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <nav aria-label={t('news.categories')}>
         <ul class="flex flex-wrap gap-2">

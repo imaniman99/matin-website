@@ -14,7 +14,7 @@ const { target, label, allLabel, options } = Astro.props;
 ---
 
 <div
-  class="filter-bar mb-10 hidden flex-wrap items-center gap-2"
+  class="filter-bar invisible mb-10 flex flex-wrap items-center gap-2"
   role="group"
   aria-label={label}
   data-filter-bar={target}
@@ -35,8 +35,8 @@ const { target, label, allLabel, options } = Astro.props;
     if (!list) return;
     const empty = document.querySelector<HTMLElement>(`[data-filter-empty="${list.id}"]`);
     const buttons = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
-    bar.classList.remove('hidden');
-    bar.classList.add('flex');
+    // Space was reserved (invisible) so showing the buttons causes no layout shift.
+    bar.classList.remove('invisible');
 
     const apply = (value: string) => {
       let shown = 0;

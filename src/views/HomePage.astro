@@ -45,8 +45,18 @@ const [settings, upcoming, programs, posts, testimonials, partners] = await Prom
   lang={lang}
   alternates={alternatesFor('home')}
   footerNewsletter={false}
+  searchable={false}
   footerWaveFrom="var(--color-primary)"
 >
+  <!-- Shown when Brevo's confirmation link brings the visitor back (?infolettre=confirmee). -->
+  <div class="container-site" data-newsletter-confirmed hidden>
+    <p
+      class="mt-4 rounded-2xl bg-aqua-light p-4 text-center font-semibold text-primary-dark"
+      role="status"
+    >
+      {t('newsletter.confirmed')}
+    </p>
+  </div>
   <SunriseHero lang={lang} />
 
   <!-- About teaser -->
@@ -162,7 +172,7 @@ const [settings, upcoming, programs, posts, testimonials, partners] = await Prom
 
   <!-- Testimonials -->
   {testimonials.length > 0 && (
-    <section class="bg-white pt-8 pb-20 sm:pb-24" aria-labelledby="testimonials-title">
+    <section class="bg-white pt-8 pb-20 sm:pb-24">
       <div class="container-site">
         <SectionHeader
           id="testimonials-title"
@@ -279,6 +289,12 @@ const [settings, upcoming, programs, posts, testimonials, partners] = await Prom
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  if (new URL(location.href).searchParams.get('infolettre') === 'confirmee') {
+    document.querySelector<HTMLElement>('[data-newsletter-confirmed]')!.hidden = false;
+  }
+</script>
 
 <style>
   .cta-glow {

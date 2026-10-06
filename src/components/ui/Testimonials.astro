@@ -34,21 +34,23 @@ const quoted = (q: string) => (lang === 'fr' ? `«${NBSP}${q}${NBSP}»` : `“${
   <Quote size={52} class="mx-auto mb-4 text-gold" aria-hidden="true" stroke-width={1.25} />
   <div class="carousel__viewport" aria-live="off" data-viewport>
     {items.map((item, i) => (
-      <figure
+      <div
         class="carousel__slide"
         role="group"
         aria-roledescription="slide"
         aria-label={t('carousel.slideOf', { n: i + 1, total })}
         data-slide
       >
-        <blockquote class="font-display text-2xl leading-snug text-primary italic sm:text-[1.9rem]">
-          <p>{quoted(pick(item.data.quote, lang) ?? '')}</p>
-        </blockquote>
-        <figcaption class="mt-6">
-          <span class="block font-semibold text-ink">{item.data.name}</span>
-          {item.data.role && <span class="text-sm text-muted">{pick(item.data.role, lang)}</span>}
-        </figcaption>
-      </figure>
+        <figure>
+          <blockquote class="font-display text-2xl leading-snug text-primary italic sm:text-[1.9rem]">
+            <p>{quoted(pick(item.data.quote, lang) ?? '')}</p>
+          </blockquote>
+          <figcaption class="mt-6">
+            <span class="block font-semibold text-ink">{item.data.name}</span>
+            {item.data.role && <span class="text-sm text-muted">{pick(item.data.role, lang)}</span>}
+          </figcaption>
+        </figure>
+      </div>
     ))}
   </div>
 

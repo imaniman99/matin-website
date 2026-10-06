@@ -16,21 +16,16 @@ const t = useTranslations(lang);
 const [line1, ...rest] = t('brand.institute').split(' ');
 ---
 
-<a
-  href={path('home', lang)}
-  class:list={['lockup', variant === 'light' && 'lockup--light']}
-  aria-label={t('a11y.homeLink')}
->
-  <span class="lockup__word" aria-hidden="true">
-    Matin
-  </span>
+<a href={path('home', lang)} class:list={['lockup', variant === 'light' && 'lockup--light']}>
+  <span class="lockup__word">Matin</span>
   <span class="lockup__rule" aria-hidden="true">
     <MapleLeaf size={11} class="lockup__leaf" />
   </span>
-  <span class="lockup__inst" aria-hidden="true">
+  <span class="lockup__inst">
     <span>{line1}</span>
     <span>{rest.join(' ')}</span>
   </span>
+  <span class="sr-only">— {t('nav.home')}</span>
 </a>
 
 <style>

@@ -85,17 +85,17 @@ const facts = [
         >
           {t('programs.details')}
         </h2>
-        <dl class="divide-y divide-line/70 px-6">
+        <ul class="divide-y divide-line/70 px-6">
           {facts.map((f) => (
-            <div class="flex gap-3 py-4">
+            <li class="flex gap-3 py-4">
               <f.icon size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
               <div>
-                <dt class="text-xs font-bold tracking-wider text-muted uppercase">{f.label}</dt>
-                <dd class="mt-0.5 font-semibold text-ink">{f.value}</dd>
+                <p class="text-xs font-bold tracking-wider text-muted uppercase">{f.label}</p>
+                <div class="mt-0.5 font-semibold text-ink">{f.value}</div>
               </div>
-            </div>
+            </li>
           ))}
-        </dl>
+        </ul>
         <div class="p-6 pt-2">
           {d.registrationUrl ? (
             <a
@@ -124,7 +124,7 @@ const facts = [
   </div>
 
   {others.length > 0 && (
-    <section class="bg-aqua-light py-20" aria-labelledby="others-title">
+    <section class="bg-aqua-light py-20" aria-labelledby="others-title" data-pagefind-ignore="all">
       <div class="container-site">
         <h2 id="others-title" class="section-title mb-12">
           {t('programs.otherPrograms')}

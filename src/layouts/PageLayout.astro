@@ -33,6 +33,7 @@ interface Props {
   type?: 'website' | 'article' | 'event';
   jsonLd?: object[];
   noindex?: boolean;
+  searchable?: boolean;
   /** Colour of the band right under the banner wave. */
   bodyBg?: string;
   footerWaveFrom?: string;
@@ -52,6 +53,7 @@ const {
   type,
   jsonLd = [],
   noindex,
+  searchable = true,
   bodyBg = 'white',
   footerWaveFrom,
 } = Astro.props;
@@ -73,6 +75,7 @@ const trail = [
   imageAlt={imageAlt}
   type={type}
   noindex={noindex}
+  searchable={searchable}
   footerWaveFrom={footerWaveFrom ?? bodyBg}
   jsonLd={[
     breadcrumbJsonLd(

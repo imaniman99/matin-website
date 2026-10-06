@@ -1,0 +1,87 @@
+---
+/**
+ * Site search powered by Pagefind: a static index generated after each build
+ * (npm run build → pagefind --site dist). No server, no third party.
+ * The index is split by page language, so French pages only find French results.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { alternatesFor, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<PageLayout
+  lang={lang}
+  title={t('search.title')}
+  lede={t('search.lede')}
+  alternates={alternatesFor('search')}
+  noindex
+  searchable={false}
+>
+  <section class="container-site max-w-4xl pt-4 pb-24">
+    <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+    <div id="search" class="search-ui" data-search></div>
+    <p class="card p-6 text-muted" data-search-unavailable hidden>
+      {t('search.devNotice')}
+    </p>
+  </section>
+</PageLayout>
+
+<script>
+  type PagefindUIConstructor = new (opts: Record<string, unknown>) => unknown;
+  const mount = document.querySelector<HTMLElement>('[data-search]');
+  if (mount) {
+    const s = document.createElement('script');
+    s.src = '/pagefind/pagefind-ui.js';
+    s.onload = () => {
+      const PagefindUI = (window as unknown as { PagefindUI: PagefindUIConstructor }).PagefindUI;
+      new PagefindUI({
+        element: '#search',
+        showSubResults: false,
+        showImages: false,
+        resetStyles: false,
+        autofocus: true,
+      });
+      // Pre-fill from ?q= so the header search can link here.
+      const q = new URL(location.href).searchParams.get('q');
+      const input = mount.querySelector<HTMLInputElement>('input');
+      if (q && input) {
+        input.value = q;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    };
+    // In `astro dev` the index does not exist yet.
+    s.onerror = () => {
+      document.querySelector<HTMLElement>('[data-search-unavailable]')!.hidden = false;
+    };
+    document.head.append(s);
+  }
+</script>
+
+<style>
+  /* Match Pagefind's UI to the brand tokens. */
+  .search-ui {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--color-primary);
+    --pagefind-ui-text: var(--color-ink);
+    --pagefind-ui-background: #ffffff;
+    --pagefind-ui-border: rgb(11 61 92 / 0.25);
+    --pagefind-ui-tag: var(--color-aqua-light);
+    --pagefind-ui-border-width: 1.5px;
+    --pagefind-ui-border-radius: 14px;
+    --pagefind-ui-font: var(--font-sans);
+  }
+  .search-ui :global(.pagefind-ui__result-link) {
+    font-family: var(--font-display);
+    color: var(--color-primary);
+  }
+  .search-ui :global(mark) {
+    background: var(--color-gold-light);
+    color: var(--color-primary-dark);
+  }
+</style>

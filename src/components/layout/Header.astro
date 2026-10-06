@@ -1,5 +1,5 @@
 ---
-import { Menu, X, Heart } from '@lucide/astro';
+import { Menu, X, Heart, Search } from '@lucide/astro';
 import Lockup from '@/components/brand/Lockup.astro';
 import LangToggle from './LangToggle.astro';
 import { path, type Lang, type RouteKey } from '@/i18n/routes';
@@ -47,7 +47,15 @@ const isActive = (href: string) => current.startsWith(href);
       </ul>
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a
+        href={path('search', lang)}
+        class="menu-btn"
+        aria-current={isActive(path('search', lang)) ? 'page' : undefined}
+      >
+        <Search size={21} aria-hidden="true" />
+        <span class="sr-only">{t('nav.search')}</span>
+      </a>
       <div class="hidden sm:block">
         <LangToggle lang={lang} alternates={alternates} />
       </div>
@@ -118,10 +126,13 @@ const isActive = (href: string) => current.startsWith(href);
     document.documentElement.style.overflow = 'hidden';
   });
   dialog?.querySelector('[data-menu-close]')?.addEventListener('click', () => dialog.close());
-  dialog?.addEventListener('close', () => {
+  // Escape fires "cancel"; some browsers then skip "close", so clean up on both.
+  const onClosed = () => {
     document.documentElement.style.overflow = '';
     openBtn?.focus();
-  });
+  };
+  dialog?.addEventListener('close', onClosed);
+  dialog?.addEventListener('cancel', onClosed);
   // Close when a link inside is used (same-page anchors) or the backdrop is clicked.
   dialog?.addEventListener('click', (e) => {
     if (e.target === dialog) dialog.close();
@@ -139,8 +150,7 @@ const isActive = (href: string) => current.startsWith(href);
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgb(255 255 255 / 0.92);
-    backdrop-filter: saturate(1.4) blur(10px);
+    background: rgb(255 255 255 / 0.97);
     border-bottom: 1px solid transparent;
     transition:
       box-shadow 0.25s,

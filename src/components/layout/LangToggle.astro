@@ -28,14 +28,9 @@ const t = useTranslations(lang);
           <abbr title={l === 'fr' ? 'Français' : 'English'}>{l.toUpperCase()}</abbr>
         </span>
       ) : (
-        <a
-          href={alternates[l]}
-          hreflang={l}
-          lang={l}
-          aria-label={t('a11y.switchTo')}
-          data-lang-switch={l}
-        >
+        <a href={alternates[l]} hreflang={l} lang={l} data-lang-switch={l}>
           {l.toUpperCase()}
+          <span class="sr-only"> – {t('a11y.switchTo')}</span>
         </a>
       )}
     </>
