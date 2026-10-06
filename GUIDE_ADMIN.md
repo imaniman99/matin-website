@@ -18,7 +18,7 @@ Ce guide explique comment mettre à jour le site de Matin **sans installer aucun
 
 ### Avant de commencer
 
-1. Ouvrez le dépôt du site : **[ADRESSE DU DÉPÔT GITHUB — à fournir]**.
+1. Ouvrez le dépôt du site : **<https://github.com/imaniman99/matin-website>**.
 2. Connectez-vous avec votre compte GitHub (demandez l'accès à la personne responsable technique).
 
 ### Les règles d'or
@@ -226,7 +226,7 @@ This guide explains how to update the Matin website **without installing any sof
 
 ### Before you start
 
-1. Open the website repository: **[GITHUB REPOSITORY ADDRESS — to be provided]**.
+1. Open the website repository: **<https://github.com/imaniman99/matin-website>**.
 2. Sign in with your GitHub account (ask the technical contact for access).
 
 ### Golden rules

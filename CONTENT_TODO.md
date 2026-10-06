@@ -29,14 +29,16 @@ These details appear on many pages (footer, Contact, About, structured data for 
 ## 1. Domain, accounts and settings (technical contact)
 
 - ☐ **Domain name.** Set `SITE_URL` in Netlify. It's used for canonical URLs, the sitemap and share previews.
-- ☐ **GitHub repository and Netlify site** (see README → Deploying).
+- ✔ **GitHub repository:** <https://github.com/imaniman99/matin-website> (private).
+- ☐ **Netlify site** (see README → Deploying).
 - ☐ **Build hook** → `BUILD_HOOK_URL` (daily rebuild for past events).
 - ☐ **Deploy-failed email notification** for the content editor.
 - ☐ **Form notification emails** (where contact and volunteer messages are sent).
 - ☐ **Newsletter:** keep the default (stored in Netlify Forms) or create a Brevo account (API key, FR/EN lists, double opt-in template).
 - ☐ **Analytics:** none (default), Plausible (≈ US$9/month, cookieless) or GA4.
 - ☐ **Anti-spam:** Cloudflare Turnstile keys, only if spam becomes a problem.
-- ☐ Fill in the **GitHub address** and **technical contact** at the end of `GUIDE_ADMIN.md` (FR and EN).
+- ☐ Fill in the **technical contact** at the end of `GUIDE_ADMIN.md` (FR and EN). The GitHub address is already filled in.
+- ☐ Give the director access: repository **Settings → Collaborators → Add people** (they need a free GitHub account).
 
 ## 2. Brand
 
