@@ -31,7 +31,7 @@ These details appear on many pages (footer, Contact, About, structured data for 
 - ☐ **Netlify site** (see README → Deploying).
 - ☐ **Build hook** → `BUILD_HOOK_URL` (daily rebuild for past events).
 - ☐ **Deploy-failed email notification** for the content editor.
-- ⚠ ☐ **Form delivery.** Submissions do not arrive yet (Netlify form detection is off). Choose a delivery method (Netlify Forms recommended, already wired), add notification emails for `interet`, `contact` and `benevolat`, send a test, then set `formsEnabled: true` in `src/content/settings/site.yaml`.
+- ✔ **Form delivery:** Netlify Forms with email notifications; test submission received on 2026-10-10. `formsEnabled: true`.
 - ☐ **Newsletter:** keep the default (stored in Netlify Forms) or create a Brevo account (API key, FR/EN lists, double opt-in template).
 - ☐ **Analytics:** none (default), Plausible (≈ US$9/month, cookieless) or GA4.
 - ☐ **Anti-spam:** Cloudflare Turnstile keys, only if spam becomes a problem.
