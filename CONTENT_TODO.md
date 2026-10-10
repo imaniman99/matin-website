@@ -15,15 +15,13 @@ Legend: ☐ to do · ⚠ important / legal
 These details appear on many pages (footer, Contact, About, structured data for Google).
 
 - ☐ **Mission** (FR + EN, 1–3 sentences). The current text is a placeholder.
-- ☐ **Founding year** (`founded`). Currently the sample value `2020`.
 - ☐ **Street address and postal code.**
 - ☐ **Phone.**
 - ☐ **Public email** (currently `info@matin-institut.example`).
 - ☐ **Opening hours** (FR + EN).
-- ☐ **Social media URLs.** They currently point to the generic Facebook / Instagram / YouTube / LinkedIn home pages. Delete any network the institute doesn't use.
-- ☐ **Registered charity number** (`charityNumber`). Leave empty if there is none: the tax-receipt sentence then stays hidden on the Donate section.
-- ☐ **Donation page URL** (`donateUrl`). Currently the Zeffy home page; replace it with the institute's own Zeffy, CanadaHelps or Stripe page.
-- ☐ **Impact numbers** (years, cultures, participants, events). These are sample figures.
+- ✔ **Social media URLs:** YouTube, LinkedIn and Instagram point to the institute's pages.
+- ☐ **Registered charity number** (`charityNumber`). Leave empty if there is none.
+- ✔ Donate button, membership and impact numbers were removed from the site.
 - ⚠ ☐ **Person in charge of personal information** (`privacyOfficer`: name, title, email). Law 25 requires this person to be named, and the privacy policy displays it.
 
 ## 1. Domain, accounts and settings (technical contact)
@@ -33,7 +31,7 @@ These details appear on many pages (footer, Contact, About, structured data for 
 - ☐ **Netlify site** (see README → Deploying).
 - ☐ **Build hook** → `BUILD_HOOK_URL` (daily rebuild for past events).
 - ☐ **Deploy-failed email notification** for the content editor.
-- ☐ **Form notification emails** (where contact and volunteer messages are sent).
+- ⚠ ☐ **Form delivery.** Submissions do not arrive yet (Netlify form detection is off). Choose a delivery method (Netlify Forms recommended, already wired), add notification emails for `interet`, `contact` and `benevolat`, send a test, then set `formsEnabled: true` in `src/content/settings/site.yaml`.
 - ☐ **Newsletter:** keep the default (stored in Netlify Forms) or create a Brevo account (API key, FR/EN lists, double opt-in template).
 - ☐ **Analytics:** none (default), Plausible (≈ US$9/month, cookieless) or GA4.
 - ☐ **Anti-spam:** Cloudflare Turnstile keys, only if spam becomes a problem.
@@ -48,13 +46,10 @@ These details appear on many pages (footer, Contact, About, structured data for 
 
 ## 3. Home (`/fr/`)
 
-The home page pulls most of its content from the collections below. Its own texts are in `src/i18n/fr.ts` / `en.ts` (`home` section). **I wrote them; please review:**
+The hero, “Who We Are”, “Our Areas of Work”, “Get Involved” and newsletter texts were supplied by the institute and are used verbatim. Other home texts (section intros, empty states, interest form) are in `src/i18n/fr.ts` / `en.ts` / `fa.ts`.
 
-- ☐ Hero line « Un lieu de rencontre, à Montréal, où les cultures se découvrent… »
-- ☐ « Un pont entre les cultures, au cœur de Montréal »
-- ☐ Section intros (programs, events, call to action « Faites partie du dialogue »).
-- ☐ **Testimonials** (`src/content/testimonials/`, 3 files). They're invented: replace them with real quotes, **with each person's permission**.
-- ☐ **Partners** (`src/content/partners/`, 5 files). Add each partner's name, URL and logo, or delete the files to hide the strip.
+- ✔ Testimonials, partner strip, impact numbers and the sample events and news were removed.
+- ☐ **Translations:** have fluent speakers review the French and Persian texts listed in [`TRANSLATIONS_FOR_REVIEW.md`](TRANSLATIONS_FOR_REVIEW.md) (regenerate with `npm run translations`).
 
 ## 4. About (`src/content/about/about.yaml`, team, documents)
 
@@ -105,11 +100,8 @@ The samples are: francisation et conversation · arts et traditions · jeunes am
 
 ## 9. Get Involved (`src/content/involvement/involvement.yaml`)
 
-- ☐ **Membership tiers:** names, prices, benefits (3 samples: Étudiant·e / Individuel / Famille).
-- ☐ **Membership sign-up link** (`membershipUrl`). Currently the Zeffy home page.
 - ☐ **Volunteer roles** (3 samples) and the volunteer intro text.
-- ☐ **Partnership text** and **donation text.**
-- ☐ **"Your gift in action" examples** (25 $ / 50 $ / 100 $). These must be **true** before they go online.
+- ☐ **Partnership text.**
 
 ## 10. Resources (`src/content/resources/`)
 

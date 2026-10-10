@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import NewsListPage from '@/views/NewsListPage.astro';
-import { getNews, newsCategories, NEWS_PAGE_SIZE } from '@/lib/content';
+import { getNews, NEWS_PAGE_SIZE } from '@/lib/content';
 
 // Page 1 lives at the section root; this route builds pages 2, 3, …
 export const getStaticPaths = (async () => {
@@ -13,7 +13,6 @@ export const getStaticPaths = (async () => {
       params: { page: String(page) },
       props: {
         posts: posts.slice((page - 1) * NEWS_PAGE_SIZE, page * NEWS_PAGE_SIZE),
-        categories: newsCategories(posts),
         current: page,
         last,
       },

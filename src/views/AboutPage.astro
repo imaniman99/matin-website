@@ -17,16 +17,19 @@ import type { CollectionEntry } from 'astro:content';
 import PageLayout from '@/layouts/PageLayout.astro';
 import WaveDivider from '@/components/brand/WaveDivider.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import { alternatesFor, type Lang } from '@/i18n/routes';
+import { path, siteAlternates, type UiLang } from '@/i18n/routes';
+import { faAboutMore } from '@/i18n/fa';
 import { useTranslations, pick } from '@/i18n/ui';
 import { getSettings, getSingleton, getTeam, getDocuments, initials } from '@/lib/content';
 import { NBSP } from '@/lib/frenchTypo';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+// The Persian page covers Who We Are, Mission, Vision and Values only.
+const full = lang !== 'fa';
 const [settings, about, team, documents] = await Promise.all([
   getSettings(),
   getSingleton('about'),
@@ -53,20 +56,40 @@ const groups: { id: string; title: string; members: Member[] }[] = [
   lang={lang}
   title={t('about.title')}
   lede={t('about.lede')}
-  alternates={alternatesFor('about')}
-  footerWaveFrom="var(--color-aqua-light)"
+  alternates={siteAlternates('about')}
+  footerWaveFrom={full ? 'var(--color-sand)' : 'var(--color-cream)'}
 >
+  <!-- Who we are -->
+  <section
+    id="who-we-are"
+    class="container-site scroll-mt-24 pt-4 pb-14"
+    aria-labelledby="who-title"
+  >
+    <div class="card max-w-4xl p-8 sm:p-10">
+      <h2 id="who-title" class="mb-4 text-3xl font-bold">
+        {t('about.whoWeAre')}
+      </h2>
+      <p class="text-lg leading-relaxed">{t('home.whoText')}</p>
+    </div>
+  </section>
+
   <!-- Mission & vision -->
   <section
     class="container-site grid gap-8 pt-4 pb-20 md:grid-cols-2"
     aria-label={`${t('about.mission')} / ${t('about.vision')}`}
   >
     {[
-      { icon: Target, title: t('about.mission'), text: pick(settings.mission, lang) },
-      { icon: Eye, title: t('about.vision'), text: pick(about.vision, lang) },
+      {
+        id: 'mission',
+        icon: Target,
+        title: t('about.mission'),
+        text: pick(settings.mission, lang),
+      },
+      { id: 'vision', icon: Eye, title: t('about.vision'), text: pick(about.vision, lang) },
     ].map((b, i) => (
       <article
-        class="card relative overflow-hidden p-8 sm:p-10"
+        id={b.id}
+        class="card relative scroll-mt-24 overflow-hidden p-8 sm:p-10"
         data-reveal
         style={`--reveal-delay:${i * 100}ms`}
       >
@@ -80,7 +103,7 @@ const groups: { id: string; title: string; members: Member[] }[] = [
   </section>
 
   <!-- Values -->
-  <section class="bg-cream py-20" aria-labelledby="values-title">
+  <section id="values" class="scroll-mt-24 bg-cream py-20" aria-labelledby="values-title">
     <div class="container-site">
       <SectionHeader id="values-title" title={t('about.values')} align="center" />
       <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -97,140 +120,158 @@ const groups: { id: string; title: string; members: Member[] }[] = [
       </ul>
     </div>
   </section>
-  <WaveDivider from="var(--color-cream)" to="white" />
+  {!full && (
+    <section class="bg-cream pb-20">
+      <p class="container-site text-center">
+        {faAboutMore.text}{' '}
+        <a href={`${path('about', 'en')}?from=fa`} lang="fa" class="font-semibold underline">
+          {faAboutMore.link}
+        </a>
+      </p>
+    </section>
+  )}
+  {full && (
+    <>
+      <WaveDivider from="var(--color-cream)" to="var(--color-ivory)" />
 
-  <!-- History timeline -->
-  <section class="container-site pt-10 pb-20" aria-labelledby="history-title">
-    <SectionHeader id="history-title" title={t('about.history')} />
-    <ol class="timeline">
-      {about.history.map((h) => (
-        <li class="timeline__item" data-reveal>
-          <span class="timeline__year">{h.year}</span>
-          <div class="card p-6">
-            <h3 class="mb-2 text-xl font-bold">{pick(h.title, lang)}</h3>
-            <p class="text-muted">{pick(h.text, lang)}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  </section>
+      <!-- History timeline -->
+      <section class="container-site pt-10 pb-20" aria-labelledby="history-title">
+        <SectionHeader id="history-title" title={t('about.history')} />
+        <ol class="timeline">
+          {about.history.map((h) => (
+            <li class="timeline__item" data-reveal>
+              <span class="timeline__year">{h.year}</span>
+              <div class="card p-6">
+                <h3 class="mb-2 text-xl font-bold">{pick(h.title, lang)}</h3>
+                <p class="text-muted">{pick(h.text, lang)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-  <!-- Director's message -->
-  <section
-    class="on-dark relative isolate overflow-hidden bg-primary py-20 text-white"
-    aria-labelledby="director-title"
-  >
-    <div class="director-glow absolute inset-0 -z-10" aria-hidden="true"></div>
-    <div class="container-site grid items-center gap-12 md:grid-cols-[16rem_1fr]">
-      <div class="mx-auto">
-        {about.director.photo ? (
-          <Image
-            src={about.director.photo}
-            alt={about.director.name}
-            width={256}
-            height={256}
-            class="size-64 rounded-full object-cover ring-4 ring-gold/70"
-          />
-        ) : (
-          <span class="avatar size-56 text-6xl ring-4 ring-gold/70" aria-hidden="true">
-            {initials(about.director.name)}
-          </span>
-        )}
-      </div>
-      <figure>
-        <p class="eyebrow mb-4" id="director-title">
-          {t('about.founderTitle')}
-        </p>
-        <Quote size={44} class="mb-4 text-gold" stroke-width={1.25} aria-hidden="true" />
-        <blockquote class="font-display text-2xl leading-snug italic sm:text-3xl">
-          <p>{quoted(pick(about.director.message, lang)!)}</p>
-        </blockquote>
-        <figcaption class="mt-6">
-          <span class="block font-semibold text-gold-light">{about.director.name}</span>
-          <span class="text-sm text-aqua-light">{pick(about.director.title, lang)}</span>
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- Team & board -->
-  {groups
-    .filter((g) => g.members.length)
-    .map((g, gi) => (
+      <!-- Director's message -->
       <section
-        class:list={['pt-20', gi === groups.length - 1 ? 'pb-10' : 'pb-4']}
-        aria-labelledby={g.id}
+        class="on-dark relative isolate overflow-hidden bg-primary py-20 text-white"
+        aria-labelledby="director-title"
       >
+        <div class="director-glow absolute inset-0 -z-10" aria-hidden="true"></div>
+        <div class="container-site grid items-center gap-12 md:grid-cols-[16rem_1fr]">
+          <div class="mx-auto">
+            {about.director.photo ? (
+              <Image
+                src={about.director.photo}
+                alt={about.director.name}
+                width={256}
+                height={256}
+                class="size-64 rounded-full object-cover ring-4 ring-gold/70"
+              />
+            ) : (
+              <span class="avatar size-56 text-6xl ring-4 ring-gold/70" aria-hidden="true">
+                {initials(about.director.name)}
+              </span>
+            )}
+          </div>
+          <figure>
+            <p class="eyebrow mb-4" id="director-title">
+              {t('about.founderTitle')}
+            </p>
+            <Quote size={44} class="mb-4 text-gold" stroke-width={1.25} aria-hidden="true" />
+            <blockquote class="font-display text-2xl leading-snug italic sm:text-3xl">
+              <p>{quoted(pick(about.director.message, lang)!)}</p>
+            </blockquote>
+            <figcaption class="mt-6">
+              <span class="block font-semibold text-gold-light">{about.director.name}</span>
+              <span class="text-sm text-sand">{pick(about.director.title, lang)}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Team & board -->
+      {groups
+        .filter((g) => g.members.length)
+        .map((g, gi) => (
+          <section
+            class:list={['pt-20', gi === groups.length - 1 ? 'pb-10' : 'pb-4']}
+            aria-labelledby={g.id}
+          >
+            <div class="container-site">
+              <SectionHeader id={g.id} title={g.title} />
+              <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                {g.members.map((member) => (
+                  <li class="card p-6 text-center" data-reveal>
+                    {member.data.photo ? (
+                      <Image
+                        src={member.data.photo}
+                        alt={member.data.name}
+                        width={160}
+                        height={160}
+                        class="mx-auto mb-5 size-32 rounded-full object-cover ring-4 ring-sand"
+                      />
+                    ) : (
+                      <span
+                        class="avatar mx-auto mb-5 size-32 text-3xl ring-4 ring-sand"
+                        aria-hidden="true"
+                      >
+                        {initials(member.data.name)}
+                      </span>
+                    )}
+                    <h3 class="text-lg font-bold">{member.data.name}</h3>
+                    <p class="mb-3 text-sm font-semibold text-gold-text">
+                      {pick(member.data.role, lang)}
+                    </p>
+                    <p class="text-sm text-muted">{pick(member.data.bio, lang)}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ))}
+
+      <WaveDivider from="var(--color-ivory)" to="var(--color-sand)" />
+
+      <!-- Governance documents -->
+      <section class="bg-sand pt-8 pb-20" aria-labelledby="docs-title">
         <div class="container-site">
-          <SectionHeader id={g.id} title={g.title} />
-          <ul class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {g.members.map((member) => (
-              <li class="card p-6 text-center" data-reveal>
-                {member.data.photo ? (
-                  <Image
-                    src={member.data.photo}
-                    alt={member.data.name}
-                    width={160}
-                    height={160}
-                    class="mx-auto mb-5 size-32 rounded-full object-cover ring-4 ring-aqua-light"
-                  />
-                ) : (
-                  <span
-                    class="avatar mx-auto mb-5 size-32 text-3xl ring-4 ring-aqua-light"
-                    aria-hidden="true"
+          <SectionHeader
+            id="docs-title"
+            title={t('about.documents')}
+            lede={t('about.documentsLede')}
+          />
+          <ul class="grid gap-4 md:grid-cols-2">
+            {documents.map((doc) => (
+              <li class="card flex items-center gap-4 p-5">
+                <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-cream text-gold-text">
+                  <FileText size={24} aria-hidden="true" />
+                </span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-semibold text-primary">{pick(doc.data.title, lang)}</p>
+                  <p class="text-sm text-muted">
+                    {doc.data.year}
+                    {doc.data.file && ' · PDF'}
+                  </p>
+                </div>
+                {doc.data.file ? (
+                  <a
+                    href={doc.data.file}
+                    class="btn btn-outline !min-h-11 shrink-0 !px-4 text-sm"
+                    download
                   >
-                    {initials(member.data.name)}
-                  </span>
+                    <Download size={16} aria-hidden="true" />
+                    {t('about.download')}
+                    <span class="sr-only">: {pick(doc.data.title, lang)}</span>
+                  </a>
+                ) : (
+                  <span class="shrink-0 text-sm text-muted italic">{t('about.comingSoon')}</span>
                 )}
-                <h3 class="text-lg font-bold">{member.data.name}</h3>
-                <p class="mb-3 text-sm font-semibold text-gold-text">
-                  {pick(member.data.role, lang)}
-                </p>
-                <p class="text-sm text-muted">{pick(member.data.bio, lang)}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
-    ))}
-
-  <WaveDivider from="white" to="var(--color-aqua-light)" />
-
-  <!-- Governance documents -->
-  <section class="bg-aqua-light pt-8 pb-20" aria-labelledby="docs-title">
-    <div class="container-site">
-      <SectionHeader id="docs-title" title={t('about.documents')} lede={t('about.documentsLede')} />
-      <ul class="grid gap-4 md:grid-cols-2">
-        {documents.map((doc) => (
-          <li class="card flex items-center gap-4 p-5">
-            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-cream text-gold-text">
-              <FileText size={24} aria-hidden="true" />
-            </span>
-            <div class="min-w-0 flex-1">
-              <p class="font-semibold text-primary">{pick(doc.data.title, lang)}</p>
-              <p class="text-sm text-muted">
-                {doc.data.year}
-                {doc.data.file && ' · PDF'}
-              </p>
-            </div>
-            {doc.data.file ? (
-              <a
-                href={doc.data.file}
-                class="btn btn-outline !min-h-11 shrink-0 !px-4 text-sm"
-                download
-              >
-                <Download size={16} aria-hidden="true" />
-                {t('about.download')}
-                <span class="sr-only">: {pick(doc.data.title, lang)}</span>
-              </a>
-            ) : (
-              <span class="shrink-0 text-sm text-muted italic">{t('about.comingSoon')}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
+    </>
+  )}
 </PageLayout>
 
 <style>

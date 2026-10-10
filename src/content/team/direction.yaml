@@ -1,10 +1,10 @@
 placeholder: true
 group: staff
 order: 1
-name: "[PLACEHOLDER] Prénom Nom"
+name: '[PLACEHOLDER] Prénom Nom'
 role:
-  fr: "Fondation et direction générale"
-  en: "Founder and Executive Director"
+  fr: 'Fondation et direction générale'
+  en: 'Founder and Executive Director'
 bio:
-  fr: "[PLACEHOLDER] Courte biographie : parcours, langues parlées, passions."
-  en: "[PLACEHOLDER] Short bio: background, languages spoken, passions."
+  fr: '[PLACEHOLDER] Courte biographie : parcours, langues parlées, passions.'
+  en: '[PLACEHOLDER] Short bio: background, languages spoken, passions.'

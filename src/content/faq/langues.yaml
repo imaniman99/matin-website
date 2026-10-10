@@ -2,8 +2,8 @@ placeholder: true
 topic: general
 order: 2
 question:
-  fr: "Dans quelles langues se déroulent les activités ?"
-  en: "In which languages are activities held?"
+  fr: 'Dans quelles langues se déroulent les activités ?'
+  en: 'In which languages are activities held?'
 answer:
   fr: "[PLACEHOLDER] La plupart des activités se déroulent en français. Certaines sont bilingues ou multilingues ; c'est indiqué dans la description."
-  en: "[PLACEHOLDER] Most activities are held in French. Some are bilingual or multilingual; this is indicated in the description."
+  en: '[PLACEHOLDER] Most activities are held in French. Some are bilingual or multilingual; this is indicated in the description.'

@@ -2,37 +2,37 @@ placeholder: true
 date: 2026-06-20
 title:
   fr: "[PLACEHOLDER] Fête interculturelle de l'été 2026"
-  en: "[PLACEHOLDER] Summer Intercultural Festival 2026"
+  en: '[PLACEHOLDER] Summer Intercultural Festival 2026'
 description:
-  fr: "[PLACEHOLDER] Retour en images sur une journée de musique, de cuisine et de jeux au parc."
-  en: "[PLACEHOLDER] A look back at a day of music, food and games in the park."
+  fr: '[PLACEHOLDER] Retour en images sur une journée de musique, de cuisine et de jeux au parc.'
+  en: '[PLACEHOLDER] A look back at a day of music, food and games in the park.'
 photos:
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-1.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 1 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 1 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 1 from the summer festival'
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-2.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 2 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 2 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 2 from the summer festival'
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-3.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 3 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 3 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 3 from the summer festival'
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-4.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 4 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 4 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 4 from the summer festival'
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-5.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 5 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 5 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 5 from the summer festival'
   - image: ../../assets/uploads/gallery/fete-ete-2026/photo-6.jpg
     alt:
       fr: "[PLACEHOLDER] Photo provisoire 6 de la fête de l'été"
-      en: "[PLACEHOLDER] Placeholder photo 6 from the summer festival"
+      en: '[PLACEHOLDER] Placeholder photo 6 from the summer festival'
 videos:
-  - youtubeId: "XXXXXXXXXXX"
+  - youtubeId: 'XXXXXXXXXXX'
     title:
-      fr: "[PLACEHOLDER] Vidéo souvenir de la fête"
-      en: "[PLACEHOLDER] Festival highlights video"
+      fr: '[PLACEHOLDER] Vidéo souvenir de la fête'
+      en: '[PLACEHOLDER] Festival highlights video'

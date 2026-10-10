@@ -12,33 +12,39 @@
 @import '@fontsource/montserrat/600.css';
 @import '@fontsource/montserrat/700.css';
 @import '@fontsource/great-vibes/400.css';
+/* Persian pages only: the browser fetches it just where Persian text appears. */
+@import '@fontsource-variable/vazirmatn/index.css';
 
 /*
  * Brand tokens, sampled from the logo and tuned for WCAG AA.
  * Contrast (checked): text/white 14.5, primary/white 11.4, gold-text/cream 5.3,
- * gold/primary-dark 7.2, muted/aqua-light 6.2. Plain --color-gold is decorative
+ * gold/primary-dark 7.2, muted/sand 6.2. Plain --color-gold is decorative
  * only (rules, icons, large display text on dark backgrounds), never small text on light.
  */
 @theme {
-  --color-primary: #0b3d5c;
-  --color-primary-dark: #062238;
-  --color-teal: #0e6e8c;
-  --color-gold: #d9a441;
-  --color-gold-light: #f2cd78;
-  --color-gold-text: #8a5f0e;
-  --color-aqua: #6ccfe3;
-  --color-aqua-light: #ddf4f9;
-  --color-cream: #fff8ec;
-  --color-ink: #1b2b36;
-  --color-muted: #4a5b66;
-  --color-line: #e7dcc4;
+  /* Deep turquoise + warm gold on warm ivory. Contrast (checked): primary/ivory 7.2,
+     ink/ivory 13.6, muted/sand 5.9, gold-text/ivory 5.6, primary-dark text on gold 5.2,
+     ivory on primary-dark 11. Plain --color-gold is for accents and button fills. */
+  --color-primary: #0a5c63;
+  --color-primary-dark: #063e43;
+  --color-teal: #0b6b72;
+  --color-gold: #d9a23d;
+  --color-gold-light: #f0cb74;
+  --color-gold-text: #855a0d;
+  --color-aqua: #1f9aa0;
+  --color-sand: #f2e8d5;
+  --color-cream: #fbf6ec;
+  --color-ivory: #fbf6ec;
+  --color-ink: #1c2b2e;
+  --color-muted: #4a5a5d;
+  --color-line: #e5d8bf;
 
   --font-display: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
   --font-sans: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-script: 'Great Vibes', 'Brush Script MT', cursive;
 
-  --shadow-soft: 0 1px 2px rgb(6 34 56 / 0.05), 0 8px 24px -8px rgb(6 34 56 / 0.14);
-  --shadow-lift: 0 2px 4px rgb(6 34 56 / 0.06), 0 18px 40px -12px rgb(6 34 56 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(6 62 67 / 0.05), 0 8px 24px -8px rgb(6 62 67 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(6 62 67 / 0.06), 0 18px 40px -12px rgb(6 62 67 / 0.22);
 
   --radius-card: 1.25rem;
 
@@ -67,6 +73,42 @@
 }
 
 @layer base {
+  /* Persian (RTL): one typeface for everything, no letter-spacing (it breaks the
+     joined script), slightly taller lines. Layout uses logical properties throughout. */
+  html[lang='fa'] {
+    --font-sans: 'Vazirmatn Variable', Tahoma, 'Segoe UI', sans-serif;
+    --font-display: 'Vazirmatn Variable', Tahoma, 'Segoe UI', sans-serif;
+    --font-script: 'Vazirmatn Variable', Tahoma, 'Segoe UI', sans-serif;
+  }
+  /* Latin-script brand text inside Persian pages (e.g. the logo) keeps the brand fonts. */
+  html[lang='fa'] [lang^='fr'],
+  html[lang='fa'] [lang^='en'] {
+    --font-sans: 'Montserrat', system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+  }
+  html[lang='fa'] body {
+    line-height: 1.9;
+  }
+  html[lang='fa'] *,
+  html[lang='fa'] *::before,
+  html[lang='fa'] *::after {
+    letter-spacing: 0 !important;
+  }
+  html[lang='fa'] h1,
+  html[lang='fa'] h2,
+  html[lang='fa'] h3 {
+    line-height: 1.45;
+  }
+  /* Directional icons (arrows, chevrons) point the other way in RTL. */
+  [dir='rtl'] .flip-rtl {
+    transform: scaleX(-1);
+  }
+  /* The "فارسی" label on French/English pages uses a system font, so those pages
+     never download the Persian web font. */
+  .fa-label {
+    font-family: Tahoma, 'Segoe UI', system-ui, sans-serif;
+    letter-spacing: 0;
+  }
   html {
     -webkit-text-size-adjust: 100%;
     scroll-padding-top: 6rem;
@@ -77,7 +119,7 @@
     }
   }
   body {
-    @apply bg-white font-sans text-ink antialiased;
+    @apply bg-ivory font-sans text-ink antialiased;
     font-size: 1.0625rem;
     line-height: 1.7;
     text-rendering: optimizeLegibility;
@@ -228,7 +270,7 @@
     @apply rounded-xl p-4 font-semibold;
   }
   .form-status.is-success {
-    @apply bg-aqua-light text-primary-dark;
+    @apply bg-sand text-primary-dark;
   }
   .form-status.is-error {
     @apply bg-[#FFF7F6] text-[#7A1A14];

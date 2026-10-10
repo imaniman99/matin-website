@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets';
+import { Picture, getImage } from 'astro:assets';
 import {
   ArrowLeft,
   CalendarPlus,
@@ -13,6 +13,7 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import CoverArt from '@/components/content/CoverArt.astro';
 import Prose from '@/components/ui/Prose.astro';
 import ShareButtons from '@/components/ui/ShareButtons.astro';
+import Lightbox from '@/components/ui/Lightbox.astro';
 import { path, type Lang } from '@/i18n/routes';
 import { useTranslations, pick } from '@/i18n/ui';
 import { renderMarkdown, slugOf, type EventEntry } from '@/lib/content';
@@ -35,6 +36,16 @@ const site = Astro.site ?? new URL(Astro.url.origin);
 const url = new URL(alternates[lang], site).href;
 const ended = event.endDate < new Date();
 const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
+// After the event: report, highlights and captioned photos (each shown only if filled in).
+const report = d.report && pick(d.report, lang);
+const highlights = d.highlights.map((h) => pick(h, lang)!).filter(Boolean);
+const photos = await Promise.all(
+  d.photos.map(async (p) => ({
+    ...p,
+    large: (await getImage({ src: p.image, width: Math.min(1800, p.image.width), format: 'webp' }))
+      .src,
+  })),
+);
 const icsHref = `/ics/${event.id}-${lang}.ics`;
 
 const jsonLd = {
@@ -99,6 +110,66 @@ const jsonLd = {
         )}
       </div>
       <Prose html={renderMarkdown(d.body[lang], lang)} class="text-lg" />
+      {report && (
+        <section class="mt-14" aria-labelledby="report-title">
+          <h2 id="report-title" class="mb-5 text-3xl font-bold">
+            {t('events.report')}
+          </h2>
+          <Prose html={renderMarkdown(report, lang)} class="text-lg" />
+        </section>
+      )}
+      {highlights.length > 0 && (
+        <section class="mt-12" aria-labelledby="highlights-title">
+          <h2 id="highlights-title" class="mb-5 text-3xl font-bold">
+            {t('events.highlights')}
+          </h2>
+          <ul class="space-y-3">
+            {highlights.map((h) => (
+              <li class="rounded-xl border-s-4 border-gold bg-white p-4 text-lg shadow-soft">
+                {h}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {photos.length > 0 && (
+        <section class="mt-12" aria-labelledby="photos-title">
+          <h2 id="photos-title" class="mb-5 text-3xl font-bold">
+            {t('events.photos')}
+          </h2>
+          <ul class="grid gap-5 sm:grid-cols-2">
+            {photos.map((p) => {
+              const alt = pick(p.alt, lang) ?? '';
+              const caption = pick(p.caption, lang);
+              return (
+                <li>
+                  <figure>
+                    <a
+                      href={p.large}
+                      data-lightbox={`event-${event.id}`}
+                      data-alt={alt}
+                      data-caption={caption ?? ''}
+                      aria-label={t('gallery.openPhoto', { alt })}
+                      class="block overflow-hidden rounded-2xl shadow-soft"
+                    >
+                      <Picture
+                        src={p.image}
+                        alt=""
+                        formats={['avif', 'webp']}
+                        widths={[400, 640, 900]}
+                        sizes="(min-width: 640px) 40vw, 100vw"
+                        class="aspect-[4/3] w-full object-cover"
+                      />
+                    </a>
+                    {caption && <figcaption class="mt-2 text-sm text-muted">{caption}</figcaption>}
+                  </figure>
+                </li>
+              );
+            })}
+          </ul>
+          <Lightbox lang={lang} />
+        </section>
+      )}
       <div class="mt-12 border-t border-line pt-6">
         <ShareButtons lang={lang} url={url} title={title} />
       </div>

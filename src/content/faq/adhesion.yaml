@@ -1,9 +1,0 @@
-placeholder: true
-topic: membership
-order: 1
-question:
-  fr: "Quels sont les avantages de l'adhésion ?"
-  en: "What are the benefits of membership?"
-answer:
-  fr: "[PLACEHOLDER] Les membres profitent de tarifs réduits, d'invitations exclusives et d'un droit de vote à l'assemblée générale."
-  en: "[PLACEHOLDER] Members enjoy reduced fees, exclusive invitations and a vote at the annual general meeting."

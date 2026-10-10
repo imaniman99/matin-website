@@ -1,16 +1,15 @@
 ---
-import { Menu, X, Heart, Search } from '@lucide/astro';
+import { ChevronDown, Menu, X, Search } from '@lucide/astro';
 import Lockup from '@/components/brand/Lockup.astro';
 import LangToggle from './LangToggle.astro';
-import { path, type Lang, type RouteKey } from '@/i18n/routes';
+import { href, type Alternates, type RouteKey, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
-  alternates: Record<Lang, string>;
-  donateUrl: string;
+  lang: UiLang;
+  alternates: Alternates;
 }
-const { lang, alternates, donateUrl } = Astro.props;
+const { lang, alternates } = Astro.props;
 const t = useTranslations(lang);
 
 const items: RouteKey[] = [
@@ -22,54 +21,84 @@ const items: RouteKey[] = [
   'getInvolved',
   'contact',
 ];
-const links = items.map((key) => ({ key, href: path(key, lang), label: t(`nav.${key}`) }));
+const links = items.map((key) => ({ key, href: href(key, lang), label: t(`nav.${key}`) }));
+const aboutHref = href('about', lang);
+// Sub-links of "About": anchors on the About page.
+const aboutLinks = [
+  { id: 'who-we-are', label: t('nav.whoWeAre') },
+  { id: 'mission', label: t('nav.mission') },
+  { id: 'vision', label: t('nav.vision') },
+  { id: 'values', label: t('nav.values') },
+].map((l) => ({ ...l, href: `${aboutHref}#${l.id}` }));
+
 const current = Astro.url.pathname;
-const isActive = (href: string) => current.startsWith(href);
+const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
 ---
 
 <header class="site-header" data-header>
   <div class="container-site flex h-[4.75rem] items-center justify-between gap-4">
     <Lockup lang={lang} />
 
-    <nav aria-label={t('a11y.mainNav')} class="hidden xl:block">
-      <ul class="flex items-center gap-0.5">
-        {links.map((l) => (
-          <li>
-            <a
-              href={l.href}
-              class:list={['nav-link', isActive(l.href) && 'is-active']}
-              aria-current={isActive(l.href) ? 'page' : undefined}
-            >
-              {l.label}
-            </a>
-          </li>
-        ))}
+    <nav aria-label={t('a11y.mainNav')} class="desktop-nav">
+      <ul class="flex items-center gap-1">
+        {links.map((l) =>
+          l.key === 'about' ? (
+            <li class="has-sub" data-submenu>
+              <div class="flex items-center">
+                <a
+                  href={l.href}
+                  class:list={['nav-link', isActive(l.href) && 'is-active']}
+                  aria-current={isActive(l.href) ? 'page' : undefined}
+                >
+                  {l.label}
+                </a>
+                <button
+                  type="button"
+                  class="sub-toggle"
+                  aria-expanded="false"
+                  aria-controls="about-submenu"
+                  data-submenu-toggle
+                >
+                  <ChevronDown size={18} aria-hidden="true" />
+                  <span class="sr-only">{t('a11y.aboutSubmenu')}</span>
+                </button>
+              </div>
+              <ul id="about-submenu" class="submenu" hidden data-submenu-list>
+                {aboutLinks.map((s) => (
+                  <li>
+                    <a href={s.href} class="submenu-link">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={l.href}
+                class:list={['nav-link', isActive(l.href) && 'is-active']}
+                aria-current={isActive(l.href) ? 'page' : undefined}
+              >
+                {l.label}
+              </a>
+            </li>
+          ),
+        )}
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2 sm:gap-3">
-      <a
-        href={path('search', lang)}
-        class="menu-btn"
-        aria-current={isActive(path('search', lang)) ? 'page' : undefined}
-      >
+    <div class="flex items-center gap-1 sm:gap-2">
+      <a href={href('search', lang)} class="menu-btn">
         <Search size={21} aria-hidden="true" />
         <span class="sr-only">{t('nav.search')}</span>
       </a>
       <div class="hidden sm:block">
         <LangToggle lang={lang} alternates={alternates} />
       </div>
-      <a
-        href={donateUrl}
-        class="btn btn-gold hidden !min-h-11 !px-5 whitespace-nowrap sm:inline-flex"
-        rel="noopener"
-      >
-        <Heart size={18} aria-hidden="true" />
-        {t('nav.donate')}
-      </a>
       <button
         type="button"
-        class="menu-btn xl:hidden"
+        class="menu-btn mobile-only"
         aria-haspopup="dialog"
         aria-controls="mobile-menu"
         data-menu-open
@@ -88,10 +117,13 @@ const isActive = (href: string) => current.startsWith(href);
         <span class="sr-only">{t('a11y.closeMenu')}</span>
       </button>
     </div>
-    <nav aria-label={t('a11y.mainNav')} class="px-5 pt-4 pb-10">
-      <ul class="space-y-1">
+    <nav aria-label={t('a11y.mainNav')} class="px-5 pt-2 pb-10">
+      <div class="mb-6 rounded-2xl bg-white/[0.06] px-4 py-3">
+        <LangToggle lang={lang} alternates={alternates} light large />
+      </div>
+      <ul>
         <li>
-          <a href={path('home', lang)} class="mobile-link">
+          <a href={href('home', lang)} class="mobile-link">
             {t('nav.home')}
           </a>
         </li>
@@ -104,16 +136,20 @@ const isActive = (href: string) => current.startsWith(href);
             >
               {l.label}
             </a>
+            {l.key === 'about' && (
+              <ul class="mobile-sub">
+                {aboutLinks.map((s) => (
+                  <li>
+                    <a href={s.href} class="mobile-sublink" data-menu-anchor>
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
-      <div class="mt-8 flex flex-wrap items-center gap-5">
-        <a href={donateUrl} class="btn btn-gold" rel="noopener">
-          <Heart size={18} aria-hidden="true" />
-          {t('nav.donate')}
-        </a>
-        <LangToggle lang={lang} alternates={alternates} light />
-      </div>
     </nav>
   </dialog>
 </header>
@@ -133,9 +169,54 @@ const isActive = (href: string) => current.startsWith(href);
   };
   dialog?.addEventListener('close', onClosed);
   dialog?.addEventListener('cancel', onClosed);
-  // Close when a link inside is used (same-page anchors) or the backdrop is clicked.
+  // Close when the backdrop is clicked, or when an anchor on the current page is chosen.
   dialog?.addEventListener('click', (e) => {
     if (e.target === dialog) dialog.close();
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-menu-anchor]');
+    if (a && a.pathname === location.pathname) dialog.close();
+  });
+
+  // "About" dropdown: button toggles it (keyboard, mouse, touch); hover opens it on
+  // devices with a mouse; Escape or leaving it closes it.
+  document.querySelectorAll<HTMLElement>('[data-submenu]').forEach((item) => {
+    const btn = item.querySelector<HTMLButtonElement>('[data-submenu-toggle]')!;
+    const list = item.querySelector<HTMLElement>('[data-submenu-list]')!;
+    let openedByHover = false;
+    const set = (open: boolean) => {
+      list.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      if (!open) openedByHover = false;
+    };
+    // A click right after hovering keeps the menu open instead of closing it.
+    btn.addEventListener('click', () => {
+      if (openedByHover) openedByHover = false;
+      else set(list.hidden === true);
+    });
+    const hover = window.matchMedia('(hover: hover) and (pointer: fine)');
+    item.addEventListener('mouseenter', () => {
+      if (hover.matches && list.hidden) {
+        set(true);
+        openedByHover = true;
+      }
+    });
+    item.addEventListener('mouseleave', () => hover.matches && set(false));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !list.hidden) {
+        set(false);
+        btn.focus();
+      }
+      if (e.key === 'ArrowDown' && document.activeElement === btn) {
+        e.preventDefault();
+        set(true);
+        list.querySelector<HTMLElement>('a')?.focus();
+      }
+    });
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget as Node)) set(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!item.contains(e.target as Node)) set(false);
+    });
   });
 
   // Subtle shadow once the page is scrolled.
@@ -150,22 +231,36 @@ const isActive = (href: string) => current.startsWith(href);
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgb(255 255 255 / 0.97);
-    border-bottom: 1px solid transparent;
+    background: rgb(251 246 236 / 0.97);
+    border-block-end: 1px solid transparent;
     transition:
       box-shadow 0.25s,
       border-color 0.25s;
   }
   .site-header.is-scrolled {
-    border-bottom-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
-    box-shadow: 0 6px 24px -14px rgb(6 34 56 / 0.35);
+    border-block-end-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
+    box-shadow: 0 6px 24px -14px rgb(6 62 67 / 0.35);
   }
+
+  /* The full menu needs this width at 17px; below it, the mobile menu is used. */
+  .desktop-nav {
+    display: none;
+  }
+  @media (min-width: 86rem) {
+    .desktop-nav {
+      display: block;
+    }
+    .menu-btn.mobile-only {
+      display: none;
+    }
+  }
+
   .nav-link {
     position: relative;
     display: block;
-    padding: 0.55rem 0.62rem;
+    padding: 0.55rem 0.7rem;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 1.0625rem; /* 17px */
     white-space: nowrap;
     color: var(--color-primary-dark);
     text-decoration: none;
@@ -175,19 +270,72 @@ const isActive = (href: string) => current.startsWith(href);
       background 0.2s;
   }
   .nav-link:hover {
-    background: var(--color-aqua-light);
+    background: var(--color-sand);
     color: var(--color-primary);
   }
   .nav-link.is-active::after {
     content: '';
     position: absolute;
-    left: 0.62rem;
-    right: 0.62rem;
-    bottom: 0.2rem;
+    inset-inline: 0.7rem;
+    inset-block-end: 0.2rem;
     height: 2px;
     border-radius: 2px;
     background: var(--color-gold);
   }
+
+  .has-sub {
+    position: relative;
+  }
+  .sub-toggle {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2.25rem;
+    margin-inline-start: -0.4rem;
+    border-radius: 999px;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  .sub-toggle:hover {
+    background: var(--color-sand);
+  }
+  .sub-toggle[aria-expanded='true'] :global(svg) {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    position: absolute;
+    inset-inline-start: 0;
+    top: calc(100% + 0.4rem);
+    min-width: 15rem;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    background: white;
+    box-shadow: var(--shadow-lift);
+    border: 1px solid var(--color-line);
+  }
+  .submenu::before {
+    /* Bridges the gap so the menu doesn't close while the pointer moves down. */
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: -0.6rem;
+    height: 0.6rem;
+  }
+  .submenu-link {
+    display: block;
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-primary-dark);
+    text-decoration: none;
+  }
+  .submenu-link:hover,
+  .submenu-link:focus-visible {
+    background: var(--color-sand);
+    color: var(--color-primary);
+  }
+
   .menu-btn {
     display: inline-grid;
     place-items: center;
@@ -197,13 +345,8 @@ const isActive = (href: string) => current.startsWith(href);
     color: var(--color-primary);
     cursor: pointer;
   }
-  @media (min-width: 80rem) {
-    .menu-btn[data-menu-open] {
-      display: none;
-    }
-  }
   .menu-btn:hover {
-    background: var(--color-aqua-light);
+    background: var(--color-sand);
   }
   .menu-btn--light {
     color: white;
@@ -211,6 +354,7 @@ const isActive = (href: string) => current.startsWith(href);
   .menu-btn--light:hover {
     background: rgb(255 255 255 / 0.12);
   }
+
   .mobile-menu {
     margin: 0;
     width: 100%;
@@ -221,12 +365,12 @@ const isActive = (href: string) => current.startsWith(href);
     padding: 0;
     color: white;
     background:
-      radial-gradient(120% 60% at 100% 0%, rgb(108 207 227 / 0.22), transparent 60%),
-      radial-gradient(80% 50% at 0% 100%, rgb(217 164 65 / 0.18), transparent 60%),
+      radial-gradient(120% 60% at 100% 0%, rgb(31 154 160 / 0.25), transparent 60%),
+      radial-gradient(80% 50% at 0% 100%, rgb(217 162 61 / 0.2), transparent 60%),
       var(--color-primary-dark);
   }
   .mobile-menu::backdrop {
-    background: rgb(6 34 56 / 0.5);
+    background: rgb(6 62 67 / 0.5);
   }
   .mobile-menu[open] {
     animation: menu-in 0.25s ease-out;
@@ -239,16 +383,33 @@ const isActive = (href: string) => current.startsWith(href);
   }
   .mobile-link {
     display: block;
-    padding: 0.7rem 0;
+    padding: 0.75rem 0;
     font-family: var(--font-display);
-    font-size: 1.65rem;
+    font-size: 1.6rem;
     font-weight: 700;
     color: white;
     text-decoration: none;
-    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    border-block-end: 1px solid rgb(255 255 255 / 0.1);
   }
   .mobile-link:hover,
   .mobile-link[aria-current='page'] {
+    color: var(--color-gold-light);
+  }
+  .mobile-sub {
+    padding-block: 0.4rem 0.6rem;
+    padding-inline-start: 1rem;
+    border-block-end: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .mobile-sublink {
+    display: block;
+    padding: 0.6rem 0;
+    min-height: 2.75rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgb(255 255 255 / 0.9);
+    text-decoration: none;
+  }
+  .mobile-sublink:hover {
     color: var(--color-gold-light);
   }
   .mobile-menu :focus-visible {

@@ -1,22 +1,33 @@
 ---
 /**
- * Newsletter sign-up.
+ * Newsletter sign-up (email only).
  * PUBLIC_NEWSLETTER_MODE=brevo → sent to /api/newsletter (Brevo, double opt-in).
- * Otherwise (default) → stored in Netlify Forms ("newsletter"), to export later.
+ * Otherwise (default) → stored in Netlify Forms ("newsletter").
+ *
+ * While settings `formsEnabled` is false (submissions don't reach Matin yet), the form
+ * stays in the HTML but hidden — so Netlify can still detect it — and a short
+ * "opens soon" note is shown instead.
  */
 import { PUBLIC_NEWSLETTER_MODE } from 'astro:env/client';
-import { path, type Lang } from '@/i18n/routes';
+import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
+import { getSettings } from '@/lib/content';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   compact?: boolean;
   id: string;
 }
 const { lang, compact = false, id } = Astro.props;
 const t = useTranslations(lang);
+const { formsEnabled } = await getSettings();
 ---
 
+{!formsEnabled && (
+  <p class:list={['newsletter-closed', compact && 'newsletter-closed--compact']}>
+    {t('newsletter.closed')}
+  </p>
+)}
 <form
   class:list={['newsletter', compact && 'newsletter--compact']}
   name="newsletter"
@@ -24,6 +35,8 @@ const t = useTranslations(lang);
   data-netlify="true"
   netlify-honeypot="bot-field"
   data-newsletter
+  hidden={!formsEnabled}
+  inert={!formsEnabled}
   data-mode={PUBLIC_NEWSLETTER_MODE}
   data-msg-email={t('form.errEmail')}
   data-msg-consent={t('form.errConsent')}
@@ -53,6 +66,7 @@ const t = useTranslations(lang);
       autocomplete="email"
       placeholder={t('newsletter.emailPlaceholder')}
       class="newsletter__input"
+      dir="auto"
     />
     <button type="submit" class="btn btn-gold shrink-0">
       {t('newsletter.submit')}
@@ -60,9 +74,8 @@ const t = useTranslations(lang);
   </div>
   <div class="newsletter__consent">
     <input id={`${id}-consent`} type="checkbox" name="consent" required />
-    <label for={`${id}-consent`}>
-      {t('newsletter.consent')} <a href={path('privacy', lang)}>{t('newsletter.privacyLink')}</a>.
-    </label>
+    <!-- prettier-ignore -->
+    <label for={`${id}-consent`}>{t('newsletter.consent')} <a href={href('privacy', lang)}>{t('newsletter.privacyLink')}</a>.</label>
   </div>
   <p class="newsletter__status" role="status" aria-live="polite" tabindex="-1"></p>
 </form>
@@ -90,20 +103,21 @@ const t = useTranslations(lang);
     }
   }
   .newsletter__label {
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--color-primary-dark);
   }
   .newsletter__input {
-    min-height: 3rem;
+    min-height: 3.1rem;
     width: 100%;
     border-radius: 999px;
-    padding: 0 1.25rem;
+    padding-inline: 1.25rem;
     background: white;
     color: var(--color-ink);
-    border: 1.5px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border: 1.5px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
   .newsletter__input::placeholder {
-    color: #6b7a84;
+    color: #5d6b6e;
   }
   .newsletter__input:focus-visible {
     border-color: var(--color-gold);
@@ -112,30 +126,41 @@ const t = useTranslations(lang);
     display: flex;
     gap: 0.6rem;
     align-items: flex-start;
-    margin-top: 0.85rem;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    margin-top: 0.9rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
   }
   .newsletter__consent input {
     margin-top: 0.2rem;
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.15rem;
+    height: 1.15rem;
     flex-shrink: 0;
     accent-color: var(--color-primary);
   }
   .newsletter__consent a {
     color: inherit;
-    font-weight: 600;
-    margin-left: 0.25rem;
+    font-weight: 700;
   }
   .newsletter__status:not(:empty) {
     margin-top: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
   }
   .newsletter--compact .newsletter__consent {
     color: rgb(255 255 255 / 0.85);
   }
   .newsletter--compact .newsletter__consent input {
     accent-color: var(--color-gold);
+  }
+  .newsletter-closed {
+    padding: 0.9rem 1.1rem;
+    border-radius: 0.9rem;
+    font-weight: 600;
+    background: var(--color-sand);
+    color: var(--color-primary-dark);
+    border-inline-start: 4px solid var(--color-gold);
+  }
+  .newsletter-closed--compact {
+    background: rgb(255 255 255 / 0.08);
+    color: rgb(255 255 255 / 0.9);
   }
 </style>

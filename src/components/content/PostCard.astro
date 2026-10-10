@@ -3,21 +3,22 @@ import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import CoverArt from './CoverArt.astro';
 import { slugOf } from '@/lib/content';
-import { path, type Lang } from '@/i18n/routes';
+import { baseLang, href as link, type UiLang } from '@/i18n/routes';
 import { useTranslations, pick } from '@/i18n/ui';
 import { formatDate } from '@/lib/dates';
 
 interface Props {
   post: CollectionEntry<'news'>;
-  lang: Lang;
+  lang: UiLang;
   headingLevel?: 'h2' | 'h3';
 }
 const { post, lang, headingLevel = 'h3' } = Astro.props;
 const t = useTranslations(lang);
 const d = post.data;
-const href = path('news', lang, slugOf(post, lang));
+const href = link('news', lang, slugOf(post, baseLang(lang)));
 const Heading = headingLevel;
-const category = d.categories[0] ?? 'community';
+// Illustration used when the article has no photo.
+const cover = d.category === 'updates' ? 'community' : 'celebration';
 ---
 
 <article class="group relative flex flex-col">
@@ -33,7 +34,7 @@ const category = d.categories[0] ?? 'community';
       />
     ) : (
       <CoverArt
-        category={category}
+        category={cover}
         seed={post.id}
         class="size-full transition duration-500 group-hover:scale-[1.03]"
       />
@@ -44,7 +45,7 @@ const category = d.categories[0] ?? 'community';
     <span aria-hidden="true" class="mx-1.5 text-gold">
       •
     </span>
-    <span class="font-semibold text-gold-text">{t(`categories.${category}`)}</span>
+    <span class="font-semibold text-gold-text">{t(`newsCategories.${d.category}`)}</span>
   </p>
   <Heading class="mb-2 text-xl leading-snug font-bold">
     <a

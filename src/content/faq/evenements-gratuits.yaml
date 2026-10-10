@@ -2,8 +2,8 @@ placeholder: true
 topic: events
 order: 1
 question:
-  fr: "Les événements sont-ils gratuits ?"
-  en: "Are events free?"
+  fr: 'Les événements sont-ils gratuits ?'
+  en: 'Are events free?'
 answer:
   fr: "[PLACEHOLDER] Plusieurs événements sont gratuits. Le prix est toujours indiqué sur la page de l'événement."
-  en: "[PLACEHOLDER] Many events are free. The price is always shown on the event page."
+  en: '[PLACEHOLDER] Many events are free. The price is always shown on the event page.'

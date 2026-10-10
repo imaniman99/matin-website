@@ -13,6 +13,7 @@ export const routes = {
   about: { fr: 'a-propos', en: 'about' },
   programs: { fr: 'programmes', en: 'programs' },
   events: { fr: 'evenements', en: 'events' },
+  eventsArchive: { fr: 'evenements/archives', en: 'events/past' },
   news: { fr: 'actualites', en: 'news' },
   gallery: { fr: 'galerie', en: 'gallery' },
   getInvolved: { fr: 's-impliquer', en: 'get-involved' },
@@ -27,17 +28,11 @@ export const routes = {
 
 export type RouteKey = keyof typeof routes;
 
-/** Translated URL segments for news categories, e.g. /fr/actualites/categorie/jeunesse/ */
+/** Translated URL segments for news categories, e.g. /fr/actualites/categorie/nouvelles-matin/ */
 export const categorySegment = { fr: 'categorie', en: 'category' } as const;
 export const categorySlugs = {
-  language: { fr: 'langues', en: 'languages' },
-  arts: { fr: 'arts', en: 'arts' },
-  youth: { fr: 'jeunesse', en: 'youth' },
-  community: { fr: 'communaute', en: 'community' },
-  newcomers: { fr: 'nouveaux-arrivants', en: 'newcomers' },
-  lectures: { fr: 'conferences', en: 'lectures' },
-  music: { fr: 'musique-cinema', en: 'music-film' },
-  celebration: { fr: 'fetes', en: 'celebrations' },
+  updates: { fr: 'nouvelles-matin', en: 'matin-updates' },
+  community: { fr: 'culture-et-communaute', en: 'montreal-culture-community' },
 } as const satisfies Record<string, Record<Lang, string>>;
 
 /** Build a localized path, e.g. path('events', 'en', 'summer-fest') → /en/events/summer-fest/ */
@@ -56,3 +51,47 @@ export function isLang(value: unknown): value is Lang {
 }
 
 export const otherLang = (lang: Lang): Lang => (lang === 'fr' ? 'en' : 'fr');
+
+/* ------------------------------------------------------------------------ *
+ * Persian (فارسی): an additional access language.
+ * French and English remain the main languages (every page exists in both).
+ * Persian has its own versions of a few pages only; links to the others go
+ * to the FA_FALLBACK version with ?from=fa, which shows a short Persian note.
+ * ------------------------------------------------------------------------ */
+export const uiLanguages = ['fr', 'en', 'fa'] as const;
+export type UiLang = (typeof uiLanguages)[number];
+export const FA_FALLBACK: Lang = 'en';
+
+/** Pages that have a Persian version, and their slug under /fa/. */
+export const faRoutes: Partial<Record<RouteKey, string>> = {
+  home: '',
+  about: 'about',
+  getInvolved: 'get-involved',
+  contact: 'contact',
+};
+
+export const isRtl = (lang: UiLang) => lang === 'fa';
+/** Language whose content/pages to use when a Persian version does not exist. */
+export const baseLang = (lang: UiLang): Lang => (lang === 'fa' ? FA_FALLBACK : lang);
+
+/**
+ * Link to a page in any interface language. In Persian, pages without a
+ * Persian version point to the fallback language with ?from=fa.
+ */
+export function href(key: RouteKey, lang: UiLang, ...rest: (string | number)[]): string {
+  if (lang !== 'fa') return path(key, lang, ...rest);
+  const slug = faRoutes[key];
+  if (slug !== undefined && rest.length === 0) return slug ? `/fa/${slug}/` : '/fa/';
+  return `${path(key, FA_FALLBACK, ...rest)}?from=fa`;
+}
+
+/** Equivalent URL of a page in each language; `fa` only when it exists. */
+export type Alternates = { fr: string; en: string; fa?: string };
+
+/** Alternates including Persian when the page has a Persian version. */
+export function siteAlternates(key: RouteKey): Alternates {
+  const alts: Alternates = alternatesFor(key);
+  const slug = faRoutes[key];
+  if (slug !== undefined) alts.fa = slug ? `/fa/${slug}/` : '/fa/';
+  return alts;
+}

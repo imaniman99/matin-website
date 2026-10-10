@@ -38,7 +38,7 @@ const videos = albums.flatMap((a) => a.data.videos);
   title={t('gallery.title')}
   lede={t('gallery.lede')}
   alternates={alternatesFor('gallery')}
-  footerWaveFrom={videos.length ? 'var(--color-aqua-light)' : 'white'}
+  footerWaveFrom={videos.length ? 'var(--color-sand)' : 'var(--color-ivory)'}
 >
   <section class="container-site pt-4 pb-20" aria-labelledby="albums-title">
     <h2 id="albums-title" class="sr-only">
@@ -99,7 +99,7 @@ const videos = albums.flatMap((a) => a.data.videos);
   </section>
 
   {videos.length > 0 && (
-    <section class="bg-aqua-light py-20" aria-labelledby="videos-title">
+    <section class="bg-sand py-20" aria-labelledby="videos-title">
       <div class="container-site">
         <h2 id="videos-title" class="section-title mb-12">
           {t('gallery.videos')}

@@ -1,18 +1,16 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import NewsListPage from '@/views/NewsListPage.astro';
-import { getNews, newsCategories } from '@/lib/content';
+import { getNews } from '@/lib/content';
 import { categorySlugs } from '@/i18n/routes';
+import { newsCategories } from '@/lib/taxonomy';
 
+// Both categories always have a page (with a short empty state until articles exist).
 export const getStaticPaths = (async () => {
   const posts = await getNews();
-  return newsCategories(posts).map((category) => ({
+  return newsCategories.map((category) => ({
     params: { category: categorySlugs[category].fr },
-    props: {
-      category,
-      posts: posts.filter((p) => p.data.categories.includes(category)),
-      categories: newsCategories(posts),
-    },
+    props: { category, posts: posts.filter((p) => p.data.category === category) },
   }));
 }) satisfies GetStaticPaths;
 ---

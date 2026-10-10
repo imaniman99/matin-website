@@ -11,13 +11,10 @@ export const categories = [
 ] as const;
 export type Category = (typeof categories)[number];
 
-export const faqTopics = [
-  'general',
-  'programs',
-  'events',
-  'membership',
-  'volunteering',
-  'donations',
-] as const;
+export const faqTopics = ['general', 'programs', 'events', 'volunteering', 'donations'] as const;
 
 export const resourceCategories = ['guide', 'newcomers', 'community', 'partners'] as const;
+
+/** News categories: official Matin news, and Matin's own reflections on Montréal culture. */
+export const newsCategories = ['updates', 'community'] as const;
+export type NewsCategory = (typeof newsCategories)[number];

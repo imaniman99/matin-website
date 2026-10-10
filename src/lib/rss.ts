@@ -19,7 +19,7 @@ export function rssFeed(lang: Lang): APIRoute {
         pubDate: post.data.date,
         link: path('news', lang, slugOf(post, lang)),
         author: post.data.author,
-        categories: post.data.categories.map((c) => t(`categories.${c}`)),
+        categories: [t(`newsCategories.${post.data.category}`)],
       })),
       customData: `<language>${lang === 'fr' ? 'fr-ca' : 'en-ca'}</language>`,
     });

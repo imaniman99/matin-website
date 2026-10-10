@@ -1,9 +1,8 @@
 ---
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { ArrowLeft } from '@lucide/astro';
+import { ArrowLeft, ExternalLink } from '@lucide/astro';
 import PageLayout from '@/layouts/PageLayout.astro';
-import CoverArt from '@/components/content/CoverArt.astro';
 import PostCard from '@/components/content/PostCard.astro';
 import Prose from '@/components/ui/Prose.astro';
 import ShareButtons from '@/components/ui/ShareButtons.astro';
@@ -26,13 +25,12 @@ const alternates = {
 };
 const site = Astro.site ?? new URL(Astro.url.origin);
 const url = new URL(alternates[lang], site).href;
-const category = d.categories[0] ?? 'community';
 
 // Related: same category first, then most recent.
 const all = (await getNews()).filter((p) => p.id !== post.id);
 const related = [
-  ...all.filter((p) => p.data.categories.some((c) => d.categories.includes(c))),
-  ...all.filter((p) => !p.data.categories.some((c) => d.categories.includes(c))),
+  ...all.filter((p) => p.data.category === d.category),
+  ...all.filter((p) => p.data.category !== d.category),
 ].slice(0, 3);
 
 const jsonLd = {
@@ -57,7 +55,7 @@ const jsonLd = {
   crumbs={[{ label: t('news.title'), href: path('news', lang) }]}
   type="article"
   jsonLd={[jsonLd]}
-  footerWaveFrom={related.length ? 'var(--color-cream)' : 'white'}
+  footerWaveFrom={related.length ? 'var(--color-cream)' : 'var(--color-ivory)'}
 >
   <p slot="hero" class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
     <span>
@@ -72,19 +70,19 @@ const jsonLd = {
     <span>
       {t('news.by')} <span class="font-semibold text-ink">{d.author}</span>
     </span>
-    {d.categories.map((c) => (
+    {[d.category].map((c) => (
       <a
         href={path('news', lang, categorySegment[lang], categorySlugs[c][lang])}
-        class="rounded-full bg-aqua-light px-3 py-1 text-xs font-bold text-primary no-underline hover:bg-primary hover:text-white"
+        class="rounded-full bg-sand px-3 py-1 text-xs font-bold text-primary no-underline hover:bg-primary hover:text-white"
       >
-        {t(`categories.${c}`)}
+        {t(`newsCategories.${c}`)}
       </a>
     ))}
   </p>
 
   <article class="container-site max-w-4xl pt-6 pb-20">
-    <div class="mb-12 aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] shadow-soft">
-      {d.image ? (
+    {d.image && (
+      <div class="mb-12 aspect-[16/9] overflow-hidden rounded-[var(--radius-card)] shadow-soft">
         <Picture
           src={d.image}
           alt={pick(d.imageAlt, lang) ?? ''}
@@ -94,11 +92,24 @@ const jsonLd = {
           class="size-full object-cover"
           loading="eager"
         />
-      ) : (
-        <CoverArt category={category} seed={post.id} class="size-full" />
-      )}
-    </div>
+      </div>
+    )}
     <Prose html={renderMarkdown(d.body[lang], lang)} class="mx-auto max-w-2xl text-lg" />
+    {d.source && (
+      <aside class="mx-auto mt-10 max-w-2xl rounded-2xl border-s-4 border-gold bg-sand p-5 text-sm">
+        <p class="mb-1 font-bold text-primary-dark">{t('news.sourceIntro')}</p>
+        <a
+          href={d.source.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 font-semibold"
+        >
+          {d.source.name}
+          <ExternalLink size={14} aria-hidden="true" />
+          <span class="sr-only">{t('a11y.externalLink')}</span>
+        </a>
+      </aside>
+    )}
     {d.tags.length > 0 && (
       <ul class="mx-auto mt-10 flex max-w-2xl flex-wrap gap-2" aria-label={t('news.tags')}>
         {d.tags.map((tag) => (

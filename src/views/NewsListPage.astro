@@ -6,18 +6,18 @@ import PostCard from '@/components/content/PostCard.astro';
 import Pagination from '@/components/ui/Pagination.astro';
 import { categorySegment, categorySlugs, path, type Lang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
-import type { Category } from '@/lib/taxonomy';
+import { newsCategories, type NewsCategory as Category } from '@/lib/taxonomy';
 
 interface Props {
   lang: Lang;
   posts: CollectionEntry<'news'>[];
-  /** All categories that have at least one post (for the chips). */
-  categories: Category[];
   current?: number;
   last?: number;
   category?: Category;
 }
-const { lang, posts, categories, current = 1, last = 1, category } = Astro.props;
+const { lang, posts, current = 1, last = 1, category } = Astro.props;
+// Both categories are always listed, even before they have articles.
+const categories = newsCategories;
 const t = useTranslations(lang);
 
 const pageHref = (l: Lang, n: number) => (n === 1 ? path('news', l) : path('news', l, 'page', n));
@@ -27,7 +27,7 @@ const alternates = category
   : { fr: pageHref('fr', current), en: pageHref('en', current) };
 
 const title = category
-  ? t('news.categoryTitle', { category: t(`categories.${category}`) })
+  ? t('news.categoryTitle', { category: t(`newsCategories.${category}`) })
   : t('news.title');
 const metaTitle =
   !category && current > 1 ? `${title} — ${t('pagination.page', { n: current })}` : title;
@@ -62,7 +62,7 @@ const metaTitle =
                 class="chip-link"
                 aria-current={category === c ? 'page' : undefined}
               >
-                {t(`categories.${c}`)}
+                {t(`newsCategories.${c}`)}
               </a>
             </li>
           ))}

@@ -6,12 +6,22 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { categories, faqTopics, resourceCategories } from './lib/taxonomy';
+import { categories, faqTopics, newsCategories, resourceCategories } from './lib/taxonomy';
 
-/** A short bilingual text: both languages required (Bill 96: French never less complete). */
-const bi = z.object({ fr: z.string().min(1), en: z.string().min(1) });
-/** Optional bilingual text. */
-const biOpt = z.object({ fr: z.string().default(''), en: z.string().default('') }).optional();
+/**
+ * A short text in French and English: both required (Bill 96: French never less complete).
+ * `fa` (Persian) is optional; Persian pages fall back to English when it is missing.
+ */
+const bi = z.object({ fr: z.string().min(1), en: z.string().min(1), fa: z.string().optional() });
+/** Optional multilingual text. */
+const biOpt = z
+  .object({ fr: z.string().default(''), en: z.string().default(''), fa: z.string().optional() })
+  .optional();
+/**
+ * Set to true once the Persian (fa) texts of an entry have been reviewed; only then
+ * does the entry appear on Persian pages.
+ */
+const faReviewed = z.boolean().default(false);
 /** Localized URL slugs; fall back to the file name when absent. */
 const slugs = z
   .object({
@@ -74,6 +84,19 @@ const events = defineCollection({
         image: image().optional(),
         imageAlt: biOpt,
         registrationUrl: z.url().optional(),
+        /* After the event (each part is shown only when filled in): */
+        report: biOpt, // full report, Markdown
+        highlights: z.array(bi).default([]), // key highlights / outcomes
+        photos: z
+          .array(
+            z.object({
+              image: image(),
+              alt: bi,
+              caption: biOpt,
+            }),
+          )
+          .default([]),
+        faReviewed,
         placeholder: z.boolean().default(false),
       })
       .refine((e) => !e.end || e.end > e.start, {
@@ -85,42 +108,33 @@ const events = defineCollection({
 const news = defineCollection({
   loader: yaml('news'),
   schema: ({ image }) =>
-    z.object({
-      title: bi,
-      urlSlug: slugs,
-      excerpt: bi,
-      body: bi,
-      date: z.coerce.date(),
-      author: z.string(),
-      categories: z.array(z.enum(categories)).default([]),
-      tags: z.array(z.string()).default([]),
-      image: image().optional(),
-      imageAlt: biOpt,
-      placeholder: z.boolean().default(false),
-    }),
-});
-
-const testimonials = defineCollection({
-  loader: yaml('testimonials'),
-  schema: z.object({
-    quote: bi,
-    name: z.string(),
-    role: biOpt,
-    order: z.number().default(100),
-    placeholder: z.boolean().default(false),
-  }),
-});
-
-const partners = defineCollection({
-  loader: yaml('partners'),
-  schema: ({ image }) =>
-    z.object({
-      name: z.string(),
-      logo: image().optional(),
-      url: z.url().optional(),
-      order: z.number().default(100),
-      placeholder: z.boolean().default(false),
-    }),
+    z
+      .object({
+        title: bi,
+        urlSlug: slugs,
+        excerpt: bi,
+        body: bi,
+        date: z.coerce.date(),
+        author: z.string(),
+        /** updates = Matin Updates · community = Montréal Culture & Community */
+        category: z.enum(newsCategories),
+        tags: z.array(z.string()).default([]),
+        image: image().optional(),
+        imageAlt: biOpt,
+        /**
+         * Required with an image: confirm that Matin owns the photo or has permission
+         * to publish it (photographer's consent, and consent of recognizable people).
+         */
+        imagePermission: z.boolean().optional(),
+        /** When the article discusses an external event or issue: link and attribution. */
+        source: z.object({ url: z.url(), name: z.string().min(1) }).optional(),
+        faReviewed,
+        placeholder: z.boolean().default(false),
+      })
+      .refine((n) => !n.image || n.imagePermission === true, {
+        message: 'Set imagePermission: true to confirm Matin may use this image',
+        path: ['imagePermission'],
+      }),
 });
 
 const settings = defineCollection({
@@ -152,12 +166,12 @@ const settings = defineCollection({
       title: bi,
       email: z.string(),
     }),
-    impact: z.object({
-      years: z.number(),
-      cultures: z.number(),
-      participants: z.number(),
-      events: z.number(),
-    }),
+    /**
+     * Turn on only once form submissions actually reach Matin (Netlify Forms detection
+     * enabled and notifications set). While false, the interest and newsletter forms
+     * show a "not open yet" message instead of accepting submissions.
+     */
+    formsEnabled: z.boolean().default(false),
     placeholder: z.boolean().default(false),
   }),
 });
@@ -263,25 +277,13 @@ const resources = defineCollection({
     .refine((r) => r.url || r.file, { message: 'Provide either a link (url) or a file' }),
 });
 
-/** Get Involved page content: membership tiers, volunteer roles, donation impact. */
+/** Get Involved page content: volunteer roles and partnership text. */
 const involvement = defineCollection({
   loader: yaml('involvement'),
   schema: z.object({
-    membershipIntro: bi,
-    membershipUrl: z.url().optional(),
-    tiers: z.array(
-      z.object({
-        name: bi,
-        price: bi,
-        benefits: z.array(bi),
-        featured: z.boolean().default(false),
-      }),
-    ),
     volunteerIntro: bi,
     roles: z.array(z.object({ title: bi, text: bi })),
     partnersText: bi,
-    donateText: bi,
-    impactExamples: z.array(z.object({ amount: z.number(), text: bi })),
     placeholder: z.boolean().default(false),
   }),
 });
@@ -301,8 +303,6 @@ export const collections = {
   programs,
   events,
   news,
-  testimonials,
-  partners,
   settings,
   team,
   about,

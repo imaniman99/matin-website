@@ -1,11 +1,11 @@
 ---
 import FormShell from './FormShell.astro';
 import Field from './Field.astro';
-import type { Lang } from '@/i18n/routes';
+import type { UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);

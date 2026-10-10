@@ -4,7 +4,7 @@ order: 1
 url: https://www.example.org/
 title:
   fr: "[PLACEHOLDER] Guide d'accueil à Montréal"
-  en: "[PLACEHOLDER] Montréal Welcome Guide"
+  en: '[PLACEHOLDER] Montréal Welcome Guide'
 description:
-  fr: "[PLACEHOLDER] Un guide pratique pour vos premiers mois : logement, santé, école, transport."
-  en: "[PLACEHOLDER] A practical guide for your first months: housing, health, school, transit."
+  fr: '[PLACEHOLDER] Un guide pratique pour vos premiers mois : logement, santé, école, transport.'
+  en: '[PLACEHOLDER] A practical guide for your first months: housing, health, school, transit.'

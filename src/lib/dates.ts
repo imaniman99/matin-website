@@ -1,4 +1,4 @@
-import type { Lang } from '@/i18n/routes';
+import type { UiLang as Lang } from '@/i18n/routes';
 import { NBSP } from './frenchTypo';
 
 export const TIME_ZONE = 'America/Toronto'; // Montréal uses Eastern Time.
@@ -38,7 +38,9 @@ function tzOffsetMinutes(date: Date): number {
   return Math.round((local - date.getTime()) / 60_000);
 }
 
-const locale = (lang: Lang) => (lang === 'fr' ? 'fr-CA' : 'en-CA');
+// Persian: Gregorian calendar (Montréal dates) with Persian digits and month names.
+const locale = (lang: Lang) =>
+  lang === 'fr' ? 'fr-CA' : lang === 'fa' ? 'fa-IR-u-ca-gregory' : 'en-CA';
 
 /**
  * « 4 octobre 2026 » / "October 4, 2026".
@@ -80,9 +82,10 @@ export function formatTime(date: Date, lang: Lang): string {
     const h = String(Number(parts.hour));
     return parts.minute === '00' ? `${h}${NBSP}h` : `${h}${NBSP}h${NBSP}${parts.minute}`;
   }
-  return new Intl.DateTimeFormat('en-CA', {
+  return new Intl.DateTimeFormat(lang === 'fa' ? 'fa-IR' : 'en-CA', {
     hour: 'numeric',
     minute: '2-digit',
+    hourCycle: lang === 'fa' ? 'h23' : undefined,
     timeZone: TIME_ZONE,
   }).format(date);
 }

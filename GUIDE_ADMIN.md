@@ -47,11 +47,11 @@ urlSlug:
   fr: atelier-cuisine-du-monde
   en: world-cooking-workshop
 title:
-  fr: 'Atelier : cuisines du monde'
-  en: 'Workshop: World Cuisines'
+  fr: "Atelier : cuisines du monde"
+  en: "Workshop: World Cuisines"
 summary:
-  fr: 'Une phrase qui donne envie de venir.'
-  en: 'One sentence that makes people want to come.'
+  fr: "Une phrase qui donne envie de venir."
+  en: "One sentence that makes people want to come."
 body:
   fr: |
     Description complète en français. Vous pouvez faire plusieurs paragraphes.
@@ -60,11 +60,11 @@ body:
     - **Texte en gras** entre deux astérisques doubles
   en: |
     Full description in English.
-start: '2026-11-21T14:00'
-end: '2026-11-21T17:00'
+start: "2026-11-21T14:00"
+end: "2026-11-21T17:00"
 location:
-  name: 'Locaux de Matin'
-  address: '1234, rue Exemple, Montréal, QC'
+  name: "Locaux de Matin"
+  address: "1234, rue Exemple, Montréal, QC"
 price:
   free: true
 registrationUrl: https://www.zeffy.com/… # facultatif : supprimez la ligne s'il n'y a pas d'inscription
@@ -76,8 +76,8 @@ registrationUrl: https://www.zeffy.com/… # facultatif : supprimez la ligne s'i
 price:
   free: false
   label:
-    fr: '15 $ · 10 $ étudiants'
-    en: '$15 · $10 students'
+    fr: "15 $ · 10 $ étudiants"
+    en: "$15 · $10 students"
 ```
 
 6. Cliquez sur **Commit changes…**, puis de nouveau sur **Commit changes**.
@@ -88,18 +88,18 @@ Dossier **`src/content/news`**, même méthode (Add file → Create new file), p
 
 ```yaml
 date: 2026-11-02
-author: 'Équipe Matin'
-categories: [community] # une ou plusieurs catégories, voir la liste plus haut
+author: "Équipe Matin"
+category: updates # updates = Nouvelles de Matin · community = Culture et communauté à Montréal
 tags: [bénévolat, fête]
 urlSlug:
   fr: retour-sur-la-fete
   en: festival-recap
 title:
-  fr: 'Retour sur la fête'
-  en: 'Festival recap'
+  fr: "Retour sur la fête"
+  en: "Festival recap"
 excerpt:
-  fr: 'Le résumé affiché sur les cartes (1 ou 2 phrases).'
-  en: 'The summary shown on cards (1 or 2 sentences).'
+  fr: "Le résumé affiché sur les cartes (1 ou 2 phrases)."
+  en: "The summary shown on cards (1 or 2 sentences)."
 body:
   fr: |
     Le texte complet de l'article.
@@ -115,8 +115,49 @@ body:
 ```yaml
 image: ../../assets/uploads/news/nom-de-la-photo.jpg
 imageAlt:
-  fr: 'Description de la photo pour les personnes aveugles'
-  en: 'Description of the photo for blind visitors'
+  fr: "Description de la photo pour les personnes aveugles"
+  en: "Description of the photo for blind visitors"
+imagePermission: true # obligatoire avec une image : Matin a le droit de publier cette photo
+```
+
+N'utilisez que des photos que Matin possède ou qu'il a la permission de publier (accord de la personne qui a pris la photo et des personnes reconnaissables).
+
+**Article sur un événement ou un sujet externe :** indiquez la source, elle s'affiche sous l'article.
+
+```yaml
+source:
+  name: "Nom de l'organisme ou du média"
+  url: https://exemple.org/page
+```
+
+**Les deux catégories :**
+
+- `updates` : **Nouvelles de Matin**. Annonces officielles, comptes rendus d'activités, partenariats, nouvelles des bénévoles.
+- `community` : **Culture et communauté à Montréal**. Réflexions ou critiques écrites par Matin sur la vie culturelle et communautaire montréalaise.
+
+Les événements ne vont **pas** dans les actualités : ils ont leur propre dossier.
+
+### 2 bis. Après un événement : compte rendu et photos
+
+Ouvrez le fichier de l'événement (dossier `src/content/events`) et ajoutez ce qui suit. Chaque partie n'apparaît que si elle est remplie. L'événement passe automatiquement dans « Événements passés » une fois terminé.
+
+```yaml
+report:
+  fr: |
+    Compte rendu complet de l'événement.
+  en: |
+    Full report of the event.
+highlights:
+  - fr: "Un moment fort ou un résultat"
+    en: "A highlight or outcome"
+photos:
+  - image: ../../assets/uploads/events/nom-evenement/photo-1.jpg
+    alt:
+      fr: "Description de la photo"
+      en: "Photo description"
+    caption:
+      fr: "Légende (facultatif)"
+      en: "Caption (optional)"
 ```
 
 ### 3. Ajouter des photos à la galerie
@@ -128,20 +169,20 @@ imageAlt:
 ```yaml
 date: 2026-11-21
 title:
-  fr: 'Atelier cuisines du monde'
-  en: 'World Cuisines Workshop'
+  fr: "Atelier cuisines du monde"
+  en: "World Cuisines Workshop"
 description:
   fr: "Une phrase sur l'album."
-  en: 'One sentence about the album.'
+  en: "One sentence about the album."
 photos:
   - image: ../../assets/uploads/gallery/atelier-cuisine/photo-1.jpg
     alt:
-      fr: 'Deux participantes préparent des dumplings'
-      en: 'Two participants making dumplings'
+      fr: "Deux participantes préparent des dumplings"
+      en: "Two participants making dumplings"
   - image: ../../assets/uploads/gallery/atelier-cuisine/photo-2.jpg
     alt:
-      fr: '…'
-      en: '…'
+      fr: "…"
+      en: "…"
 videos: []
 ```
 
@@ -149,10 +190,10 @@ videos: []
 
 ```yaml
 videos:
-  - youtubeId: 'AbCdEfGhIjK' # exemple : remplacez par le vrai identifiant
+  - youtubeId: "AbCdEfGhIjK" # exemple : remplacez par le vrai identifiant
     title:
-      fr: 'Titre de la vidéo'
-      en: 'Video title'
+      fr: "Titre de la vidéo"
+      en: "Video title"
 ```
 
 **Le texte « alt »** décrit la photo pour les personnes qui ne la voient pas. Soyez bref et concret.
@@ -166,13 +207,13 @@ Dossier **`src/content/team`** : un fichier par personne.
 ```yaml
 group: staff # staff = équipe, board = conseil d'administration
 order: 3 # ordre d'affichage
-name: 'Prénom Nom'
+name: "Prénom Nom"
 role:
-  fr: 'Coordination des bénévoles'
-  en: 'Volunteer Coordinator'
+  fr: "Coordination des bénévoles"
+  en: "Volunteer Coordinator"
 bio:
-  fr: 'Deux ou trois phrases.'
-  en: 'Two or three sentences.'
+  fr: "Deux ou trois phrases."
+  en: "Two or three sentences."
 photo: ../../assets/uploads/team/prenom-nom.jpg # facultatif : sans photo, les initiales s'affichent
 ```
 
@@ -189,16 +230,35 @@ Où trouver quoi :
 
 | Je veux modifier…                                                                 | Fichier                                                                                |
 | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Adresse, téléphone, courriel, heures, réseaux sociaux, lien de don, chiffres clés | `src/content/settings/site.yaml`                                                       |
+| Adresse, téléphone, courriel, heures, réseaux sociaux, mission, formulaires actifs | `src/content/settings/site.yaml`                                                       |
 | Vision, valeurs, historique, mot de la direction                                  | `src/content/about/about.yaml`                                                         |
-| Adhésion, rôles bénévoles, exemples de dons                                       | `src/content/involvement/involvement.yaml`                                             |
+| Rôles bénévoles, texte sur les partenariats                                       | `src/content/involvement/involvement.yaml`                                             |
 | Programmes                                                                        | `src/content/programs/`                                                                |
 | Questions fréquentes                                                              | `src/content/faq/`                                                                     |
 | Ressources                                                                        | `src/content/resources/`                                                               |
-| Témoignages, partenaires                                                          | `src/content/testimonials/`, `src/content/partners/`                                   |
 | Rapports annuels                                                                  | `src/content/documents/` (le PDF va dans `public/documents/`)                          |
 | Pages légales                                                                     | `src/content/legal/`                                                                   |
-| Textes de l'interface (boutons, titres de sections)                               | `src/i18n/fr.ts` et `src/i18n/en.ts` (à confier de préférence à la personne technique) |
+| Textes de l'interface (boutons, titres de sections)                               | `src/i18n/fr.ts`, `src/i18n/en.ts`, `src/i18n/fa.ts` (à confier de préférence à la personne technique) |
+
+### Formulaires (intérêt, infolettre, contact, bénévolat)
+
+Les formulaires ne s'affichent comme actifs que lorsque `formsEnabled: true` dans `src/content/settings/site.yaml`. Tant que la réception des messages n'est pas confirmée, laissez `false` : le site affiche alors un message invitant à écrire par courriel. N'activez qu'après avoir testé qu'un envoi arrive bien.
+
+### Persan (فارسی)
+
+Le persan est une langue d'accès supplémentaire : seules l'accueil, « Qui sommes-nous » (mission, vision, valeurs), « S'impliquer » et « Contact » existent en persan. Les autres pages s'ouvrent en anglais avec une courte note.
+
+Pour qu'un événement ou une actualité apparaisse sur le site persan, ajoutez une traduction **révisée par une personne qui parle couramment le persan** :
+
+```yaml
+title:
+  fr: "…"
+  en: "…"
+  fa: "…"
+faReviewed: true # seulement après révision
+```
+
+Liste des traductions à faire réviser : `TRANSLATIONS_FOR_REVIEW.md` (à régénérer avec `npm run translations`).
 
 ### Vérifier que la mise à jour est en ligne
 
@@ -250,7 +310,13 @@ This guide explains how to update the Matin website **without installing any sof
 
 In the **`src/content/news`** folder, use the same method with the **news template** above.
 
-To add a picture, upload it to `src/assets/uploads/news` (**Add file → Upload files**), then add the `image:` and `imageAlt:` lines.
+Choose the `category`: `updates` (**Matin Updates**: announcements, activity reports, partnerships) or `community` (**Montréal Culture & Community**: Matin's own reflections on Montréal cultural life). Events don't go in the news; they have their own folder.
+
+To add a picture, upload it to `src/assets/uploads/news` (**Add file → Upload files**), then add the `image:`, `imageAlt:` and `imagePermission: true` lines. Only use photos Matin owns or has permission to publish. For a post about an outside event or topic, add the `source:` block (name and address); it is shown under the post.
+
+### 2b. After an event: report and photos
+
+Open the event's file and add the `report`, `highlights` and `photos` blocks (template in the French section, “2 bis”). Each part only appears when filled in. The event moves to “Past events” automatically once it's over.
 
 ### 3. Add photos to the gallery
 
@@ -273,7 +339,15 @@ In **`src/content/team`**, there is one file per person (see the **team template
 3. Change the text.
 4. Click **Commit changes**.
 
-The table in the French section shows **which file holds what** (contact details and donation link are in `src/content/settings/site.yaml`).
+The table in the French section shows **which file holds what** (contact details and social links are in `src/content/settings/site.yaml`).
+
+### Forms
+
+The forms (interest, newsletter, contact, volunteer) only appear active when `formsEnabled: true` in `src/content/settings/site.yaml`. Keep it `false` until you have confirmed that a test submission really arrives; until then the site invites people to write by email.
+
+### Persian (فارسی)
+
+Persian is an additional access language: only Home, About (mission, vision, values), Get Involved and Contact exist in Persian. Other pages open in English with a short note. For an event or news post to appear on the Persian site, add `fa:` texts **reviewed by a fluent Persian speaker** and `faReviewed: true`. The list of translations to review is in `TRANSLATIONS_FOR_REVIEW.md` (regenerate with `npm run translations`).
 
 ### Checking that your update is live
 

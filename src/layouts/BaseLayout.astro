@@ -5,18 +5,19 @@ import SEO from '@/components/layout/SEO.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import CookieBanner from '@/components/layout/CookieBanner.astro';
-import type { Lang } from '@/i18n/routes';
+import { isRtl, type Alternates, type UiLang } from '@/i18n/routes';
+import { faFallbackNotice } from '@/i18n/fa';
 import { useTranslations } from '@/i18n/ui';
 import { getSettings } from '@/lib/content';
 import { organizationJsonLd } from '@/lib/seo';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   /** Page title without the site name (omit on the home page). */
   title?: string;
   description?: string;
   /** Equivalent URL of this page in each language (toggle + hreflang). */
-  alternates: Record<Lang, string>;
+  alternates: Alternates;
   image?: string;
   imageAlt?: string;
   type?: 'website' | 'article' | 'event';
@@ -48,14 +49,16 @@ const t = useTranslations(lang);
 const settings = await getSettings();
 const fullTitle = title ? `${title} | ${t('meta.siteName')}` : t('meta.homeTitle');
 const site = Astro.site ?? new URL(Astro.url.origin);
+const htmlLang = lang === 'fr' ? 'fr-CA' : lang === 'en' ? 'en-CA' : 'fa';
+const rssLang = lang === 'fa' ? 'en' : lang;
 ---
 
 <!doctype html>
-<html lang={lang === 'fr' ? 'fr-CA' : 'en-CA'} dir="ltr">
+<html lang={htmlLang} dir={isRtl(lang) ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0B3D5C" />
+    <meta name="theme-color" content="#0A5C63" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="preload" href={playfair800} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
@@ -66,7 +69,7 @@ const site = Astro.site ?? new URL(Astro.url.origin);
       rel="alternate"
       type="application/rss+xml"
       title={`${t('meta.siteName')} — ${t('nav.news')}`}
-      href={`/${lang}/rss.xml`}
+      href={`/${rssLang}/rss.xml`}
     />
     <SEO
       lang={lang}
@@ -77,31 +80,56 @@ const site = Astro.site ?? new URL(Astro.url.origin);
       imageAlt={imageAlt}
       type={type}
       noindex={noindex}
-      jsonLd={[organizationJsonLd(settings, lang, site), ...jsonLd]}
+      jsonLd={[organizationJsonLd(settings, lang, site, t('meta.defaultDescription')), ...jsonLd]}
     />
   </head>
   <body class="flex min-h-dvh flex-col">
     <a
       href="#main"
-      class="sr-only-focusable fixed top-3 left-3 z-50 rounded-full bg-primary px-5 py-3 font-semibold text-white no-underline shadow-lift"
+      class="sr-only-focusable fixed start-3 top-3 z-50 rounded-full bg-primary px-5 py-3 font-semibold text-white no-underline shadow-lift"
     >
       {t('a11y.skipToContent')}
     </a>
-    <Header lang={lang} alternates={alternates} donateUrl={settings.donateUrl} />
+    <Header lang={lang} alternates={alternates} />
     <main
       id="main"
       tabindex="-1"
       class="outline-none"
       data-pagefind-body={searchable ? '' : undefined}
     >
+      {lang !== 'fa' && (
+        <div
+          class="fa-notice"
+          lang="fa"
+          dir="rtl"
+          role="note"
+          hidden
+          data-fa-notice
+          data-pagefind-ignore
+        >
+          <p>
+            {faFallbackNotice.text} <a href="/fa/">{faFallbackNotice.back}</a>
+          </p>
+        </div>
+      )}
       <slot />
     </main>
     <!-- On short pages, fill the remaining height with the last section's colour so the footer wave blends in. -->
-    <div class="flex-1" style={`background:${footerWaveFrom ?? 'white'}`} aria-hidden="true"></div>
+    <div
+      class="flex-1"
+      style={`background:${footerWaveFrom ?? 'var(--color-ivory)'}`}
+      aria-hidden="true"
+    ></div>
     <Footer lang={lang} showNewsletter={footerNewsletter} waveFrom={footerWaveFrom} />
     <CookieBanner lang={lang} />
 
     <script>
+      // Opened from the Persian site (?from=fa): say why the page is not in Persian.
+      if (new URL(location.href).searchParams.get('from') === 'fa') {
+        const note = document.querySelector<HTMLElement>('[data-fa-notice]');
+        if (note) note.hidden = false;
+      }
+
       // Gentle fade-in on scroll. Content is visible by default; only animated when
       // the visitor allows motion and IntersectionObserver exists.
       const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
@@ -123,3 +151,19 @@ const site = Astro.site ?? new URL(Astro.url.origin);
     </script>
   </body>
 </html>
+
+<style>
+  .fa-notice {
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    font-family: Tahoma, 'Segoe UI', system-ui, sans-serif;
+    background: var(--color-sand);
+    color: var(--color-primary-dark);
+    border-block-end: 1px solid var(--color-line);
+  }
+  .fa-notice a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+</style>

@@ -2,35 +2,32 @@
 # Tout ce qui est entre [PLACEHOLDER] doit être remplacé (voir CONTENT_TODO.md).
 placeholder: true
 mission:
-  fr: "[PLACEHOLDER] Matin favorise le dialogue, la compréhension mutuelle et les échanges entre les cultures au Québec et au Canada, en offrant un espace accueillant où chacun peut apprendre, créer et partager."
-  en: "[PLACEHOLDER] Matin fosters dialogue, mutual understanding and exchange between cultures in Québec and Canada, offering a welcoming space where everyone can learn, create and share."
-founded: 2020
+  fr: '[PLACEHOLDER] Matin favorise le dialogue, la compréhension mutuelle et les échanges entre les cultures au Québec et au Canada, en offrant un espace accueillant où chacun peut apprendre, créer et partager.'
+  en: '[PLACEHOLDER] Matin fosters dialogue, mutual understanding and exchange between cultures in Québec and Canada, offering a welcoming space where everyone can learn, create and share.'
+  fa: '[PLACEHOLDER] متین گفت‌وگو، درک متقابل و تبادل میان فرهنگ‌ها را در کبک و کانادا تقویت می‌کند و فضایی گرم و پذیرا فراهم می‌آورد تا همه بتوانند بیاموزند، بیافرینند و تجربه‌هایشان را با هم در میان بگذارند.'
 address:
-  street: "[PLACEHOLDER] 1234, rue Exemple"
+  street: '[PLACEHOLDER] 1234, rue Exemple'
   city: Montréal
   region: QC
-  postalCode: "H0H 0H0"
+  postalCode: 'H0H 0H0'
   country: CA
-phone: "[PLACEHOLDER] 514 000-0000"
-email: "info@matin-institut.example"
+phone: '[PLACEHOLDER] 514 000-0000'
+email: 'info@matin-institut.example'
 hours:
   fr: "[PLACEHOLDER] Lundi au vendredi : 10 h – 18 h\nSamedi : 10 h – 16 h\nDimanche : fermé"
   en: "[PLACEHOLDER] Monday to Friday: 10 a.m. – 6 p.m.\nSaturday: 10 a.m. – 4 p.m.\nSunday: closed"
 social:
-  facebook: https://www.facebook.com/
-  instagram: https://www.instagram.com/
-  youtube: https://www.youtube.com/
-  linkedin: https://www.linkedin.com/
-charityNumber: ""
+  youtube: https://www.youtube.com/@MatinInstitute
+  linkedin: https://www.linkedin.com/company/matin-intercultural-community-center/
+  instagram: https://www.instagram.com/matincc.ca/
+charityNumber: ''
 donateUrl: https://www.zeffy.com/
-impact:
-  years: 6
-  cultures: 40
-  participants: 2500
-  events: 180
+# Turn on (true) only once form submissions really reach Matin: Netlify →
+# Forms → "Enable form detection", then set up notification emails and redeploy.
+formsEnabled: false
 privacyOfficer:
-  name: "[PLACEHOLDER] Nom de la personne responsable"
+  name: '[PLACEHOLDER] Nom de la personne responsable'
   title:
-    fr: "[PLACEHOLDER] Directrice générale ou directeur général"
-    en: "[PLACEHOLDER] Executive Director"
-  email: "confidentialite@matin-institut.example"
+    fr: '[PLACEHOLDER] Directrice générale ou directeur général'
+    en: '[PLACEHOLDER] Executive Director'
+  email: 'confidentialite@matin-institut.example'

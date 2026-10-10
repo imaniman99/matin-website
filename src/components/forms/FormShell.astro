@@ -6,23 +6,31 @@
  */
 import { Send } from '@lucide/astro';
 import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
-import { path, type Lang } from '@/i18n/routes';
+import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   name: string; // Netlify form name, e.g. "contact"
   id: string;
   submitLabel?: string;
+  /** Consent sentence (ends right before the Privacy Policy link). */
+  consentText?: string;
+  /** Where a no-JavaScript submission lands afterwards. */
+  action?: string;
+  /** Hide the form (kept in the HTML so Netlify can still detect it). */
+  disabled?: boolean;
 }
-const { lang, name, id, submitLabel } = Astro.props;
+const { lang, name, id, submitLabel, consentText, action, disabled = false } = Astro.props;
 const t = useTranslations(lang);
 ---
 
 <form
   name={name}
   method="post"
-  action={`${path('contact', lang)}?sent=1`}
+  action={action ?? `${href('contact', lang)}?sent=1`}
+  hidden={disabled}
+  inert={disabled}
   data-netlify="true"
   netlify-honeypot="bot-field"
   data-enhanced-form
@@ -61,7 +69,7 @@ const t = useTranslations(lang);
       />
       {/* One line on purpose: keeps the period glued to the link. */}
       <!-- prettier-ignore -->
-      <label for={`${id}-consent`} class="text-sm leading-relaxed" data-short={t('form.consentContact').split(',')[0]}>{t('form.consentContact')} <a href={path('privacy', lang)}>{t('newsletter.privacyLink')}</a>. <span class="text-muted">({t('form.required')})</span></label>
+      <label for={`${id}-consent`} class="text-sm leading-relaxed" data-short={(consentText ?? t('form.consentContact')).split(/[,.]/)[0]}>{consentText ?? t('form.consentContact')} <a href={href('privacy', lang)}>{t('newsletter.privacyLink')}</a>. <span class="text-muted">({t('form.required')})</span></label>
     </div>
     <p id={`${id}-consent-error`} class="field-error" hidden></p>
   </div>
@@ -81,6 +89,8 @@ const t = useTranslations(lang);
       />
     </div>
   )}
+
+  <slot name="before-submit" />
 
   <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
     <button type="submit" class="btn btn-primary self-start">

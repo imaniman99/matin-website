@@ -1,11 +1,11 @@
 ---
 /** Labelled form field with an associated (initially hidden) error message. */
 import type { HTMLAttributes } from 'astro/types';
-import type { Lang } from '@/i18n/routes';
+import type { UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   id: string;
   name: string;
   label: string;

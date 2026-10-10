@@ -3,7 +3,8 @@ import { marked } from 'marked';
 import type { Lang } from '@/i18n/routes';
 import { typo } from './frenchTypo';
 import { montrealTime } from './dates';
-import { categories, type Category } from '@/lib/taxonomy';
+import { newsCategories as newsCategoryList, type NewsCategory } from '@/lib/taxonomy';
+import type { UiLang } from '@/i18n/routes';
 
 /** URL slug of an entry in a given language (falls back to the file name). */
 export function slugOf(
@@ -14,7 +15,7 @@ export function slugOf(
 }
 
 /** Markdown from the CMS → HTML, with Québec typography applied to French. */
-export function renderMarkdown(source: string, lang: Lang): string {
+export function renderMarkdown(source: string, lang: UiLang): string {
   return marked.parse(typo(source, lang), { async: false, gfm: true, breaks: false });
 }
 
@@ -68,18 +69,21 @@ export async function getNews(limit?: number) {
 
 export const NEWS_PAGE_SIZE = 6;
 
-/** Categories used by at least one post, in the canonical order. */
-export function newsCategories(posts: CollectionEntry<'news'>[]): Category[] {
-  const used = new Set(posts.flatMap((p) => p.data.categories));
-  return categories.filter((c) => used.has(c));
+/** News categories that have at least one post, in the canonical order. */
+export function newsCategories(posts: CollectionEntry<'news'>[]): NewsCategory[] {
+  const used = new Set(posts.map((p) => p.data.category));
+  return newsCategoryList.filter((c) => used.has(c));
 }
 
-export async function getTestimonials() {
-  return (await getCollection('testimonials')).sort((a, b) => a.data.order - b.data.order);
-}
-
-export async function getPartners() {
-  return (await getCollection('partners')).sort((a, b) => a.data.order - b.data.order);
+/**
+ * Entries shown on a page in this language. Persian pages only show entries whose
+ * Persian translation has been reviewed (faReviewed: true).
+ */
+export function forLang<T extends { data: { faReviewed?: boolean } }>(
+  items: T[],
+  lang: UiLang,
+): T[] {
+  return lang === 'fa' ? items.filter((i) => i.data.faReviewed) : items;
 }
 
 export async function getTeam() {

@@ -1,0 +1,50 @@
+---
+/** Past events archive: reports, photos and highlights, newest first. */
+import PageLayout from '@/layouts/PageLayout.astro';
+import EventCardWide from '@/components/content/EventCardWide.astro';
+import { alternatesFor, path, type Lang } from '@/i18n/routes';
+import { useTranslations } from '@/i18n/ui';
+import { getPastEvents } from '@/lib/content';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const past = await getPastEvents();
+---
+
+<PageLayout
+  lang={lang}
+  title={t('events.archiveTitle')}
+  lede={t('events.archiveLede')}
+  alternates={alternatesFor('eventsArchive')}
+  crumbs={[{ label: t('events.title'), href: path('events', lang) }]}
+>
+  <section class="container-site pt-4 pb-24">
+    {past.length > 0 ? (
+      <ul class="grid gap-6 lg:grid-cols-2">
+        {past.map((event) => (
+          <li>
+            <EventCardWide event={event} lang={lang} past />
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="archive-empty">{t('events.archiveEmpty')}</p>
+    )}
+  </section>
+</PageLayout>
+
+<style>
+  .archive-empty {
+    max-width: 48rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 1rem;
+    font-size: 1.15rem;
+    background: white;
+    color: var(--color-ink);
+    border-inline-start: 4px solid var(--color-gold);
+    box-shadow: var(--shadow-soft);
+  }
+</style>

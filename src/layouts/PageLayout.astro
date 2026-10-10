@@ -7,7 +7,7 @@ import { ChevronRight } from '@lucide/astro';
 import BaseLayout from './BaseLayout.astro';
 import LeafRule from '@/components/brand/LeafRule.astro';
 import WaveDivider from '@/components/brand/WaveDivider.astro';
-import { path, type Lang } from '@/i18n/routes';
+import { href, type Alternates, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 import { breadcrumbJsonLd } from '@/lib/seo';
 
@@ -17,7 +17,7 @@ export interface Crumb {
 }
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   /** Visible H1. */
   title: string;
   /** <title> when different from the H1. */
@@ -25,7 +25,7 @@ interface Props {
   description?: string;
   lede?: string;
   eyebrow?: string;
-  alternates: Record<Lang, string>;
+  alternates: Alternates;
   /** Intermediate crumbs between "Home" and the current page. */
   crumbs?: Crumb[];
   image?: string;
@@ -54,15 +54,15 @@ const {
   jsonLd = [],
   noindex,
   searchable = true,
-  bodyBg = 'white',
+  bodyBg = 'var(--color-ivory)',
   footerWaveFrom,
 } = Astro.props;
 const t = useTranslations(lang);
 const site = Astro.site ?? new URL(Astro.url.origin);
 const trail = [
-  { label: t('common.home'), href: path('home', lang) },
+  { label: t('common.home'), href: href('home', lang) },
   ...crumbs,
-  { label: title, href: alternates[lang] },
+  { label: title, href: alternates[lang] ?? alternates.en },
 ];
 ---
 
@@ -87,7 +87,7 @@ const trail = [
 >
   <section class="page-hero relative isolate overflow-hidden" aria-labelledby="page-title">
     <svg
-      class="pointer-events-none absolute -top-24 right-[-8rem] -z-10 w-[34rem] opacity-60 sm:right-[-4rem]"
+      class="pointer-events-none absolute -end-32 -top-24 -z-10 w-[34rem] opacity-60 sm:-end-16"
       viewBox="0 0 400 400"
       aria-hidden="true"
     >
@@ -119,7 +119,9 @@ const trail = [
             const last = i === trail.length - 1;
             return (
               <li class="flex items-center gap-1.5">
-                {i > 0 && <ChevronRight size={14} class="text-gold-text" aria-hidden="true" />}
+                {i > 0 && (
+                  <ChevronRight size={14} class="flip-rtl text-gold-text" aria-hidden="true" />
+                )}
                 {last ? (
                   <span aria-current="page" class="font-semibold text-primary">
                     {c.label}
@@ -152,6 +154,11 @@ const trail = [
   .page-hero {
     background:
       radial-gradient(60% 90% at 100% 0%, rgb(255 244 214 / 0.9), transparent 70%),
+      linear-gradient(180deg, #ffffff, var(--color-cream));
+  }
+  [dir='rtl'] .page-hero {
+    background:
+      radial-gradient(60% 90% at 0% 0%, rgb(255 244 214 / 0.9), transparent 70%),
       linear-gradient(180deg, #ffffff, var(--color-cream));
   }
 </style>

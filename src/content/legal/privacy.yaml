@@ -9,7 +9,7 @@ body:
   fr: |
     > [PLACEHOLDER] Ébauche à faire valider avant la mise en ligne.
 
-    Matin – Institut interculturel (« Matin », « nous ») accorde une grande importance à la protection de vos renseignements personnels. Cette politique explique quels renseignements nous recueillons, pourquoi, comment nous les protégeons et quels sont vos droits, conformément à la *Loi sur la protection des renseignements personnels dans le secteur privé* du Québec, telle que modifiée par la Loi 25.
+    L'Institut interculturel Matin (« Matin », « nous ») accorde une grande importance à la protection de vos renseignements personnels. Cette politique explique quels renseignements nous recueillons, pourquoi, comment nous les protégeons et quels sont vos droits, conformément à la *Loi sur la protection des renseignements personnels dans le secteur privé* du Québec, telle que modifiée par la Loi 25.
 
     ## Personne responsable de la protection des renseignements personnels
 
@@ -32,7 +32,7 @@ body:
 
     - **Netlify, Inc.** (hébergement du site et traitement des formulaires de contact et de bénévolat) : les soumissions de formulaires sont stockées sur des serveurs situés principalement aux **États-Unis**.
     - **[PLACEHOLDER] Brevo** (envoi de l'infolettre) : serveurs situés dans l'Union européenne.
-    - **[PLACEHOLDER] Zeffy** (dons et adhésions en ligne) : plateforme externe régie par sa propre politique de confidentialité.
+    - **[PLACEHOLDER] Zeffy** (dons en ligne) : plateforme externe régie par sa propre politique de confidentialité.
     - **Cloudflare, Inc.** (si la protection anti-robot Turnstile est activée sur les formulaires) : vérifie que l’envoi provient d’une personne; serveurs situés notamment aux États-Unis.
 
     Avant de communiquer des renseignements à l'extérieur du Québec, nous avons évalué que ces fournisseurs offrent une protection adéquate, notamment par des engagements contractuels de confidentialité et de sécurité.
@@ -61,7 +61,7 @@ body:
   en: |
     > [PLACEHOLDER] Draft to be validated before going live.
 
-    Matin – Intercultural Institute ("Matin", "we") takes the protection of your personal information seriously. This policy explains what information we collect, why, how we protect it and what your rights are, in accordance with Québec's *Act respecting the protection of personal information in the private sector*, as amended by Law 25.
+    Matin Intercultural Institute ("Matin", "we") takes the protection of your personal information seriously. This policy explains what information we collect, why, how we protect it and what your rights are, in accordance with Québec's *Act respecting the protection of personal information in the private sector*, as amended by Law 25.
 
     ## Person in charge of the protection of personal information
 
@@ -84,7 +84,7 @@ body:
 
     - **Netlify, Inc.** (website hosting and processing of the contact and volunteer forms): form submissions are stored on servers located mainly in the **United States**.
     - **[PLACEHOLDER] Brevo** (newsletter delivery): servers located in the European Union.
-    - **[PLACEHOLDER] Zeffy** (online donations and memberships): an external platform governed by its own privacy policy.
+    - **[PLACEHOLDER] Zeffy** (online donations): an external platform governed by its own privacy policy.
     - **Cloudflare, Inc.** (if Turnstile anti-robot protection is enabled on the forms): checks that a submission comes from a person; servers located notably in the United States.
 
     Before communicating information outside Québec, we assessed that these providers offer adequate protection, including through contractual confidentiality and security commitments.

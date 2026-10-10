@@ -5,23 +5,31 @@
  */
 import MapleLeaf from './MapleLeaf.astro';
 import { useTranslations } from '@/i18n/ui';
-import { path, type Lang } from '@/i18n/routes';
+import { href, type UiLang } from '@/i18n/routes';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   variant?: 'dark' | 'light';
 }
 const { lang, variant = 'dark' } = Astro.props;
 const t = useTranslations(lang);
-const [line1, ...rest] = t('brand.institute').split(' ');
+// The logo keeps its French/English wording; on Persian pages it shows the French logo.
+const logoLang = lang === 'fa' ? 'fr' : lang;
+const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ');
 ---
 
-<a href={path('home', lang)} class:list={['lockup', variant === 'light' && 'lockup--light']}>
-  <span class="lockup__word">Matin</span>
+<a
+  href={href('home', lang)}
+  class:list={['lockup', variant === 'light' && 'lockup--light']}
+  dir="ltr"
+>
+  <span class="lockup__word" lang={logoLang} dir="ltr">
+    Matin
+  </span>
   <span class="lockup__rule" aria-hidden="true">
     <MapleLeaf size={11} class="lockup__leaf" />
   </span>
-  <span class="lockup__inst">
+  <span class="lockup__inst" lang={logoLang} dir="ltr">
     <span>{line1}</span>
     <span>{rest.join(' ')}</span>
   </span>

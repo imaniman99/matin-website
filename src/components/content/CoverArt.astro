@@ -13,15 +13,16 @@ interface Props {
 }
 const { category, seed = category, class: className = '' } = Astro.props;
 
+// Warm ivory/sand backgrounds; turquoise and gold come from the waves and the sun.
 const palettes: Record<Category, [string, string]> = {
-  language: ['#DDF4F9', '#A9E3EF'],
-  arts: ['#FFF1D6', '#F6D58F'],
-  youth: ['#E4F6EF', '#A8DCC8'],
-  community: ['#FFF8EC', '#F2CD78'],
-  newcomers: ['#DDF4F9', '#FFF1D6'],
-  lectures: ['#E8EEF4', '#B9CCDC'],
-  music: ['#EAF2FB', '#A9C9EA'],
-  celebration: ['#FFF1D6', '#A9E3EF'],
+  language: ['#FBF6EC', '#EADFC8'],
+  arts: ['#FBF3E2', '#EFD9AE'],
+  youth: ['#F7F4EA', '#DCE5D5'],
+  community: ['#FBF6EC', '#F0DEB4'],
+  newcomers: ['#F7F1E4', '#E1E8E2'],
+  lectures: ['#F6F2EA', '#DED9CC'],
+  music: ['#F8F3E8', '#E2DCCB'],
+  celebration: ['#FBF2DF', '#ECD3A0'],
 };
 const [c1, c2] = palettes[category];
 // Cheap deterministic variation so neighbouring cards don't look identical.
@@ -56,11 +57,13 @@ const uid = `cv${n}${category}`;
     <circle cx={sunX} cy="168" r="40" fill={`url(#${uid}-sun)`}></circle>
     <path
       d={`M0 ${170 - waveShift / 3} C 100 ${130 + waveShift} 220 ${210 - waveShift} 400 ${160} V240 H0Z`}
-      fill="#BDEAF3"
+      fill="#1F9AA0"
+      fill-opacity="0.55"
     ></path>
     <path
       d={`M0 ${195} C 120 ${165 + waveShift / 2} 260 ${230 - waveShift / 2} 400 ${190} V240 H0Z`}
-      fill="#F4FBFD"
+      fill="#0A5C63"
+      fill-opacity="0.85"
     ></path>
     <path
       d={`M0 ${182} C 110 ${150 + waveShift / 2} 240 ${222 - waveShift / 2} 400 ${176}`}

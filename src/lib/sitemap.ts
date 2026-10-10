@@ -2,21 +2,28 @@
  * Every public page as a FR/EN pair, so the sitemap can declare hreflang
  * alternates even when the URLs are translated (/fr/a-propos/ ↔ /en/about/).
  */
-import { categorySegment, categorySlugs, path, routes, type RouteKey } from '@/i18n/routes';
-import { getEvents, getNews, getPrograms, newsCategories, NEWS_PAGE_SIZE, slugOf } from './content';
+import {
+  categorySegment,
+  categorySlugs,
+  path,
+  routes,
+  siteAlternates,
+  type RouteKey,
+} from '@/i18n/routes';
+import { getEvents, getNews, getPrograms, NEWS_PAGE_SIZE, slugOf } from './content';
+import { newsCategories } from './taxonomy';
 
 export interface PagePair {
   fr: string;
   en: string;
+  /** Persian version, when one exists. */
+  fa?: string;
   lastmod?: Date;
 }
 
 export async function allPagePairs(): Promise<PagePair[]> {
   const keys = (Object.keys(routes) as RouteKey[]).filter((k) => k !== 'search');
-  const pairs: PagePair[] = keys.map((key) => ({
-    fr: path(key, 'fr'),
-    en: path(key, 'en'),
-  }));
+  const pairs: PagePair[] = keys.map((key) => siteAlternates(key));
 
   for (const p of await getPrograms()) {
     pairs.push({
@@ -39,7 +46,7 @@ export async function allPagePairs(): Promise<PagePair[]> {
       lastmod: post.data.date,
     });
   }
-  for (const c of newsCategories(posts)) {
+  for (const c of newsCategories) {
     pairs.push({
       fr: path('news', 'fr', categorySegment.fr, categorySlugs[c].fr),
       en: path('news', 'en', categorySegment.en, categorySlugs[c].en),

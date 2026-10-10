@@ -8,14 +8,21 @@ export const GET: APIRoute = async ({ site }) => {
   const pairs = await allPagePairs();
 
   const urls = pairs.flatMap((pair) =>
-    (['fr', 'en'] as const).map(
-      (lang) => `  <url>
-    <loc>${esc(abs(pair[lang]))}</loc>${pair.lastmod ? `\n    <lastmod>${pair.lastmod.toISOString().slice(0, 10)}</lastmod>` : ''}
+    (['fr', 'en', 'fa'] as const)
+      .filter((lang) => pair[lang])
+      .map(
+        (lang) => `  <url>
+    <loc>${esc(abs(pair[lang]!))}</loc>${pair.lastmod ? `\n    <lastmod>${pair.lastmod.toISOString().slice(0, 10)}</lastmod>` : ''}
     <xhtml:link rel="alternate" hreflang="fr-CA" href="${esc(abs(pair.fr))}"/>
-    <xhtml:link rel="alternate" hreflang="en-CA" href="${esc(abs(pair.en))}"/>
+    <xhtml:link rel="alternate" hreflang="en-CA" href="${esc(abs(pair.en))}"/>${
+      pair.fa
+        ? `
+    <xhtml:link rel="alternate" hreflang="fa" href="${esc(abs(pair.fa))}"/>`
+        : ''
+    }
     <xhtml:link rel="alternate" hreflang="x-default" href="${esc(abs(pair.fr))}"/>
   </url>`,
-    ),
+      ),
   );
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

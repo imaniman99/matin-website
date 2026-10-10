@@ -63,7 +63,7 @@ src/
 
 ## How content works
 
-Each collection in `src/content/` (events, news, programs, team, gallery, faq, resources, testimonials, partners, documents, legal, about, involvement, settings) holds one YAML file per entry, with **French and English side by side**:
+Each collection in `src/content/` (events, news, programs, team, gallery, faq, resources, documents, legal, about, involvement, settings) holds one YAML file per entry, with **French and English side by side**:
 
 ```yaml
 title:
@@ -75,13 +75,17 @@ title:
 - `urlSlug` gives translated URLs (`/fr/evenements/soiree-…` ↔ `/en/events/world-music-night`). The FR/EN switch always links to the equivalent page.
 - Event times are entered as **Montréal local time** (`2026-10-24T19:00`), so daylight saving time is handled automatically.
 - Body fields are Markdown. French text gets Québec typography automatically (non-breaking space before `:` and inside « », no space before `; ! ?`).
-- `src/content/settings/site.yaml` holds the organization details: address, hours, social links, donation URL, impact numbers and the privacy officer.
+- `src/content/settings/site.yaml` holds the organization details: address, hours, social links, mission, the privacy officer and `formsEnabled` (see Forms below).
+- News posts have one `category`: `updates` (Matin Updates) or `community` (Montréal Culture & Community). A post with an image needs `imagePermission: true`; an optional `source` (name + URL) is shown under the post.
+- Past events can carry a `report`, `highlights` and captioned `photos`. Ended events are listed on the past-events archive (`/fr/evenements/archives/`, `/en/events/past/`).
 
 ## Languages
 
 - Interface text lives in `src/i18n/fr.ts` and `src/i18n/en.ts`. TypeScript enforces that both have the same keys.
+- **Persian (فارسی)** is an additional access language at `/fa/` (right-to-left, Vazirmatn font, Persian numerals). Only Home, About (mission, vision, values), Get Involved and Contact are localized; `src/i18n/fa.ts` may be partial and falls back to English. Links to other pages open the English version with `?from=fa`, which shows a short Persian note (`FA_FALLBACK` in `routes.ts`). Events and news appear in Persian only when they have `fa` texts and `faReviewed: true`.
+- `npm run translations` regenerates `TRANSLATIONS_FOR_REVIEW.md`, the list of French and Persian texts to have reviewed by fluent speakers.
 - Translated URL segments live in `src/i18n/routes.ts`.
-- Each page outputs `lang`, canonical and `hreflang` alternates (`fr-CA`, `en-CA`, `x-default` → French). `/sitemap.xml` lists every page with its translated alternate.
+- Each page outputs `lang`, canonical and `hreflang` alternates (`fr-CA`, `en-CA`, `fa` where it exists, `x-default` → French). `/sitemap.xml` lists every page with its translated alternate.
 
 ## Deploying to Netlify
 
@@ -89,7 +93,7 @@ title:
 2. In Netlify: **Add new site → Import an existing project →** choose the repository. Build settings are read from `netlify.toml` (`npm run build`, publish `dist`, Node 22).
 3. **Site configuration → Environment variables:** add the values you need from [`.env.example`](.env.example). At minimum, set `SITE_URL` to the final domain.
 4. **Build hook for the daily rebuild:** Site configuration → Build & deploy → Build hooks → _Add build hook_. Copy its URL into the `BUILD_HOOK_URL` variable. The `daily-rebuild` function then rebuilds the site every morning (≈ 5 a.m. Montréal) so ended events move to "Past events".
-5. **Forms → Enable form detection.** Then add email notifications under **Forms → Form notifications** for `contact` and `benevolat` (and `newsletter` if you don't use Brevo).
+5. **Forms → Enable form detection.** Then add email notifications under **Forms → Form notifications** for `interet`, `contact` and `benevolat` (and `newsletter` if you don't use Brevo). Send a test submission, and only then set `formsEnabled: true` in `src/content/settings/site.yaml`.
 6. **Deploy notifications → Add notification → Email → "Deploy failed"**, sent to the content editor and the technical contact. A content mistake fails the build (the live site stays as it was), and this email is how editors find out what to fix.
 7. Connect the domain (Domain management), then redeploy so `SITE_URL` takes effect.
 
@@ -110,7 +114,8 @@ All are optional; the site works without them. See `.env.example` for details.
 
 ## Forms and newsletter
 
-- **Contact** (`contact`) and **volunteer** (`benevolat`) forms use **Netlify Forms**. They have a honeypot field, bilingual validation with an error summary, and a required consent checkbox.
+- **Delivery switch:** every form is shown as active only when `formsEnabled: true` in `src/content/settings/site.yaml`. While it is `false` (the current value, because submissions were not yet confirmed to arrive), visitors see a short note with the contact email instead. The forms stay in the HTML (hidden and inert) so Netlify can still detect them.
+- **Interest** (`interet`), **contact** (`contact`) and **volunteer** (`benevolat`) forms use **Netlify Forms**. They have a honeypot field, bilingual validation with an error summary, and a required consent checkbox.
 - **Free-tier limit:** Netlify's free plan includes only a limited number of form submissions per month (historically 100/month on the Starter plan). Check the current figure at <https://www.netlify.com/pricing/>. If the institute outgrows it, upgrade or move the forms to a provider such as Formspree.
 - **Newsletter:** by default, sign-ups are stored in Netlify Forms (export them as CSV). Set `PUBLIC_NEWSLETTER_MODE=brevo` and the Brevo variables to send them to Brevo with double opt-in, which is the recommended proof of consent under CASL. The confirmation link returns visitors to `/fr/?infolettre=confirmee`, which shows a thank-you message.
 - **Turnstile (optional):** the widget loads only when someone starts filling in a form. The `submission-created` function verifies each submission and deletes the ones that fail.

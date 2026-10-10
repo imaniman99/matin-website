@@ -1,12 +1,12 @@
 ---
-import type { Lang } from '@/i18n/routes';
+import type { Alternates, UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
   title: string;
   description: string;
-  alternates: Record<Lang, string>;
+  alternates: Alternates;
   image?: string;
   imageAlt?: string;
   type?: 'website' | 'article' | 'event';
@@ -27,7 +27,7 @@ const {
 } = Astro.props;
 const t = useTranslations(lang);
 const site = Astro.site ?? new URL(Astro.url.origin);
-const canonical = new URL(alternates[lang], site).href;
+const canonical = new URL(alternates[lang] ?? alternates.en, site).href;
 const imageUrl = new URL(image, site).href;
 // JSON in a <script> must not be able to close the tag.
 const ld = (obj: object) => JSON.stringify(obj).replace(/</g, '\\u003c');
@@ -40,6 +40,7 @@ const ld = (obj: object) => JSON.stringify(obj).replace(/</g, '\\u003c');
 
 <link rel="alternate" hreflang="fr-CA" href={new URL(alternates.fr, site).href} />
 <link rel="alternate" hreflang="en-CA" href={new URL(alternates.en, site).href} />
+{alternates.fa && <link rel="alternate" hreflang="fa" href={new URL(alternates.fa, site).href} />}
 <link rel="alternate" hreflang="x-default" href={new URL(alternates.fr, site).href} />
 
 <meta property="og:type" content={type === 'event' ? 'website' : type} />
@@ -48,7 +49,11 @@ const ld = (obj: object) => JSON.stringify(obj).replace(/</g, '\\u003c');
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content={t('meta.locale')} />
-<meta property="og:locale:alternate" content={lang === 'fr' ? 'en_CA' : 'fr_CA'} />
+{(['fr_CA', 'en_CA', ...(alternates.fa ? ['fa_IR'] : [])] as const)
+  .filter((l) => l !== t('meta.locale'))
+  .map((l) => (
+    <meta property="og:locale:alternate" content={l} />
+  ))}
 <meta property="og:image" content={imageUrl} />
 <meta property="og:image:alt" content={imageAlt ?? t('meta.siteName')} />
 <meta name="twitter:card" content="summary_large_image" />

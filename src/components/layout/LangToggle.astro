@@ -1,22 +1,39 @@
 ---
-/** FR | EN switch — always links to the equivalent page in the other language. */
-import { languages, type Lang } from '@/i18n/routes';
+/**
+ * FR | EN | فارسی — links to the equivalent page in each language. Persian links to
+ * the home page of the Persian site when the current page has no Persian version.
+ */
+import { uiLanguages, type Alternates, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
-  alternates: Record<Lang, string>;
+  lang: UiLang;
+  alternates: Alternates;
   light?: boolean;
+  large?: boolean;
 }
-const { lang, alternates, light = false } = Astro.props;
+const { lang, alternates, light = false, large = false } = Astro.props;
 const t = useTranslations(lang);
+
+// Each label and description is written in its own language.
+const labels: Record<UiLang, { text: string; full: string; go: string }> = {
+  fr: { text: 'FR', full: 'Français', go: 'Lire cette page en français' },
+  en: { text: 'EN', full: 'English', go: 'Read this page in English' },
+  fa: {
+    text: 'فارسی',
+    full: 'فارسی',
+    go: alternates.fa ? 'این صفحه را به فارسی بخوانید' : 'رفتن به نسخه فارسی سایت',
+  },
+};
+const target = (l: UiLang) => alternates[l] ?? '/fa/';
+const htmlLang = (l: UiLang) => (l === 'fr' ? 'fr-CA' : l === 'en' ? 'en-CA' : 'fa');
 ---
 
 <nav
   aria-label={t('a11y.languageSwitcher')}
-  class:list={['lang-toggle', light && 'lang-toggle--light']}
+  class:list={['lang-toggle', light && 'lang-toggle--light', large && 'lang-toggle--large']}
 >
-  {languages.map((l, i) => (
+  {uiLanguages.map((l, i) => (
     <>
       {i > 0 && (
         <span class="sep" aria-hidden="true">
@@ -24,13 +41,25 @@ const t = useTranslations(lang);
         </span>
       )}
       {l === lang ? (
-        <span class="current" aria-current="true">
-          <abbr title={l === 'fr' ? 'Français' : 'English'}>{l.toUpperCase()}</abbr>
+        <span
+          class:list={['current', l === 'fa' && 'fa-label']}
+          aria-current="true"
+          lang={htmlLang(l)}
+          dir={l === 'fa' ? 'rtl' : undefined}
+        >
+          <abbr title={labels[l].full}>{labels[l].text}</abbr>
         </span>
       ) : (
-        <a href={alternates[l]} hreflang={l} lang={l} data-lang-switch={l}>
-          {l.toUpperCase()}
-          <span class="sr-only"> – {t('a11y.switchTo')}</span>
+        <a
+          href={target(l)}
+          hreflang={htmlLang(l)}
+          lang={htmlLang(l)}
+          dir={l === 'fa' ? 'rtl' : undefined}
+          class:list={[l === 'fa' && 'fa-label']}
+          data-lang-switch={l}
+        >
+          {labels[l].text}
+          <span class="sr-only"> – {labels[l].go}</span>
         </a>
       )}
     </>
@@ -41,41 +70,62 @@ const t = useTranslations(lang);
   .lang-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
     font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
   .lang-toggle abbr {
     text-decoration: none;
   }
   .current {
     color: var(--color-primary);
-    border-bottom: 2px solid var(--color-gold);
+    border-block-end: 2px solid var(--color-gold);
     padding: 0.35rem 0.2rem 0.15rem;
   }
   .sep {
     color: var(--color-line);
   }
   a {
+    display: inline-block;
     color: var(--color-muted);
     text-decoration: none;
-    padding: 0.35rem 0.25rem;
-    border-radius: 4px;
+    padding: 0.35rem 0.3rem;
+    border-radius: 6px;
     min-width: 2rem;
     text-align: center;
   }
   a:hover {
     color: var(--color-primary);
-    background: var(--color-aqua-light);
+    background: var(--color-sand);
+  }
+  .fa-label {
+    font-size: 1rem;
+    letter-spacing: 0;
   }
   .lang-toggle--light .current {
     color: white;
   }
   .lang-toggle--light a {
-    color: var(--color-aqua-light);
+    color: rgb(255 255 255 / 0.85);
   }
   .lang-toggle--light a:hover {
     color: var(--color-primary-dark);
+    background: var(--color-gold-light);
+  }
+  .lang-toggle--light .sep {
+    color: rgb(255 255 255 / 0.3);
+  }
+  .lang-toggle--large {
+    gap: 0.6rem;
+    font-size: 1.1rem;
+  }
+  .lang-toggle--large a,
+  .lang-toggle--large .current {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    display: inline-grid;
+    place-items: center;
   }
 </style>

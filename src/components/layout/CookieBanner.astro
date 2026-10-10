@@ -6,11 +6,11 @@
  * The preferences dialog is always reachable from the footer ("Manage cookies").
  */
 import { Cookie, X } from '@lucide/astro';
-import { path, type Lang } from '@/i18n/routes';
+import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
-  lang: Lang;
+  lang: UiLang;
 }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
@@ -32,7 +32,7 @@ const t = useTranslations(lang);
         </h2>
         <p class="text-sm text-white/85">
           {t('consent.text')}{' '}
-          <a href={path('privacy', lang)} class="font-semibold text-gold-light">
+          <a href={href('privacy', lang)} class="font-semibold text-gold-light">
             {t('consent.policyLink')}
           </a>
         </p>
@@ -211,7 +211,7 @@ const t = useTranslations(lang);
     cursor: pointer;
   }
   .close-btn:hover {
-    background: var(--color-aqua-light);
+    background: var(--color-sand);
   }
   .switch {
     appearance: none;

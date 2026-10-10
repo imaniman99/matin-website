@@ -1,5 +1,5 @@
 ---
-import { CalendarDays, List } from '@lucide/astro';
+import { ArrowRight, CalendarDays, List } from '@lucide/astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import EventCard from '@/components/content/EventCard.astro';
 import EventCalendar from '@/components/content/EventCalendar.astro';
@@ -34,7 +34,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
   lede={t('events.lede')}
   alternates={alternatesFor('events')}
   searchable={false}
-  footerWaveFrom="var(--color-aqua-light)"
+  footerWaveFrom="var(--color-sand)"
 >
   <section class="container-site pt-4 pb-20" aria-labelledby="upcoming-title">
     <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -113,7 +113,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
   </section>
   <ExpireEvents />
 
-  <section class="bg-aqua-light pt-16 pb-24" aria-labelledby="past-title">
+  <section class="bg-sand pt-16 pb-24" aria-labelledby="past-title">
     <div class="container-site">
       <h2 id="past-title" class="section-title mb-10">
         {t('events.past')}
@@ -143,6 +143,10 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
       ) : (
         <p class="text-muted">{t('events.noPast')}</p>
       )}
+      <a href={path('eventsArchive', lang)} class="link-arrow mt-8">
+        {t('events.viewArchive')}
+        <ArrowRight size={18} aria-hidden="true" />
+      </a>
     </div>
   </section>
 </PageLayout>
@@ -211,7 +215,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
     display: inline-flex;
     padding: 4px;
     border-radius: 999px;
-    background: var(--color-aqua-light);
+    background: var(--color-sand);
   }
   .view-toggle button {
     display: inline-flex;
