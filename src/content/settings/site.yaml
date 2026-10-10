@@ -24,7 +24,7 @@ charityNumber: ''
 donateUrl: https://www.zeffy.com/
 # Turn on (true) only once form submissions really reach Matin: Netlify →
 # Forms → "Enable form detection", then set up notification emails and redeploy.
-formsEnabled: false
+formsEnabled: true
 privacyOfficer:
   name: '[PLACEHOLDER] Nom de la personne responsable'
   title:
