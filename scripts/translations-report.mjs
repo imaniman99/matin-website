@@ -132,7 +132,7 @@ out.push('');
 out.push(`## 4. Persian — content files (${content.length} texts, all to review)`);
 out.push('');
 out.push(
-  'Mission and vision are still `[PLACEHOLDER]` texts in every language: replace the French and English first, then the Persian.',
+  'Mission and vision have no Persian translation yet: the Persian About page shows the values only until they are translated.',
 );
 out.push('');
 out.push('| File | English (source) | فارسی |');

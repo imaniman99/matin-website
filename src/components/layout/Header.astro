@@ -23,13 +23,16 @@ const items: RouteKey[] = [
 ];
 const links = items.map((key) => ({ key, href: href(key, lang), label: t(`nav.${key}`) }));
 const aboutHref = href('about', lang);
-// Sub-links of "About": anchors on the About page.
+// Sub-links of "About": anchors on the About page. The Persian About page has the
+// values section only (the other texts are not translated yet).
 const aboutLinks = [
   { id: 'who-we-are', label: t('nav.whoWeAre') },
   { id: 'mission', label: t('nav.mission') },
   { id: 'vision', label: t('nav.vision') },
   { id: 'values', label: t('nav.values') },
-].map((l) => ({ ...l, href: `${aboutHref}#${l.id}` }));
+]
+  .filter((l) => lang !== 'fa' || l.id === 'values')
+  .map((l) => ({ ...l, href: `${aboutHref}#${l.id}` }));
 
 const current = Astro.url.pathname;
 const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
@@ -111,15 +114,15 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
 
   <dialog id="mobile-menu" class="mobile-menu" aria-label={t('a11y.mainNav')}>
     <div class="flex h-[4.75rem] items-center justify-between px-5">
-      <Lockup lang={lang} variant="light" />
-      <button type="button" class="menu-btn menu-btn--light" data-menu-close>
+      <Lockup lang={lang} />
+      <button type="button" class="menu-btn" data-menu-close>
         <X size={28} aria-hidden="true" />
         <span class="sr-only">{t('a11y.closeMenu')}</span>
       </button>
     </div>
     <nav aria-label={t('a11y.mainNav')} class="px-5 pt-2 pb-10">
-      <div class="mb-6 rounded-2xl bg-white/[0.06] px-4 py-3">
-        <LangToggle lang={lang} alternates={alternates} light large />
+      <div class="mb-6 rounded-2xl bg-tint px-4 py-3">
+        <LangToggle lang={lang} alternates={alternates} large />
       </div>
       <ul>
         <li>
@@ -231,15 +234,14 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgb(251 246 236 / 0.97);
+    background: white;
     border-block-end: 1px solid transparent;
     transition:
       box-shadow 0.25s,
       border-color 0.25s;
   }
   .site-header.is-scrolled {
-    border-block-end-color: color-mix(in srgb, var(--color-gold) 45%, transparent);
-    box-shadow: 0 6px 24px -14px rgb(6 62 67 / 0.35);
+    border-block-end-color: var(--color-line);
   }
 
   /* The full menu needs this width at 17px; below it, the mobile menu is used. */
@@ -262,7 +264,7 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     font-weight: 600;
     font-size: 1.0625rem; /* 17px */
     white-space: nowrap;
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
     text-decoration: none;
     border-radius: 999px;
     transition:
@@ -270,7 +272,7 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
       background 0.2s;
   }
   .nav-link:hover {
-    background: var(--color-sand);
+    background: var(--color-tint);
     color: var(--color-primary);
   }
   .nav-link.is-active::after {
@@ -297,7 +299,7 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     cursor: pointer;
   }
   .sub-toggle:hover {
-    background: var(--color-sand);
+    background: var(--color-tint);
   }
   .sub-toggle[aria-expanded='true'] :global(svg) {
     transform: rotate(180deg);
@@ -327,12 +329,12 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     border-radius: 0.6rem;
     font-weight: 600;
     font-size: 1rem;
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
     text-decoration: none;
   }
   .submenu-link:hover,
   .submenu-link:focus-visible {
-    background: var(--color-sand);
+    background: var(--color-tint);
     color: var(--color-primary);
   }
 
@@ -346,13 +348,7 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     cursor: pointer;
   }
   .menu-btn:hover {
-    background: var(--color-sand);
-  }
-  .menu-btn--light {
-    color: white;
-  }
-  .menu-btn--light:hover {
-    background: rgb(255 255 255 / 0.12);
+    background: var(--color-tint);
   }
 
   .mobile-menu {
@@ -363,14 +359,11 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     max-height: none;
     border: 0;
     padding: 0;
-    color: white;
-    background:
-      radial-gradient(120% 60% at 100% 0%, rgb(31 154 160 / 0.25), transparent 60%),
-      radial-gradient(80% 50% at 0% 100%, rgb(217 162 61 / 0.2), transparent 60%),
-      var(--color-primary-dark);
+    color: var(--color-ink);
+    background: white;
   }
   .mobile-menu::backdrop {
-    background: rgb(6 62 67 / 0.5);
+    background: rgb(47 59 59 / 0.4);
   }
   .mobile-menu[open] {
     animation: menu-in 0.25s ease-out;
@@ -387,18 +380,20 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     font-family: var(--font-display);
     font-size: 1.6rem;
     font-weight: 700;
-    color: white;
+    color: var(--color-primary);
     text-decoration: none;
-    border-block-end: 1px solid rgb(255 255 255 / 0.1);
+    border-block-end: 1px solid var(--color-line);
   }
   .mobile-link:hover,
   .mobile-link[aria-current='page'] {
-    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 2px;
   }
   .mobile-sub {
     padding-block: 0.4rem 0.6rem;
     padding-inline-start: 1rem;
-    border-block-end: 1px solid rgb(255 255 255 / 0.1);
+    border-block-end: 1px solid var(--color-line);
   }
   .mobile-sublink {
     display: block;
@@ -406,13 +401,10 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     min-height: 2.75rem;
     font-size: 1.1rem;
     font-weight: 600;
-    color: rgb(255 255 255 / 0.9);
+    color: var(--color-ink);
     text-decoration: none;
   }
   .mobile-sublink:hover {
-    color: var(--color-gold-light);
-  }
-  .mobile-menu :focus-visible {
-    outline-color: var(--color-gold-light);
+    text-decoration: underline;
   }
 </style>

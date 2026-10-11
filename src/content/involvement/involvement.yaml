@@ -1,7 +1,3 @@
-placeholder: true
-volunteerIntro:
-  fr: '[PLACEHOLDER] Nos bénévoles sont le cœur de Matin. Quelques heures par mois suffisent pour faire une différence.'
-  en: '[PLACEHOLDER] Volunteers are the heart of Matin. A few hours a month are enough to make a difference.'
 roles:
   - title: { fr: 'Accueil et événements', en: 'Welcome & events' }
     text:
@@ -21,6 +17,3 @@ roles:
         fr: 'Photo, rédaction, réseaux sociaux, traduction.',
         en: 'Photography, writing, social media, translation.',
       }
-partnersText:
-  fr: '[PLACEHOLDER] Entreprises, fondations, institutions : associez votre nom à un projet porteur de sens et rejoignez une communauté diversifiée.'
-  en: '[PLACEHOLDER] Businesses, foundations, institutions: link your name to a meaningful project and reach a diverse community.'

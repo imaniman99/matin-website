@@ -105,7 +105,7 @@ const { formsEnabled } = await getSettings();
   .newsletter__label {
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
   }
   .newsletter__input {
     min-height: 3.1rem;
@@ -117,10 +117,10 @@ const { formsEnabled } = await getSettings();
     border: 1.5px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
   .newsletter__input::placeholder {
-    color: #5d6b6e;
+    color: var(--color-muted);
   }
   .newsletter__input:focus-visible {
-    border-color: var(--color-gold);
+    border-color: var(--color-primary);
   }
   .newsletter__consent {
     display: flex;
@@ -145,22 +145,15 @@ const { formsEnabled } = await getSettings();
     margin-top: 0.75rem;
     font-weight: 700;
   }
-  .newsletter--compact .newsletter__consent {
-    color: rgb(255 255 255 / 0.85);
-  }
-  .newsletter--compact .newsletter__consent input {
-    accent-color: var(--color-gold);
-  }
   .newsletter-closed {
     padding: 0.9rem 1.1rem;
     border-radius: 0.9rem;
     font-weight: 600;
-    background: var(--color-sand);
-    color: var(--color-primary-dark);
+    background: var(--color-tint);
+    color: var(--color-ink);
     border-inline-start: 4px solid var(--color-gold);
   }
   .newsletter-closed--compact {
-    background: rgb(255 255 255 / 0.08);
-    color: rgb(255 255 255 / 0.9);
+    background: white;
   }
 </style>

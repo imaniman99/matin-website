@@ -1,9 +1,0 @@
-placeholder: true
-topic: donations
-order: 1
-question:
-  fr: 'Vais-je recevoir un reçu fiscal pour mon don ?'
-  en: 'Will I receive a tax receipt for my donation?'
-answer:
-  fr: "[PLACEHOLDER] Les reçus fiscaux dépendent du statut d'organisme de bienfaisance enregistré de Matin. Cette réponse sera confirmée par l'équipe."
-  en: "[PLACEHOLDER] Tax receipts depend on Matin's registered charity status. The team will confirm this answer."

@@ -1,7 +1,6 @@
 ---
 import { MapPin, Phone, Mail, Clock } from '@lucide/astro';
 import Lockup from '@/components/brand/Lockup.astro';
-import WaveDivider from '@/components/brand/WaveDivider.astro';
 import LeafRule from '@/components/brand/LeafRule.astro';
 import SocialLinks from '@/components/ui/SocialLinks.astro';
 import NewsletterForm from '@/components/forms/NewsletterForm.astro';
@@ -12,9 +11,8 @@ import { getSettings } from '@/lib/content';
 interface Props {
   lang: UiLang;
   showNewsletter?: boolean;
-  waveFrom?: string;
 }
-const { lang, showNewsletter = true, waveFrom = 'var(--color-ivory)' } = Astro.props;
+const { lang, showNewsletter = true } = Astro.props;
 const t = useTranslations(lang);
 const s = await getSettings();
 
@@ -35,19 +33,25 @@ const year = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-CA', {
 }).format(new Date().getFullYear());
 // Shown as plain, non-clickable text in the footer (as requested).
 const plainText: RouteKey[] = ['resources', 'faq'];
-const fullAddress = `${s.address.street}, ${s.address.city} (${s.address.region}) ${s.address.postalCode}`;
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+// Contact details appear only once they are set in the site settings.
+const a = s.address;
+const fullAddress = a && `${a.street}, ${a.city} (${a.region}) ${a.postalCode}`;
+const mapsUrl =
+  fullAddress &&
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+const hasContact = Boolean(a || s.phone || s.email);
+// The mission has no Persian translation yet: Persian pages skip it rather than show English.
+const mission = lang !== 'fa' || s.mission.fa ? pick(s.mission, lang) : undefined;
 ---
 
-<footer class="on-dark bg-primary-dark text-white/90">
-  <WaveDivider from={waveFrom} to="var(--color-primary-dark)" />
-  <div class="container-site grid gap-12 pt-10 pb-12 md:grid-cols-2 lg:grid-cols-12">
+<footer class="border-t border-line bg-tint text-ink">
+  <div class="container-site grid gap-12 pt-14 pb-12 md:grid-cols-2 lg:grid-cols-12">
     <div class="lg:col-span-4">
       <div class="mb-6">
-        <Lockup lang={lang} variant="light" />
+        <Lockup lang={lang} variant="tint" />
       </div>
-      <p class="script mb-2 text-3xl text-gold-light">{t('brand.tagline')}</p>
-      <p class="max-w-sm text-[0.95rem] leading-relaxed text-white/80">{pick(s.mission, lang)}</p>
+      <p class="mb-3 font-display text-2xl font-bold text-primary">{t('brand.tagline')}</p>
+      {mission && <p class="max-w-sm text-[0.95rem] leading-relaxed">{mission}</p>}
       <SocialLinks lang={lang} social={s.social} class="mt-6" />
     </div>
 
@@ -68,65 +72,67 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
       </ul>
     </nav>
 
-    <div class="lg:col-span-3">
-      <h2 class="footer-title">{t('footer.contactTitle')}</h2>
-      <address class="space-y-3 text-[0.95rem] not-italic">
-        <p class="flex gap-3">
-          <MapPin size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-          <a href={mapsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">
-            {s.address.street}
-            <br />
-            {s.address.city} ({s.address.region}) {s.address.postalCode}
-            <span class="sr-only">{t('a11y.externalLink')}</span>
-          </a>
-        </p>
-        <p class="flex gap-3">
-          <Phone size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-          <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="footer-link">
-            {s.phone}
-          </a>
-        </p>
-        <p class="flex gap-3">
-          <Mail size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-          <a href={`mailto:${s.email}`} class="footer-link break-all">
-            {s.email}
-          </a>
-        </p>
-      </address>
-      {showNewsletter && (
-        <>
-          <h2 class="footer-title mt-8">{t('footer.hoursTitle')}</h2>
-          <p class="flex gap-3 text-[0.95rem] whitespace-pre-line text-white/80">
-            <Clock size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-            <span>{pick(s.hours, lang)}</span>
-          </p>
-        </>
-      )}
-    </div>
-
-    {!showNewsletter && (
+    {(hasContact || s.hours) && (
       <div class="lg:col-span-3">
-        <h2 class="footer-title">{t('footer.hoursTitle')}</h2>
-        <p class="flex gap-3 text-[0.95rem] whitespace-pre-line text-white/80">
-          <Clock size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-          <span>{pick(s.hours, lang)}</span>
-        </p>
+        {hasContact && (
+          <>
+            <h2 class="footer-title">{t('footer.contactTitle')}</h2>
+            <address class="mb-8 space-y-3 text-[0.95rem] not-italic">
+              {a && (
+                <p class="flex gap-3">
+                  <MapPin size={18} class="mt-1 shrink-0 text-gold-dark" aria-hidden="true" />
+                  <a href={mapsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">
+                    {a.street}
+                    <br />
+                    {a.city} ({a.region}) {a.postalCode}
+                    <span class="sr-only">{t('a11y.externalLink')}</span>
+                  </a>
+                </p>
+              )}
+              {s.phone && (
+                <p class="flex gap-3">
+                  <Phone size={18} class="mt-1 shrink-0 text-gold-dark" aria-hidden="true" />
+                  <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="footer-link">
+                    {s.phone}
+                  </a>
+                </p>
+              )}
+              {s.email && (
+                <p class="flex gap-3">
+                  <Mail size={18} class="mt-1 shrink-0 text-gold-dark" aria-hidden="true" />
+                  <a href={`mailto:${s.email}`} class="footer-link break-all">
+                    {s.email}
+                  </a>
+                </p>
+              )}
+            </address>
+          </>
+        )}
+        {s.hours && (
+          <>
+            <h2 class="footer-title">{t('footer.hoursTitle')}</h2>
+            <p class="flex gap-3 text-[0.95rem] whitespace-pre-line">
+              <Clock size={18} class="mt-1 shrink-0 text-gold-dark" aria-hidden="true" />
+              <span>{pick(s.hours, lang)}</span>
+            </p>
+          </>
+        )}
       </div>
     )}
 
     {showNewsletter && (
       <div class="md:col-span-2 lg:col-span-3">
         <h2 class="footer-title">{t('footer.newsletterTitle')}</h2>
-        <p class="mb-4 text-[0.95rem] text-white/80">{t('newsletter.text')}</p>
+        <p class="mb-4 text-[0.95rem]">{t('newsletter.text')}</p>
         <NewsletterForm lang={lang} compact id="footer-newsletter" />
       </div>
     )}
   </div>
 
   <div class="container-site">
-    <LeafRule light class="mx-auto max-w-none opacity-70" />
+    <LeafRule class="mx-auto max-w-none" />
   </div>
-  <div class="container-site flex flex-col gap-4 py-7 text-sm text-white/70 md:flex-row md:items-center md:justify-between">
+  <div class="container-site flex flex-col gap-4 py-7 text-sm md:flex-row md:items-center md:justify-between">
     <p>
       © {year} {t('meta.siteName')}. {t('footer.rights')}
       {s.charityNumber && (
@@ -156,25 +162,22 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
 <style>
   .footer-title {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
     font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-gold-light);
+    color: var(--color-primary);
     margin-bottom: 1rem;
   }
   .footer-link {
-    color: rgb(255 255 255 / 0.85);
+    color: var(--color-ink);
     text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-plain {
-    color: rgb(255 255 255 / 0.7);
-    cursor: default;
   }
   .footer-link:hover {
-    color: var(--color-gold-light);
     text-decoration: underline;
+    text-decoration-color: var(--color-primary);
+  }
+  .footer-plain {
+    color: var(--color-muted);
+    cursor: default;
   }
 </style>

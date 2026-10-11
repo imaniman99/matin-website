@@ -6,7 +6,6 @@
 import { ChevronRight } from '@lucide/astro';
 import BaseLayout from './BaseLayout.astro';
 import LeafRule from '@/components/brand/LeafRule.astro';
-import WaveDivider from '@/components/brand/WaveDivider.astro';
 import { href, type Alternates, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 import { breadcrumbJsonLd } from '@/lib/seo';
@@ -34,9 +33,6 @@ interface Props {
   jsonLd?: object[];
   noindex?: boolean;
   searchable?: boolean;
-  /** Colour of the band right under the banner wave. */
-  bodyBg?: string;
-  footerWaveFrom?: string;
 }
 
 const {
@@ -54,8 +50,6 @@ const {
   jsonLd = [],
   noindex,
   searchable = true,
-  bodyBg = 'var(--color-ivory)',
-  footerWaveFrom,
 } = Astro.props;
 const t = useTranslations(lang);
 const site = Astro.site ?? new URL(Astro.url.origin);
@@ -76,7 +70,6 @@ const trail = [
   type={type}
   noindex={noindex}
   searchable={searchable}
-  footerWaveFrom={footerWaveFrom ?? bodyBg}
   jsonLd={[
     breadcrumbJsonLd(
       trail.map((c) => ({ name: c.label, url: c.href })),
@@ -85,33 +78,7 @@ const trail = [
     ...jsonLd,
   ]}
 >
-  <section class="page-hero relative isolate overflow-hidden" aria-labelledby="page-title">
-    <svg
-      class="pointer-events-none absolute -end-32 -top-24 -z-10 w-[34rem] opacity-60 sm:-end-16"
-      viewBox="0 0 400 400"
-      aria-hidden="true"
-    >
-      <defs>
-        <radialGradient id="ph-sun">
-          <stop offset="0" stop-color="#F7D888" stop-opacity="0.8"></stop>
-          <stop offset="1" stop-color="#F7D888" stop-opacity="0"></stop>
-        </radialGradient>
-        <linearGradient id="ph-ray" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0" stop-color="#E0A93F" stop-opacity="0.55"></stop>
-          <stop offset="1" stop-color="#E0A93F" stop-opacity="0"></stop>
-        </linearGradient>
-      </defs>
-      <circle cx="200" cy="200" r="190" fill="url(#ph-sun)"></circle>
-      {Array.from({ length: 16 }, (_, i) => (
-        <path
-          d="M-2.5 -70 L0 -195 L2.5 -70Z"
-          fill="url(#ph-ray)"
-          transform={`translate(200 200) rotate(${i * 22.5})`}
-        />
-      ))}
-      <circle cx="200" cy="200" r="52" fill="#F7D888" opacity="0.55"></circle>
-    </svg>
-
+  <section class="mb-10 border-b border-line bg-tint" aria-labelledby="page-title">
     <div class="container-site pt-10 pb-14 sm:pt-12 sm:pb-20">
       <nav aria-label={t('a11y.breadcrumbs')} class="mb-8">
         <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted">
@@ -120,14 +87,17 @@ const trail = [
             return (
               <li class="flex items-center gap-1.5">
                 {i > 0 && (
-                  <ChevronRight size={14} class="flip-rtl text-gold-text" aria-hidden="true" />
+                  <ChevronRight size={14} class="flip-rtl text-gold-dark" aria-hidden="true" />
                 )}
                 {last ? (
-                  <span aria-current="page" class="font-semibold text-primary">
+                  <span aria-current="page" class="font-semibold text-ink">
                     {c.label}
                   </span>
                 ) : (
-                  <a href={c.href} class="text-muted hover:text-primary">
+                  <a
+                    href={c.href}
+                    class="text-muted underline-offset-4 hover:text-ink hover:underline"
+                  >
                     {c.label}
                   </a>
                 )}
@@ -136,29 +106,17 @@ const trail = [
           })}
         </ol>
       </nav>
-      {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-      <h1 id="page-title" class="max-w-4xl text-4xl font-bold sm:text-5xl lg:text-6xl">
-        {title}
-      </h1>
-      <LeafRule class="mt-6 w-44" />
-      {lede && <p class="lede mt-6 max-w-2xl sm:text-xl">{lede}</p>}
-      <slot name="hero" />
+      <div class="flex flex-col items-center text-center">
+        {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+        <h1 id="page-title" class="max-w-4xl text-4xl font-bold sm:text-5xl lg:text-6xl">
+          {title}
+        </h1>
+        <LeafRule class="mt-6 w-48" />
+        {lede && <p class="lede mt-6 max-w-2xl sm:text-xl">{lede}</p>}
+        <slot name="hero" />
+      </div>
     </div>
   </section>
-  <WaveDivider from="var(--color-cream)" to={bodyBg} />
 
   <slot />
 </BaseLayout>
-
-<style>
-  .page-hero {
-    background:
-      radial-gradient(60% 90% at 100% 0%, rgb(255 244 214 / 0.9), transparent 70%),
-      linear-gradient(180deg, #ffffff, var(--color-cream));
-  }
-  [dir='rtl'] .page-hero {
-    background:
-      radial-gradient(60% 90% at 0% 0%, rgb(255 244 214 / 0.9), transparent 70%),
-      linear-gradient(180deg, #ffffff, var(--color-cream));
-  }
-</style>

@@ -34,7 +34,6 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
   lede={t('events.lede')}
   alternates={alternatesFor('events')}
   searchable={false}
-  footerWaveFrom="var(--color-sand)"
 >
   <section class="container-site pt-4 pb-20" aria-labelledby="upcoming-title">
     <div class="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -113,24 +112,24 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
   </section>
   <ExpireEvents />
 
-  <section class="bg-sand pt-16 pb-24" aria-labelledby="past-title">
+  <section class="bg-tint pt-16 pb-24" aria-labelledby="past-title">
     <div class="container-site">
       <h2 id="past-title" class="section-title mb-10">
         {t('events.past')}
       </h2>
       {past.length > 0 ? (
-        <ul class="divide-y divide-primary/10 overflow-hidden rounded-[var(--radius-card)] bg-white shadow-soft">
+        <ul class="divide-y divide-line overflow-hidden rounded-[var(--radius-card)] border border-line bg-white">
           {past.map((e) => (
-            <li class="relative flex flex-col gap-1 px-6 py-5 transition hover:bg-cream sm:flex-row sm:items-center sm:gap-6">
+            <li class="relative flex flex-col gap-1 px-6 py-5 transition hover:bg-tint sm:flex-row sm:items-center sm:gap-6">
               <time
                 datetime={e.data.start.slice(0, 10)}
-                class="w-44 shrink-0 text-sm font-semibold text-gold-text"
+                class="w-44 shrink-0 text-sm font-semibold text-gold-dark"
               >
                 {formatDate(e.startDate, lang, false)}
               </time>
               <a
                 href={path('events', lang, slugOf(e, lang))}
-                class="font-display text-lg font-bold text-primary no-underline after:absolute after:inset-0 hover:text-teal"
+                class="font-display text-lg font-bold text-primary no-underline after:absolute after:inset-0 hover:text-ink"
               >
                 {pick(e.data.title, lang)}
               </a>
@@ -202,7 +201,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
     min-width: 11rem;
     padding: 0 2.25rem 0 1rem;
     border-radius: 999px;
-    border: 1.5px solid rgb(11 61 92 / 0.22);
+    border: 1.5px solid var(--color-line);
     background: white
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%230B3D5C' stroke-width='2'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E")
       no-repeat right 0.9rem center;
@@ -215,7 +214,7 @@ const months = [...new Set(upcoming.map((e) => e.data.start.slice(0, 7)))].map((
     display: inline-flex;
     padding: 4px;
     border-radius: 999px;
-    background: var(--color-sand);
+    background: var(--color-tint);
   }
   .view-toggle button {
     display: inline-flex;

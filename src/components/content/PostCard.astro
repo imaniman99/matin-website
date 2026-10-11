@@ -45,12 +45,12 @@ const cover = d.category === 'updates' ? 'community' : 'celebration';
     <span aria-hidden="true" class="mx-1.5 text-gold">
       •
     </span>
-    <span class="font-semibold text-gold-text">{t(`newsCategories.${d.category}`)}</span>
+    <span class="font-semibold text-gold-dark">{t(`newsCategories.${d.category}`)}</span>
   </p>
   <Heading class="mb-2 text-xl leading-snug font-bold">
     <a
       href={href}
-      class="text-primary no-underline group-hover:text-teal after:absolute after:inset-0 after:content-['']"
+      class="text-primary no-underline group-hover:text-ink after:absolute after:inset-0 after:content-['']"
     >
       {pick(d.title, lang)}
     </a>

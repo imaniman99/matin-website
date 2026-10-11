@@ -1,71 +1,56 @@
-placeholder: true
 vision:
-  fr: '[PLACEHOLDER] Un Québec où chaque culture se sent chez elle et où la diversité est vécue comme une richesse partagée.'
-  en: '[PLACEHOLDER] A Québec where every culture feels at home and diversity is experienced as a shared wealth.'
-  fa: '[PLACEHOLDER] کبکی که در آن هر فرهنگی احساس کند در خانه خویش است و تنوع، ثروتی مشترک به شمار آید.'
+  fr: "Nous croyons que la diversité culturelle est l'une des plus grandes forces d'une société. Matin imagine un avenir où chaque personne, quelle que soit son origine, est accueillie, respectée et en mesure de participer pleinement à la vie sociale, culturelle et citoyenne, et où le dialogue entre les cultures nourrit la confiance, l'équité et la solidarité entre les générations."
+  en: "We believe cultural diversity is one of society's greatest strengths. Matin envisions a future in which people of every origin are welcomed, respected, and able to take part fully in social, cultural, and civic life, and in which dialogue between cultures leads to trust, equity, and lasting solidarity across generations."
 values:
   - icon: dialogue
     title: { fr: 'Dialogue', en: 'Dialogue', fa: 'گفت‌وگو' }
     text:
-      fr: 'Écouter, se raconter et apprendre les uns des autres.'
-      en: 'Listening, sharing our stories and learning from one another.'
+      fr: "Nous écoutons d'abord, partageons nos histoires et apprenons les uns des autres."
+      en: 'We listen first, share our stories, and learn from one another.'
       fa: 'گوش دادن، روایت کردن و آموختن از یکدیگر.'
   - icon: respect
     title: { fr: 'Respect', en: 'Respect', fa: 'احترام' }
     text:
-      fr: 'Accueillir chaque personne avec dignité, dans toute sa singularité.'
-      en: 'Welcoming every person with dignity, in all their uniqueness.'
+      fr: 'Nous accueillons chaque personne avec dignité, dans toute son unicité.'
+      en: 'We welcome every person with dignity, in all their uniqueness.'
       fa: 'پذیرفتن هر انسان با کرامت و با همه ویژگی‌های یگانه‌اش.'
   - icon: openness
     title: { fr: 'Ouverture', en: 'Openness', fa: 'گشودگی' }
     text:
-      fr: "Cultiver la curiosité et la découverte de l'autre."
-      en: 'Nurturing curiosity and discovery of others.'
+      fr: 'Nous restons curieux et ouverts à la découverte des autres.'
+      en: 'We stay curious and open to discovering others.'
       fa: 'پرورش کنجکاوی و شوق شناختن دیگری.'
   - icon: creativity
     title: { fr: 'Créativité', en: 'Creativity', fa: 'خلاقیت' }
     text:
-      fr: "Faire de l'art et de la culture des ponts entre les gens."
-      en: 'Making art and culture into bridges between people.'
+      fr: "Nous faisons de l'art et de la culture des ponts entre les personnes."
+      en: 'We use art and culture as bridges between people.'
       fa: 'هنر و فرهنگ را به پل‌هایی میان مردم بدل کردن.'
   - icon: community
     title: { fr: 'Communauté', en: 'Community', fa: 'همبستگی اجتماعی' }
     text:
-      fr: 'Bâtir ensemble des liens durables, ici, à Montréal.'
-      en: 'Building lasting connections together, here in Montréal.'
+      fr: 'Nous bâtissons des liens durables, ici à Montréal et au-delà.'
+      en: 'We build lasting connections, here in Montréal and beyond.'
       fa: 'ساختن پیوندهای ماندگار با هم، همین‌جا در مونترال.'
   - icon: equity
     title: { fr: 'Équité', en: 'Equity', fa: 'برابری' }
     text:
-      fr: 'Rendre nos activités accessibles au plus grand nombre.'
-      en: 'Making our activities accessible to as many people as possible.'
+      fr: 'Nous œuvrons pour rendre nos activités accessibles au plus grand nombre.'
+      en: 'We work to make our activities accessible to as many people as possible.'
       fa: 'دسترس‌پذیر کردن فعالیت‌هایمان برای هرچه بیشتر مردم.'
 history:
-  - year: '2020'
-    title: { fr: '[PLACEHOLDER] Fondation', en: '[PLACEHOLDER] Founding' }
-    text:
-      fr: "[PLACEHOLDER] Naissance de Matin autour d'un petit groupe de bénévoles."
-      en: '[PLACEHOLDER] Matin is born around a small group of volunteers.'
-  - year: '2022'
-    title: { fr: '[PLACEHOLDER] Premiers programmes', en: '[PLACEHOLDER] First programs' }
-    text:
-      fr: '[PLACEHOLDER] Lancement des ateliers de francisation et des soirées culturelles.'
-      en: '[PLACEHOLDER] Launch of French workshops and cultural evenings.'
-  - year: '2024'
-    title: { fr: '[PLACEHOLDER] Nouveaux locaux', en: '[PLACEHOLDER] New premises' }
-    text:
-      fr: '[PLACEHOLDER] Installation dans nos locaux actuels.'
-      en: '[PLACEHOLDER] Move to our current premises.'
   - year: '2026'
-    title: { fr: "[PLACEHOLDER] Aujourd'hui", en: '[PLACEHOLDER] Today' }
+    title: { fr: 'Matin voit le jour', en: 'Matin is born' }
     text:
-      fr: '[PLACEHOLDER] Plus de 40 cultures représentées et des centaines de participants chaque année.'
-      en: '[PLACEHOLDER] More than 40 cultures represented and hundreds of participants every year.'
-director:
-  name: '[PLACEHOLDER] Prénom Nom'
+      fr: "En 2026, l'Institut interculturel Matin commence son histoire à Montréal. Nous sommes jeunes, et c'est notre force : tout reste à construire. Nous partons avec une mission claire, une vision partagée et des valeurs qui nous tiennent à cœur, et nous bâtissons les partenariats, les programmes et la communauté qui leur donneront vie. Venez écrire les premières pages avec nous."
+      en: 'In 2026, Matin Intercultural Institute begins its story in Montréal. We are new, and that is our strength: everything is still ahead of us. We start with a clear mission, a shared vision, and values we hold dear, and we are building the partnerships, programs, and community that will bring them to life. Come write the first pages with us.'
+# The badge shows the initials until a photo exists: add src/assets/brand/president.jpg
+# (or .png / .webp) and it replaces the initials automatically.
+president:
+  name: 'Reza Moafi'
   title:
-    fr: '[PLACEHOLDER] Fondation et direction générale'
-    en: '[PLACEHOLDER] Founder and Executive Director'
+    fr: 'Fondateur et président'
+    en: 'Founder and President'
   message:
-    fr: "[PLACEHOLDER] Matin est né d'une conviction simple : lorsque les cultures se parlent, tout le monde grandit. Bienvenue chez vous."
-    en: '[PLACEHOLDER] Matin was born from a simple conviction: when cultures talk to each other, everyone grows. Welcome home.'
+    fr: "« Les cultures ne sont pas des distances à franchir ; ce sont des paysages vivants que nous pouvons apprendre à parcourir ensemble. Au fil de mes années auprès des quartiers et des communautés, j'ai vu à maintes reprises que l'appartenance ne se décrète pas par les seules politiques. Elle se construit, une conversation à la fois, lorsque chacun se sent écouté et invité à façonner le lieu qu'il appelle chez lui. Matin est né de cette conviction. Nous sommes un jeune institut aux horizons larges, et notre promesse est simple : ici, chaque voix a sa place, chaque histoire compte et chaque différence devient une force partagée. Bienvenue chez vous. »"
+    en: '"Cultures are not distances to be crossed; they are living landscapes we can learn to walk together. In my years of working alongside neighbourhoods and communities, I have seen again and again that belonging is never granted by policy alone. It is built, one conversation at a time, when people feel heard and invited to shape the place they call home. Matin was founded on that conviction. We are a young institute with a long horizon, and our promise is simple: here, every voice has a place, every story matters, and every difference becomes a shared source of strength. Welcome home."'

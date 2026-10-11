@@ -23,7 +23,7 @@ const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
 ---
 
 <article
-  class="card group relative flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+  class="card group relative flex flex-col overflow-hidden transition-colors duration-200 hover:border-gold"
   data-event-end={event.endDate.toISOString()}
 >
   <div class="relative aspect-[16/9]">
@@ -39,11 +39,11 @@ const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
     ) : (
       <CoverArt category={d.category} seed={event.id} class="size-full" />
     )}
-    <div class="absolute top-4 left-4 flex min-w-[4.25rem] flex-col items-center rounded-2xl bg-white/95 px-3 py-2 text-center shadow-soft ring-1 ring-gold/40">
+    <div class="absolute top-4 left-4 flex min-w-[4.25rem] flex-col items-center rounded-2xl bg-white/95 px-3 py-2 text-center border border-line">
       <span class="font-display text-[1.75rem] leading-none font-bold text-primary">
         {badge.day}
       </span>
-      <span class="mt-1 text-[0.7rem] font-bold tracking-[0.14em] text-gold-text uppercase">
+      <span class="mt-1 text-[0.7rem] font-bold tracking-[0.14em] text-gold-dark uppercase">
         {badge.month.replace('.', '')}
       </span>
     </div>
@@ -62,7 +62,7 @@ const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
     <p class="mb-5 text-[0.95rem] text-muted">{pick(d.summary, lang)}</p>
     <ul class="mt-auto space-y-1.5 text-sm text-ink">
       <li class="flex items-start gap-2">
-        <Clock size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+        <Clock size={16} class="mt-[3px] shrink-0 text-ink" aria-hidden="true" />
         <span>
           <span>{formatLongDate(event.startDate, lang)}</span>
           {' · '}
@@ -70,12 +70,12 @@ const price = d.price.free ? t('events.free') : pick(d.price.label, lang);
         </span>
       </li>
       <li class="flex items-start gap-2">
-        <MapPin size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+        <MapPin size={16} class="mt-[3px] shrink-0 text-ink" aria-hidden="true" />
         <span>{d.location.name}</span>
       </li>
       {price && (
         <li class="flex items-start gap-2">
-          <Ticket size={16} class="mt-[3px] shrink-0 text-teal" aria-hidden="true" />
+          <Ticket size={16} class="mt-[3px] shrink-0 text-ink" aria-hidden="true" />
           <span class="font-semibold">{price}</span>
         </li>
       )}

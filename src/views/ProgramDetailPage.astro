@@ -52,7 +52,6 @@ const facts = [
   lede={pick(d.summary, lang)}
   alternates={alternates}
   crumbs={[{ label: t('programs.title'), href: path('programs', lang) }]}
-  footerWaveFrom={others.length ? 'var(--color-sand)' : 'var(--color-ivory)'}
 >
   <div class="container-site grid gap-12 pt-6 pb-20 lg:grid-cols-[1fr_22rem]">
     <article>
@@ -79,16 +78,13 @@ const facts = [
 
     <aside class="lg:sticky lg:top-28 lg:self-start" aria-labelledby="facts-title">
       <div class="card overflow-hidden">
-        <h2
-          id="facts-title"
-          class="bg-primary px-6 py-4 font-sans text-sm font-bold tracking-[0.18em] text-gold-light uppercase"
-        >
+        <h2 id="facts-title" class="border-b border-line bg-tint px-6 py-4 text-2xl font-bold">
           {t('programs.details')}
         </h2>
         <ul class="divide-y divide-line/70 px-6">
           {facts.map((f) => (
             <li class="flex gap-3 py-4">
-              <f.icon size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+              <f.icon size={20} class="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
               <div>
                 <p class="text-xs font-bold tracking-wider text-muted uppercase">{f.label}</p>
                 <div class="mt-0.5 font-semibold text-ink">{f.value}</div>
@@ -124,7 +120,7 @@ const facts = [
   </div>
 
   {others.length > 0 && (
-    <section class="bg-sand py-20" aria-labelledby="others-title" data-pagefind-ignore="all">
+    <section class="bg-tint py-20" aria-labelledby="others-title" data-pagefind-ignore="all">
       <div class="container-site">
         <h2 id="others-title" class="section-title mb-12">
           {t('programs.otherPrograms')}

@@ -1,4 +1,8 @@
 ---
+/**
+ * The one section-title pattern used across the site: centred title, then a thin gold
+ * line on each side of a small gold maple leaf. Optional eyebrow, lede and link.
+ */
 import { ArrowRight } from '@lucide/astro';
 import LeafRule from '@/components/brand/LeafRule.astro';
 
@@ -8,31 +12,24 @@ interface Props {
   title: string;
   lede?: string;
   link?: { href: string; label: string };
-  align?: 'left' | 'center';
+  /** Heading level; h2 by default. */
+  as?: 'h2' | 'h3';
+  class?: string;
 }
-const { id, eyebrow, title, lede, link, align = 'left' } = Astro.props;
-const centered = align === 'center';
+const { id, eyebrow, title, lede, link, as: Tag = 'h2', class: className = 'mb-12' } = Astro.props;
 ---
 
-<div
-  class:list={[
-    'mb-12 flex flex-col gap-6',
-    centered ? 'items-center text-center' : 'md:flex-row md:items-end md:justify-between',
-  ]}
-  data-reveal
->
-  <div class:list={['max-w-2xl', centered && 'flex flex-col items-center']}>
-    {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-    <h2 id={id} class="section-title">
-      {title}
-    </h2>
-    <LeafRule class:list={['mt-5 w-40', centered && 'mx-auto']} />
-    {lede && <p class="lede mt-5">{lede}</p>}
-  </div>
+<div class:list={['flex flex-col items-center text-center', className]}>
+  {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+  <Tag id={id} class="section-title max-w-3xl">
+    {title}
+  </Tag>
+  <LeafRule class="mt-5 w-48" />
+  {lede && <p class="lede mt-5 max-w-2xl">{lede}</p>}
   {link && (
-    <a href={link.href} class="link-arrow shrink-0">
+    <a href={link.href} class="link-arrow mt-5">
       {link.label}
-      <ArrowRight size={18} aria-hidden="true" />
+      <ArrowRight size={18} class="flip-rtl" aria-hidden="true" />
     </a>
   )}
 </div>

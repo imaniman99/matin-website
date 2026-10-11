@@ -102,11 +102,11 @@ const t = useTranslations(Astro.props.lang);
     margin: 0;
     padding: 0;
     border: 0;
-    background: rgb(4 20 34 / 0.94);
+    background: rgb(47 59 59 / 0.96);
     color: white;
   }
   .lightbox::backdrop {
-    background: rgb(4 20 34 / 0.6);
+    background: rgb(47 59 59 / 0.6);
   }
   .lightbox__inner {
     position: relative;
@@ -127,7 +127,6 @@ const t = useTranslations(Astro.props.lang);
     max-width: 100%;
     object-fit: contain;
     border-radius: 0.75rem;
-    box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
   }
   .lightbox__caption {
     display: flex;
@@ -137,7 +136,7 @@ const t = useTranslations(Astro.props.lang);
     text-align: center;
   }
   .lightbox__count {
-    color: var(--color-gold-light);
+    color: var(--color-gold);
     white-space: nowrap;
   }
   .lb-btn {
@@ -153,10 +152,10 @@ const t = useTranslations(Astro.props.lang);
   }
   .lb-btn:hover {
     background: var(--color-gold);
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
   }
   .lb-btn:focus-visible {
-    outline-color: var(--color-gold-light);
+    outline-color: var(--color-gold);
   }
   .lb-close {
     top: 1rem;

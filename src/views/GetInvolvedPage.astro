@@ -4,9 +4,8 @@
  * Persian: introduction and interest form (the sections that have Persian text).
  * Membership and donations are not offered (Matin hasn't opened them).
  */
-import { HandHeart, Handshake, Mail, Send } from '@lucide/astro';
+import { HandHeart, Handshake, Send } from '@lucide/astro';
 import PageLayout from '@/layouts/PageLayout.astro';
-import WaveDivider from '@/components/brand/WaveDivider.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
 import InterestForm from '@/components/forms/InterestForm.astro';
 import VolunteerForm from '@/components/forms/VolunteerForm.astro';
@@ -45,7 +44,7 @@ const jump = [
 >
   {jump.length > 1 && (
     <nav slot="hero" aria-label={t('involved.jumpTo')} class="mt-8">
-      <ul class="flex flex-wrap gap-2">
+      <ul class="flex flex-wrap justify-center gap-2">
         {jump.map((j) => (
           <li>
             <a href={`#${j.id}`} class="jump">
@@ -73,16 +72,14 @@ const jump = [
 
   {full && (
     <>
-      <WaveDivider from="var(--color-ivory)" to="var(--color-sand)" />
-
       <!-- Volunteer -->
-      <section id={ids.volunteer} class="bg-sand pt-8 pb-20" aria-labelledby="volunteer-title">
+      <section id={ids.volunteer} class="bg-tint pt-8 pb-20" aria-labelledby="volunteer-title">
         <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.15fr]">
           <div>
             <SectionHeader
               id="volunteer-title"
               title={t('involved.volunteer')}
-              lede={pick(inv.volunteerIntro, lang)}
+              lede={inv.volunteerIntro && pick(inv.volunteerIntro, lang)}
             />
             <ul class="space-y-4">
               {inv.roles.map((r) => (
@@ -100,8 +97,6 @@ const jump = [
         </div>
       </section>
 
-      <WaveDivider from="var(--color-sand)" to="var(--color-ivory)" flip />
-
       <!-- Partnerships -->
       <section id={ids.partners} class="container-site pt-8 pb-20" aria-labelledby="partners-title">
         <div class="card grid items-center gap-8 p-8 sm:p-12 md:grid-cols-[1fr_auto]">
@@ -109,10 +104,9 @@ const jump = [
             <h2 id="partners-title" class="section-title mb-4">
               {t('involved.partners')}
             </h2>
-            <p class="max-w-2xl text-lg text-muted">{pick(inv.partnersText, lang)}</p>
+            {inv.partnersText && <p class="max-w-2xl text-lg">{pick(inv.partnersText, lang)}</p>}
           </div>
           <a href={href('contact', lang)} class="btn btn-primary">
-            <Mail size={18} aria-hidden="true" />
             {t('involved.partnersCta')}
           </a>
         </div>
@@ -129,15 +123,17 @@ const jump = [
     min-height: 2.75rem;
     padding: 0.4rem 1.1rem;
     border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--color-primary);
+    font-weight: 700;
+    color: var(--color-ink);
     background: white;
+    border: 1px solid var(--color-line);
     text-decoration: none;
-    box-shadow: var(--shadow-soft);
   }
   .jump:hover {
-    background: var(--color-primary);
-    color: white;
+    background: var(--color-tint);
+    text-decoration: underline;
+  }
+  .jump :global(svg) {
+    color: var(--color-gold-dark);
   }
 </style>

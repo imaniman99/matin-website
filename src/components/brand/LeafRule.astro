@@ -1,14 +1,13 @@
 ---
-/** Thin gold rule with a small centred maple leaf — echoes the logo. Decorative. */
+/** Thin gold line on each side of a small gold maple leaf — echoes the logo. Decorative. */
 import MapleLeaf from './MapleLeaf.astro';
 interface Props {
   class?: string;
-  light?: boolean;
 }
-const { class: className = '', light = false } = Astro.props;
+const { class: className = '' } = Astro.props;
 ---
 
-<div class:list={['leaf-rule', light && 'leaf-rule--light', className]} aria-hidden="true">
+<div class:list={['leaf-rule', className]} aria-hidden="true">
   <span></span>
   <MapleLeaf size={16} />
   <span></span>
@@ -20,18 +19,11 @@ const { class: className = '', light = false } = Astro.props;
     align-items: center;
     gap: 0.75rem;
     max-width: 18rem;
-    color: var(--color-teal);
+    color: var(--color-gold);
   }
   .leaf-rule span {
     flex: 1;
-    height: 2px;
-    border-radius: 2px;
-    background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold));
-  }
-  .leaf-rule span:last-child {
-    background: linear-gradient(270deg, transparent, var(--color-gold) 30%, var(--color-gold));
-  }
-  .leaf-rule--light {
-    color: var(--color-gold-light);
+    height: 1.5px;
+    background: var(--color-gold);
   }
 </style>

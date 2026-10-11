@@ -28,9 +28,9 @@ const areas = [
 
 {!formsEnabled && (
   <div class="closed" role="status">
-    <p class="mb-1 text-lg font-bold text-primary-dark">{t('interest.closedTitle')}</p>
+    <p class="mb-1 text-lg font-bold text-ink">{t('interest.closedTitle')}</p>
     <p class="mb-4">{t('interest.closedText')}</p>
-    <a href={href('contact', lang)} class="btn btn-primary !min-h-11">
+    <a href={href('contact', lang)} class="btn btn-primary">
       <Mail size={18} aria-hidden="true" />
       {t('interest.closedLink')}
     </a>
@@ -103,7 +103,7 @@ const areas = [
   .closed {
     padding: 1.25rem 1.4rem;
     border-radius: 1rem;
-    background: var(--color-sand);
+    background: var(--color-tint);
     color: var(--color-ink);
     border-inline-start: 4px solid var(--color-gold);
   }
@@ -127,7 +127,7 @@ const areas = [
     padding: 0.85rem 1rem;
     border-radius: 0.75rem;
     font-size: 0.92rem;
-    background: var(--color-ivory);
+    background: white;
     color: var(--color-ink);
     border: 1px solid var(--color-line);
   }

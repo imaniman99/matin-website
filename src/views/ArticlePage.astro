@@ -55,7 +55,6 @@ const jsonLd = {
   crumbs={[{ label: t('news.title'), href: path('news', lang) }]}
   type="article"
   jsonLd={[jsonLd]}
-  footerWaveFrom={related.length ? 'var(--color-cream)' : 'var(--color-ivory)'}
 >
   <p slot="hero" class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
     <span>
@@ -73,7 +72,7 @@ const jsonLd = {
     {[d.category].map((c) => (
       <a
         href={path('news', lang, categorySegment[lang], categorySlugs[c][lang])}
-        class="rounded-full bg-sand px-3 py-1 text-xs font-bold text-primary no-underline hover:bg-primary hover:text-white"
+        class="rounded-full border border-line bg-tint px-3 py-1 text-sm font-bold text-ink no-underline hover:underline"
       >
         {t(`newsCategories.${c}`)}
       </a>
@@ -96,8 +95,8 @@ const jsonLd = {
     )}
     <Prose html={renderMarkdown(d.body[lang], lang)} class="mx-auto max-w-2xl text-lg" />
     {d.source && (
-      <aside class="mx-auto mt-10 max-w-2xl rounded-2xl border-s-4 border-gold bg-sand p-5 text-sm">
-        <p class="mb-1 font-bold text-primary-dark">{t('news.sourceIntro')}</p>
+      <aside class="mx-auto mt-10 max-w-2xl rounded-2xl border-s-4 border-gold bg-tint p-5 text-sm">
+        <p class="mb-1 font-bold text-ink">{t('news.sourceIntro')}</p>
         <a
           href={d.source.url}
           target="_blank"
@@ -127,7 +126,7 @@ const jsonLd = {
   </article>
 
   {related.length > 0 && (
-    <section class="bg-cream py-20" aria-labelledby="related-title" data-pagefind-ignore="all">
+    <section class="bg-tint py-20" aria-labelledby="related-title" data-pagefind-ignore="all">
       <div class="container-site">
         <h2 id="related-title" class="section-title mb-12">
           {t('news.related')}

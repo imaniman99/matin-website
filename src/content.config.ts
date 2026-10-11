@@ -142,16 +142,19 @@ const settings = defineCollection({
   schema: z.object({
     mission: bi,
     founded: z.number().int().optional(),
-    address: z.object({
-      street: z.string(),
-      city: z.string().default('Montréal'),
-      region: z.string().default('QC'),
-      postalCode: z.string(),
-      country: z.string().default('CA'),
-    }),
-    phone: z.string(),
-    email: z.string(),
-    hours: bi,
+    /** Contact details are optional: each one appears on the site only once it is set. */
+    address: z
+      .object({
+        street: z.string(),
+        city: z.string().default('Montréal'),
+        region: z.string().default('QC'),
+        postalCode: z.string(),
+        country: z.string().default('CA'),
+      })
+      .optional(),
+    phone: z.string().optional(),
+    email: z.string().optional(),
+    hours: bi.optional(),
     social: z.object({
       facebook: z.url().optional(),
       instagram: z.url().optional(),
@@ -161,11 +164,13 @@ const settings = defineCollection({
     charityNumber: z.string().optional(),
     donateUrl: z.url(),
     /** Law 25: person in charge of the protection of personal information. */
-    privacyOfficer: z.object({
-      name: z.string(),
-      title: bi,
-      email: z.string(),
-    }),
+    privacyOfficer: z
+      .object({
+        name: z.string(),
+        title: bi,
+        email: z.string(),
+      })
+      .optional(),
     /**
      * Turn on only once form submissions actually reach Matin (Netlify Forms detection
      * enabled and notifications set). While false, the interest and newsletter forms
@@ -190,28 +195,27 @@ const team = defineCollection({
     }),
 });
 
-/** Page-level content for "About" (vision, values, history, director's message). */
+/** Page-level content for "About" (vision, values, story, President's message). */
 const about = defineCollection({
   loader: yaml('about'),
-  schema: ({ image }) =>
-    z.object({
-      vision: bi,
-      values: z.array(
-        z.object({
-          title: bi,
-          text: bi,
-          icon: z.enum(['dialogue', 'respect', 'openness', 'creativity', 'community', 'equity']),
-        }),
-      ),
-      history: z.array(z.object({ year: z.string(), title: bi, text: bi })),
-      director: z.object({
-        name: z.string(),
+  schema: z.object({
+    vision: bi,
+    values: z.array(
+      z.object({
         title: bi,
-        message: bi,
-        photo: image().optional(),
+        text: bi,
+        icon: z.enum(['dialogue', 'respect', 'openness', 'creativity', 'community', 'equity']),
       }),
-      placeholder: z.boolean().default(false),
+    ),
+    history: z.array(z.object({ year: z.string(), title: bi, text: bi })),
+    /** Photo: drop src/assets/brand/president.(jpg|png|webp) in place of the initials. */
+    president: z.object({
+      name: z.string(),
+      title: bi,
+      message: bi,
     }),
+    placeholder: z.boolean().default(false),
+  }),
 });
 
 /** Downloadable governance documents (annual reports, bylaws…). PDFs go in public/documents/. */
@@ -281,9 +285,9 @@ const resources = defineCollection({
 const involvement = defineCollection({
   loader: yaml('involvement'),
   schema: z.object({
-    volunteerIntro: bi,
+    volunteerIntro: bi.optional(),
     roles: z.array(z.object({ title: bi, text: bi })),
-    partnersText: bi,
+    partnersText: bi.optional(),
     placeholder: z.boolean().default(false),
   }),
 });

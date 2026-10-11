@@ -1,5 +1,4 @@
 ---
-import { Mail } from '@lucide/astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Accordion from '@/components/ui/Accordion.astro';
 import { alternatesFor, path, type Lang } from '@/i18n/routes';
@@ -35,13 +34,13 @@ const jsonLd = {
   alternates={alternatesFor('faq')}
   jsonLd={[jsonLd]}
 >
-  <nav slot="hero" aria-label={t('faq.topics')} class="mt-8">
-    <ul class="flex flex-wrap gap-2">
+  <nav slot="hero" aria-label={t('faq.topics')} class="mt-8" hidden={groups.length === 0}>
+    <ul class="flex flex-wrap justify-center gap-2">
       {groups.map((g) => (
         <li>
           <a
             href={`#${g.topic}`}
-            class="rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-primary no-underline shadow-soft hover:bg-primary hover:text-white"
+            class="inline-block rounded-full border border-line bg-white px-4 py-2.5 font-bold text-ink no-underline hover:bg-tint hover:underline"
           >
             {t(`faq.${g.topic}`)}
           </a>
@@ -51,6 +50,7 @@ const jsonLd = {
   </nav>
 
   <div class="container-site max-w-4xl space-y-14 pt-4 pb-20">
+    {groups.length === 0 && <p class="card p-8 text-center text-lg">{t('faq.empty')}</p>}
     {groups.map((g) => (
       <section id={g.topic} aria-labelledby={`${g.topic}-title`}>
         <h2 id={`${g.topic}-title`} class="mb-6 text-3xl font-bold">
@@ -66,10 +66,9 @@ const jsonLd = {
       </section>
     ))}
 
-    <div class="card flex flex-col items-start gap-5 bg-cream p-8 sm:flex-row sm:items-center sm:justify-between">
+    <div class="card flex flex-col items-start gap-5 p-8 sm:flex-row sm:items-center sm:justify-between">
       <p class="font-display text-2xl font-bold text-primary">{t('faq.stillQuestions')}</p>
       <a href={path('contact', lang)} class="btn btn-primary">
-        <Mail size={18} aria-hidden="true" />
         {t('faq.contactUs')}
       </a>
     </div>

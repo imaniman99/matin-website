@@ -55,17 +55,17 @@ const en: Dictionary = {
     devNotice: 'Search works once the site is built (npm run build, then npm run preview).',
   },
   home: {
-    heroEyebrow: 'Matin Intercultural Institute',
+    heroEyebrow: 'MATIN INTERCULTURAL INSTITUTE',
     heroTitle: 'Cultures in Dialogue',
-    heroLine1:
-      'A Montréal-based initiative bringing people and communities together across cultures.',
-    heroLine2:
-      'Through exchange, dialogue and shared learning, we are building understanding and connection.',
+    heroText:
+      'Matin Intercultural Institute is a Montréal-based non-profit where cultures meet in conversation. Through dialogue, the arts, research, and public engagement, we bring people and communities of all origins together to build understanding, equity, and a shared sense of belonging, rooted in Québec and open to the world.',
+    heroLogoAlt:
+      'Matin Intercultural Institute logo: Matin, Institut interculturel, Intercultural Institute',
     heroCtaWho: 'Who We Are',
     heroCtaInvolved: 'Get Involved',
     whoTitle: 'Who We Are',
     whoText:
-      'Matin Intercultural Institute is a Montréal-based initiative dedicated to bringing people and communities together across cultural backgrounds. Through intercultural dialogue, cultural exchange and shared learning, Matin seeks to foster mutual understanding, meaningful connections and a stronger sense of belonging. Open to all communities, Matin is rooted in Québec and connected to Canada and the wider world.',
+      'Matin Intercultural Institute is a Montréal-based non-profit working at the intersection of culture, dialogue, and social development. We bring together people and communities of all origins through intercultural exchange, the arts, research, and public engagement. Rooted in Québec and connected to Canada and the world, Matin works to build mutual understanding, equity, and a shared sense of belonging.',
     whoCardsLabel: 'Learn more about Matin',
     areasEyebrow: 'Our areas of work',
     areasTitle: 'How Matin Brings Cultures Together',
@@ -179,6 +179,8 @@ const en: Dictionary = {
   },
   programs: {
     title: 'Programs',
+    empty:
+      "Matin's first programs are being shaped with the community. Check back soon, or tell us what interests you.",
     lede: 'Languages, arts, youth and newcomer support: activities to learn, create and connect.',
     learnMore: 'Learn more',
     audience: 'Audience',
@@ -234,11 +236,12 @@ const en: Dictionary = {
     title: 'About',
     lede: 'Matin is a Montréal intercultural institute that brings cultures together through dialogue, creativity and sharing.',
     whoWeAre: 'Who We Are',
-    mission: 'Our mission',
-    vision: 'Our vision',
+    mission: 'Our Mission',
+    vision: 'Our Vision',
     values: 'Our values',
     history: 'Our story',
-    founderTitle: 'A word from our director',
+    founderTitle: 'A WORD FROM OUR PRESIDENT',
+    presidentPhotoAlt: 'Portrait of {name}',
     team: 'Our team',
     board: 'Board of directors',
     documents: 'Annual reports & governance',
@@ -249,6 +252,7 @@ const en: Dictionary = {
   },
   gallery: {
     title: 'Gallery',
+    empty: "Photos and videos of Matin's first activities will appear here soon.",
     lede: 'Photos and videos from the highlights of life at Matin.',
     albums: 'Photo albums',
     videos: 'Videos',
@@ -326,6 +330,8 @@ const en: Dictionary = {
   },
   faq: {
     title: 'Frequently Asked Questions',
+    empty:
+      'Answers to frequently asked questions will appear here soon. In the meantime, write to us.',
     lede: "Answers to the most common questions. Can't find yours? Write to us.",
     topics: 'Topics',
     general: 'General',
@@ -338,6 +344,7 @@ const en: Dictionary = {
   },
   legal: {
     updated: 'Last updated: {date}',
+    officerFallback: 'Write to us through our [Contact page]({href}).',
   },
   notFound: {
     title: 'Page not found',

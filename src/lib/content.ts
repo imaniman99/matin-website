@@ -135,6 +135,3 @@ export const initials = (name: string) =>
     .slice(0, 2)
     .map((w) => w[0]?.toUpperCase() ?? '')
     .join('') || 'M';
-
-/** True if any visible text still contains the placeholder marker. */
-export const isPlaceholderText = (text: string | undefined) => !!text?.includes('[PLACEHOLDER]');

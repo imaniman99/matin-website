@@ -171,10 +171,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
     padding: 0.4rem;
     border-radius: 0.75rem;
     background: white;
-    box-shadow: inset 0 0 0 1px rgb(11 61 92 / 0.07);
+    box-shadow: inset 0 0 0 1px var(--color-line);
   }
   .cal-day.has-events {
-    background: linear-gradient(180deg, #fff, var(--color-cream));
+    background: white;
     box-shadow: inset 0 0 0 1.5px var(--color-gold);
   }
   .cal-num {
@@ -199,12 +199,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     overflow-wrap: anywhere;
   }
   .cal-event:hover {
-    background: var(--color-teal);
+    background: var(--color-ink);
   }
   .cal-time {
     display: block;
     font-weight: 400;
-    color: var(--color-gold-light);
+    color: var(--color-gold);
   }
   .cal-nav {
     display: grid;
@@ -214,7 +214,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     border-radius: 999px;
     color: var(--color-primary);
     background: white;
-    border: 1.5px solid rgb(11 61 92 / 0.2);
+    border: 1.5px solid var(--color-line);
     cursor: pointer;
   }
   .cal-nav:disabled {

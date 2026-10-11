@@ -57,17 +57,17 @@ const fr = {
       'La recherche fonctionne une fois le site construit (npm run build, puis npm run preview).',
   },
   home: {
-    heroEyebrow: 'Institut interculturel Matin',
-    heroTitle: 'Matin relie les cultures',
-    heroLine1:
-      'Une initiative montréalaise qui rapproche les personnes et les communautés de différentes cultures.',
-    heroLine2:
-      "Par le dialogue, les échanges culturels et l'apprentissage partagé, nous souhaitons créer des liens et favoriser la compréhension mutuelle.",
-    heroCtaWho: 'Qui sommes-nous ?',
-    heroCtaInvolved: 'Participez',
+    heroEyebrow: 'INSTITUT INTERCULTUREL MATIN',
+    heroTitle: 'Cultures en dialogue',
+    heroText:
+      "L'Institut interculturel Matin est un organisme à but non lucratif montréalais où les cultures se rencontrent dans la conversation. Par le dialogue, les arts, la recherche et l'engagement public, nous rassemblons des personnes et des communautés de toutes origines pour bâtir la compréhension, l'équité et un sentiment d'appartenance partagé, enracinés au Québec et ouverts sur le monde.",
+    heroLogoAlt:
+      "Logo de l'Institut interculturel Matin : Matin, Institut interculturel, Intercultural Institute",
+    heroCtaWho: 'Qui sommes-nous',
+    heroCtaInvolved: 'Nous rejoindre',
     whoTitle: 'Qui sommes-nous ?',
     whoText:
-      "L'Institut interculturel Matin est une initiative montréalaise qui vise à rapprocher les personnes et les communautés de différentes origines culturelles. Par le dialogue interculturel, les échanges culturels et l'apprentissage partagé, Matin souhaite favoriser la compréhension mutuelle, créer des liens et renforcer le sentiment d'appartenance. Ouvert à toutes les communautés, Matin s'enracine au Québec et s'ouvre au Canada et au monde.",
+      "L'Institut interculturel Matin est un organisme à but non lucratif montréalais qui œuvre à la croisée de la culture, du dialogue et du développement social. Nous rassemblons des personnes et des communautés de toutes origines grâce aux échanges interculturels, aux arts, à la recherche et à l'engagement public. Enraciné au Québec et connecté au Canada et au monde, Matin travaille à bâtir la compréhension mutuelle, l'équité et un sentiment d'appartenance partagé.",
     whoCardsLabel: 'En savoir plus sur Matin',
     areasEyebrow: "Nos champs d'action",
     areasTitle: 'Comment Matin rapproche les cultures',
@@ -182,6 +182,8 @@ const fr = {
   },
   programs: {
     title: 'Programmes',
+    empty:
+      'Les premiers programmes de Matin se construisent avec la communauté. Revenez bientôt, ou dites-nous ce qui vous intéresse.',
     lede: 'Langues, arts, jeunesse et accueil : des activités pour apprendre, créer et se rencontrer.',
     learnMore: 'En savoir plus',
     audience: 'Public',
@@ -236,12 +238,13 @@ const fr = {
   about: {
     title: 'À propos',
     lede: 'Matin est un institut interculturel montréalais qui rassemble les cultures autour du dialogue, de la création et du partage.',
-    whoWeAre: 'Qui sommes-nous ?',
+    whoWeAre: 'Qui sommes-nous',
     mission: 'Notre mission',
     vision: 'Notre vision',
     values: 'Nos valeurs',
     history: 'Notre histoire',
-    founderTitle: 'Mot de la direction',
+    founderTitle: 'UN MOT DE NOTRE PRÉSIDENT',
+    presidentPhotoAlt: 'Portrait de {name}',
     team: 'Notre équipe',
     board: "Conseil d'administration",
     documents: 'Rapports annuels et gouvernance',
@@ -251,6 +254,7 @@ const fr = {
   },
   gallery: {
     title: 'Galerie',
+    empty: 'Les photos et vidéos des premières activités de Matin paraîtront ici bientôt.',
     lede: 'Retour en images et en vidéos sur les moments forts de la vie de Matin.',
     albums: 'Albums photo',
     videos: 'Vidéos',
@@ -310,7 +314,7 @@ const fr = {
     consentContact:
       "J'accepte que Matin utilise ces renseignements pour répondre à ma demande, conformément à sa",
     send: 'Envoyer',
-    sending: 'Envoi en cours…',
+    sending: 'Envoi…',
     success: 'Merci! Votre message a bien été envoyé. Nous vous répondrons bientôt.',
     error: "Le message n'a pas pu être envoyé. Veuillez réessayer ou nous écrire directement.",
     errorsIntro: 'Veuillez corriger les champs suivants :',
@@ -329,6 +333,7 @@ const fr = {
   },
   faq: {
     title: 'Foire aux questions',
+    empty: "Les réponses aux questions fréquentes paraîtront ici bientôt. D'ici là, écrivez-nous.",
     lede: 'Les réponses aux questions les plus fréquentes. Vous ne trouvez pas? Écrivez-nous.',
     topics: 'Thèmes',
     general: 'Généralités',
@@ -341,6 +346,7 @@ const fr = {
   },
   legal: {
     updated: 'Dernière mise à jour : {date}',
+    officerFallback: 'Écrivez-nous par notre [page Contact]({href}).',
   },
   notFound: {
     title: 'Page introuvable',

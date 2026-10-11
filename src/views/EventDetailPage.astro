@@ -104,7 +104,7 @@ const jsonLd = {
           <CoverArt category={d.category} seed={event.id} class="size-full" />
         )}
         {ended && (
-          <span class="absolute top-4 left-4 rounded-full bg-primary-dark px-4 py-1.5 text-sm font-bold text-white">
+          <span class="absolute top-4 left-4 rounded-full border border-line bg-white px-4 py-1.5 text-sm font-bold text-ink">
             {t('events.ended')}
           </span>
         )}
@@ -179,7 +179,7 @@ const jsonLd = {
       <div class="card overflow-hidden">
         <ul class="divide-y divide-line/70 px-6">
           <li class="flex gap-3 py-5">
-            <Clock size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <Clock size={20} class="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
             <div>
               <p class="text-xs font-bold tracking-wider text-muted uppercase">
                 {t('events.when')}
@@ -193,7 +193,7 @@ const jsonLd = {
             </div>
           </li>
           <li class="flex gap-3 py-5">
-            <MapPin size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+            <MapPin size={20} class="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
             <div>
               <p class="text-xs font-bold tracking-wider text-muted uppercase">
                 {t('events.where')}
@@ -215,7 +215,7 @@ const jsonLd = {
           </li>
           {price && (
             <li class="flex gap-3 py-5">
-              <Ticket size={20} class="mt-0.5 shrink-0 text-teal" aria-hidden="true" />
+              <Ticket size={20} class="mt-0.5 shrink-0 text-ink" aria-hidden="true" />
               <div>
                 <p class="text-xs font-bold tracking-wider text-muted uppercase">
                   {t('events.price')}
@@ -243,18 +243,18 @@ const jsonLd = {
 
       {!ended && (
         <div class="card p-6">
-          <h2 class="mb-4 flex items-center gap-2 font-sans text-sm font-bold tracking-[0.15em] text-primary uppercase">
-            <CalendarPlus size={18} class="text-gold-text" aria-hidden="true" />
+          <h2 class="mb-4 flex items-center gap-2 font-sans text-sm font-bold tracking-[0.15em] text-ink uppercase">
+            <CalendarPlus size={18} class="text-gold-dark" aria-hidden="true" />
             {t('events.addToCalendar')}
           </h2>
           <div class="flex flex-col gap-2">
-            <a href={icsHref} class="btn btn-outline !min-h-11 text-sm" download>
+            <a href={icsHref} class="btn btn-outline" download>
               <Download size={16} aria-hidden="true" />
               {t('events.icsDownload')}
             </a>
             <a
               href={googleCalendarUrl(event, lang, url)}
-              class="btn btn-outline !min-h-11 text-sm"
+              class="btn btn-outline"
               target="_blank"
               rel="noopener noreferrer"
             >

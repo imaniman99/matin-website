@@ -1,21 +1,11 @@
 # Coordonnées et réglages généraux du site / Site-wide details.
-# Tout ce qui est entre [PLACEHOLDER] doit être remplacé (voir CONTENT_TODO.md).
-placeholder: true
+# Adresse, téléphone, courriel, heures et personne responsable de la confidentialité :
+# ajoutez-les ici quand ils sont connus ; le site les affiche alors automatiquement.
+# Address, phone, email, hours and privacy officer: add them here once known
+# (see CONTENT_TODO.md); the site shows them automatically.
 mission:
-  fr: '[PLACEHOLDER] Matin favorise le dialogue, la compréhension mutuelle et les échanges entre les cultures au Québec et au Canada, en offrant un espace accueillant où chacun peut apprendre, créer et partager.'
-  en: '[PLACEHOLDER] Matin fosters dialogue, mutual understanding and exchange between cultures in Québec and Canada, offering a welcoming space where everyone can learn, create and share.'
-  fa: '[PLACEHOLDER] متین گفت‌وگو، درک متقابل و تبادل میان فرهنگ‌ها را در کبک و کانادا تقویت می‌کند و فضایی گرم و پذیرا فراهم می‌آورد تا همه بتوانند بیاموزند، بیافرینند و تجربه‌هایشان را با هم در میان بگذارند.'
-address:
-  street: '[PLACEHOLDER] 1234, rue Exemple'
-  city: Montréal
-  region: QC
-  postalCode: 'H0H 0H0'
-  country: CA
-phone: '[PLACEHOLDER] 514 000-0000'
-email: 'info@matin-institut.example'
-hours:
-  fr: "[PLACEHOLDER] Lundi au vendredi : 10 h – 18 h\nSamedi : 10 h – 16 h\nDimanche : fermé"
-  en: "[PLACEHOLDER] Monday to Friday: 10 a.m. – 6 p.m.\nSaturday: 10 a.m. – 4 p.m.\nSunday: closed"
+  fr: "Promouvoir le dialogue interculturel, l'équité et les échanges culturels au Québec, au Canada et à l'international. Nous soutenons l'accueil et la pleine participation des personnes immigrantes, mettons en valeur les arts et le patrimoine des diverses communautés, faisons avancer la recherche et les publications sur l'interculturalité, et renforçons les liens entre les jeunes, les familles et les personnes aînées."
+  en: 'To promote intercultural dialogue, equity, and cultural exchange in Québec, Canada, and internationally. We support the welcoming and full participation of immigrants, celebrate the arts and heritage of diverse communities, advance research and publications on interculturality, and strengthen ties between youth, families, and seniors.'
 social:
   youtube: https://www.youtube.com/@MatinInstitute
   linkedin: https://www.linkedin.com/company/matin-intercultural-community-center/
@@ -25,9 +15,3 @@ donateUrl: https://www.zeffy.com/
 # Turn on (true) only once form submissions really reach Matin: Netlify →
 # Forms → "Enable form detection", then set up notification emails and redeploy.
 formsEnabled: true
-privacyOfficer:
-  name: '[PLACEHOLDER] Nom de la personne responsable'
-  title:
-    fr: '[PLACEHOLDER] Directrice générale ou directeur général'
-    en: '[PLACEHOLDER] Executive Director'
-  email: 'confidentialite@matin-institut.example'

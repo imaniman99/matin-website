@@ -9,9 +9,10 @@ import { href, type UiLang } from '@/i18n/routes';
 
 interface Props {
   lang: UiLang;
-  variant?: 'dark' | 'light';
+  /** Background the lockup sits on (the leaf is cut out of the rule with it). */
+  variant?: 'white' | 'tint';
 }
-const { lang, variant = 'dark' } = Astro.props;
+const { lang, variant = 'white' } = Astro.props;
 const t = useTranslations(lang);
 // The logo keeps its French/English wording; on Persian pages it shows the French logo.
 const logoLang = lang === 'fa' ? 'fr' : lang;
@@ -20,7 +21,7 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
 
 <a
   href={href('home', lang)}
-  class:list={['lockup', variant === 'light' && 'lockup--light']}
+  class:list={['lockup', variant === 'tint' && 'lockup--tint']}
   dir="ltr"
 >
   <span class="lockup__word" lang={logoLang} dir="ltr">
@@ -49,10 +50,7 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
     font-weight: 800;
     font-size: 2.1rem;
     letter-spacing: -0.01em;
-    background: linear-gradient(180deg, #1a6e93 0%, #0b3d5c 45%, #041a2e 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--color-primary);
     padding-bottom: 0.08em;
   }
   .lockup__rule {
@@ -60,20 +58,14 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
     align-self: stretch;
     width: 2px;
     margin-block: 0.2rem;
-    background: linear-gradient(
-      180deg,
-      transparent,
-      var(--color-gold) 20%,
-      var(--color-gold) 80%,
-      transparent
-    );
+    background: var(--color-gold);
   }
   .lockup__rule :global(.lockup__leaf) {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--color-teal);
+    color: var(--color-gold);
     background: var(--lockup-bg, white);
     padding: 2px 0;
     width: 13px;
@@ -87,20 +79,9 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
     font-weight: 700;
     font-size: 0.72rem;
     letter-spacing: 0.04em;
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
   }
-  .lockup--light .lockup__word {
-    background: linear-gradient(180deg, #ffffff, #ddf4f9);
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-  .lockup--light .lockup__inst {
-    color: white;
-  }
-  .lockup--light {
-    --lockup-bg: var(--color-primary-dark);
-  }
-  .lockup--light .lockup__rule :global(.lockup__leaf) {
-    color: var(--color-gold-light);
+  .lockup--tint {
+    --lockup-bg: var(--color-tint);
   }
 </style>

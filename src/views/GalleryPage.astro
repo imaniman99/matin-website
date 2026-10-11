@@ -38,12 +38,12 @@ const videos = albums.flatMap((a) => a.data.videos);
   title={t('gallery.title')}
   lede={t('gallery.lede')}
   alternates={alternatesFor('gallery')}
-  footerWaveFrom={videos.length ? 'var(--color-sand)' : 'var(--color-ivory)'}
 >
   <section class="container-site pt-4 pb-20" aria-labelledby="albums-title">
     <h2 id="albums-title" class="sr-only">
       {t('gallery.albums')}
     </h2>
+    {albums.length === 0 && <p class="card p-8 text-center text-lg">{t('gallery.empty')}</p>}
     <div class="space-y-20">
       {albumsWithLarge.map(({ album, photos }) => (
         <section aria-labelledby={`album-${album.id}`}>
@@ -56,7 +56,7 @@ const videos = albums.flatMap((a) => a.data.videos);
                 {pick(album.data.title, lang)}
               </h3>
               {album.data.description && (
-                <p class="mt-3 max-w-2xl text-muted">{pick(album.data.description, lang)}</p>
+                <p class="mt-3 max-w-2xl">{pick(album.data.description, lang)}</p>
               )}
             </div>
           </div>
@@ -99,7 +99,7 @@ const videos = albums.flatMap((a) => a.data.videos);
   </section>
 
   {videos.length > 0 && (
-    <section class="bg-sand py-20" aria-labelledby="videos-title">
+    <section class="bg-tint py-20" aria-labelledby="videos-title">
       <div class="container-site">
         <h2 id="videos-title" class="section-title mb-12">
           {t('gallery.videos')}
@@ -137,7 +137,7 @@ const videos = albums.flatMap((a) => a.data.videos);
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 999px;
-    color: var(--color-primary-dark);
+    color: var(--color-ink);
     background: rgb(255 255 255 / 0.9);
     opacity: 0;
     transform: translateY(6px);

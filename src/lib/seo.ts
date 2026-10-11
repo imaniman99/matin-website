@@ -25,15 +25,19 @@ export function organizationJsonLd(
     logo: new URL('/icons/logo-512.png', site).href,
     image: new URL('/og-default.jpg', site).href,
     description,
-    email: settings.email,
-    telephone: settings.phone,
+    ...(settings.email ? { email: settings.email } : {}),
+    ...(settings.phone ? { telephone: settings.phone } : {}),
     address: {
       '@type': 'PostalAddress',
-      streetAddress: settings.address.street,
-      addressLocality: settings.address.city,
-      addressRegion: settings.address.region,
-      postalCode: settings.address.postalCode,
-      addressCountry: settings.address.country,
+      ...(settings.address
+        ? {
+            streetAddress: settings.address.street,
+            postalCode: settings.address.postalCode,
+          }
+        : {}),
+      addressLocality: settings.address?.city ?? 'Montréal',
+      addressRegion: settings.address?.region ?? 'QC',
+      addressCountry: settings.address?.country ?? 'CA',
     },
     ...(sameAs.length ? { sameAs } : {}),
   };

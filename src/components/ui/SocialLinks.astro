@@ -48,17 +48,15 @@ const present = networks.filter((n) => social[n.key]);
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 999px;
-    color: white;
-    background: rgb(255 255 255 / 0.08);
-    border: 1px solid rgb(255 255 255 / 0.18);
+    color: var(--color-primary);
+    background: white;
+    border: 1px solid var(--color-line);
     transition:
       background 0.2s,
-      color 0.2s,
-      transform 0.2s;
+      color 0.2s;
   }
   .social-link:hover {
     background: var(--color-gold);
-    color: var(--color-primary-dark);
-    transform: translateY(-2px);
+    color: var(--color-ink);
   }
 </style>

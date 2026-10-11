@@ -1,7 +1,7 @@
 ---
 /**
  * Branded illustrated cover used when an entry has no photo yet:
- * soft gradient, sunrise, waves and the category icon. Decorative.
+ * flat light turquoise, a gold sun, turquoise waves and the category icon. Decorative.
  */
 import CategoryIcon from './CategoryIcon.astro';
 import type { Category } from '@/lib/taxonomy';
@@ -13,23 +13,10 @@ interface Props {
 }
 const { category, seed = category, class: className = '' } = Astro.props;
 
-// Warm ivory/sand backgrounds; turquoise and gold come from the waves and the sun.
-const palettes: Record<Category, [string, string]> = {
-  language: ['#FBF6EC', '#EADFC8'],
-  arts: ['#FBF3E2', '#EFD9AE'],
-  youth: ['#F7F4EA', '#DCE5D5'],
-  community: ['#FBF6EC', '#F0DEB4'],
-  newcomers: ['#F7F1E4', '#E1E8E2'],
-  lectures: ['#F6F2EA', '#DED9CC'],
-  music: ['#F8F3E8', '#E2DCCB'],
-  celebration: ['#FBF2DF', '#ECD3A0'],
-};
-const [c1, c2] = palettes[category];
 // Cheap deterministic variation so neighbouring cards don't look identical.
 const n = [...seed].reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) % 997, 7);
 const sunX = 70 + (n % 260);
 const waveShift = (n % 5) * 18;
-const uid = `cv${n}${category}`;
 ---
 
 <div class:list={['cover-art relative overflow-hidden', className]} aria-hidden="true">
@@ -38,41 +25,25 @@ const uid = `cv${n}${category}`;
     preserveAspectRatio="xMidYMid slice"
     class="absolute inset-0 size-full"
   >
-    <defs>
-      <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color={c1}></stop>
-        <stop offset="1" stop-color={c2}></stop>
-      </linearGradient>
-      <radialGradient id={`${uid}-halo`}>
-        <stop offset="0" stop-color="#FFF4D6" stop-opacity="0.9"></stop>
-        <stop offset="1" stop-color="#FFF4D6" stop-opacity="0"></stop>
-      </radialGradient>
-      <linearGradient id={`${uid}-sun`} x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#FBE3A6"></stop>
-        <stop offset="1" stop-color="#EDBE5C"></stop>
-      </linearGradient>
-    </defs>
-    <rect width="400" height="240" fill={`url(#${uid}-bg)`}></rect>
-    <circle cx={sunX} cy="168" r="110" fill={`url(#${uid}-halo)`}></circle>
-    <circle cx={sunX} cy="168" r="40" fill={`url(#${uid}-sun)`}></circle>
+    <rect width="400" height="240" fill="var(--color-tint)"></rect>
+    <circle cx={sunX} cy="168" r="40" fill="var(--color-gold)"></circle>
     <path
       d={`M0 ${170 - waveShift / 3} C 100 ${130 + waveShift} 220 ${210 - waveShift} 400 ${160} V240 H0Z`}
-      fill="#1F9AA0"
-      fill-opacity="0.55"
+      fill="var(--color-turquoise)"
+      fill-opacity="0.35"
     ></path>
     <path
       d={`M0 ${195} C 120 ${165 + waveShift / 2} 260 ${230 - waveShift / 2} 400 ${190} V240 H0Z`}
-      fill="#0A5C63"
-      fill-opacity="0.85"
+      fill="var(--color-primary)"
     ></path>
     <path
       d={`M0 ${182} C 110 ${150 + waveShift / 2} 240 ${222 - waveShift / 2} 400 ${176}`}
       fill="none"
-      stroke="#D9A441"
+      stroke="var(--color-gold)"
       stroke-width="1.5"
     ></path>
   </svg>
-  <div class="absolute inset-0 grid place-items-center pb-[16%] text-primary/75">
+  <div class="absolute inset-0 grid place-items-center pb-[16%] text-primary">
     <CategoryIcon category={category} size={56} strokeWidth={1.25} />
   </div>
 </div>

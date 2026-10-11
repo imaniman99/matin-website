@@ -2,7 +2,8 @@
  * Québec French typography (OQLF conventions):
  *  - non-breaking space before the colon « : »
  *  - non-breaking spaces inside guillemets « like this »
- *  - NO space before ; ! ? (unlike France)
+ *  - a space the author put before ; ! ? is kept but made non-breaking
+ *    (texts are published exactly as written, see CLAUDE.md)
  *
  * Only touches spaces that are already adjacent to the punctuation, so URLs,
  * times like 19:00 and Markdown syntax are left alone.
@@ -21,7 +22,7 @@ export function frenchTypo(input: string): string {
     .replace(openQuote, `«${NBSP}`)
     .replace(closeQuote, `${NBSP}»`)
     .replace(beforeColon, `${NBSP}:`)
-    .replace(beforeStrongPunct, '$1');
+    .replace(beforeStrongPunct, `${NBSP}$1`);
 }
 
 /** Applies French typography only when the language is French. */

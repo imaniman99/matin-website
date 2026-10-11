@@ -3,8 +3,8 @@ import { defineConfig, envField } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import placeholderReport from './integrations/placeholder-report.mjs';
 
-// [PLACEHOLDER] Replace with the real domain once it is known (see CONTENT_TODO.md).
-const SITE_URL = process.env.SITE_URL ?? 'https://www.matin-institut.example';
+// The live domain; Netlify can override it with the SITE_URL environment variable.
+const SITE_URL = process.env.SITE_URL ?? 'https://matincc.ca';
 
 export default defineConfig({
   site: SITE_URL,

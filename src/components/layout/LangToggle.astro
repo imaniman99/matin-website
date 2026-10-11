@@ -9,10 +9,9 @@ import { useTranslations } from '@/i18n/ui';
 interface Props {
   lang: UiLang;
   alternates: Alternates;
-  light?: boolean;
   large?: boolean;
 }
-const { lang, alternates, light = false, large = false } = Astro.props;
+const { lang, alternates, large = false } = Astro.props;
 const t = useTranslations(lang);
 
 // Each label and description is written in its own language.
@@ -31,7 +30,7 @@ const htmlLang = (l: UiLang) => (l === 'fr' ? 'fr-CA' : l === 'en' ? 'en-CA' : '
 
 <nav
   aria-label={t('a11y.languageSwitcher')}
-  class:list={['lang-toggle', light && 'lang-toggle--light', large && 'lang-toggle--large']}
+  class:list={['lang-toggle', large && 'lang-toggle--large']}
 >
   {uiLanguages.map((l, i) => (
     <>
@@ -80,7 +79,7 @@ const htmlLang = (l: UiLang) => (l === 'fr' ? 'fr-CA' : l === 'en' ? 'en-CA' : '
     text-decoration: none;
   }
   .current {
-    color: var(--color-primary);
+    color: var(--color-ink);
     border-block-end: 2px solid var(--color-gold);
     padding: 0.35rem 0.2rem 0.15rem;
   }
@@ -97,25 +96,12 @@ const htmlLang = (l: UiLang) => (l === 'fr' ? 'fr-CA' : l === 'en' ? 'en-CA' : '
     text-align: center;
   }
   a:hover {
-    color: var(--color-primary);
-    background: var(--color-sand);
+    color: var(--color-ink);
+    background: var(--color-tint);
   }
   .fa-label {
     font-size: 1rem;
     letter-spacing: 0;
-  }
-  .lang-toggle--light .current {
-    color: white;
-  }
-  .lang-toggle--light a {
-    color: rgb(255 255 255 / 0.85);
-  }
-  .lang-toggle--light a:hover {
-    color: var(--color-primary-dark);
-    background: var(--color-gold-light);
-  }
-  .lang-toggle--light .sep {
-    color: rgb(255 255 255 / 0.3);
   }
   .lang-toggle--large {
     gap: 0.6rem;

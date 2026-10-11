@@ -23,7 +23,7 @@ const audienceLabel = t('programs.audience') + (lang === 'fr' ? `${NBSP}: ` : ':
 ---
 
 <article
-  class="card group relative flex flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lift"
+  class="card group relative flex flex-col overflow-hidden transition-colors duration-200 hover:border-gold"
   data-category={d.category}
 >
   <div class="relative aspect-[16/10]">
@@ -41,7 +41,7 @@ const audienceLabel = t('programs.audience') + (lang === 'fr' ? `${NBSP}: ` : ':
     )}
   </div>
   <div class="relative flex flex-1 flex-col p-6 pt-9">
-    <span class="absolute -top-7 left-6 grid size-14 place-items-center rounded-full bg-primary text-gold-light shadow-lift ring-4 ring-white">
+    <span class="absolute -top-7 left-6 grid size-14 place-items-center rounded-full border border-line bg-white text-gold-dark">
       <CategoryIcon category={d.category} size={24} />
     </span>
     <p class="eyebrow mb-2">{t(`categories.${d.category}`)}</p>
@@ -56,7 +56,7 @@ const audienceLabel = t('programs.audience') + (lang === 'fr' ? `${NBSP}: ` : ':
     <p class="mb-5 text-[0.95rem] text-muted">{pick(d.summary, lang)}</p>
     <div class="mt-auto flex items-center justify-between gap-3 border-t border-line/70 pt-4 text-sm">
       <span class="flex items-center gap-2 text-ink">
-        <Users size={16} class="text-teal" aria-hidden="true" />
+        <Users size={16} class="text-ink" aria-hidden="true" />
         <span>
           <span class="sr-only">{audienceLabel}</span>
           {pick(d.audience, lang)}

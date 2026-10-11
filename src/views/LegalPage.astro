@@ -1,7 +1,7 @@
 ---
 import PageLayout from '@/layouts/PageLayout.astro';
 import Prose from '@/components/ui/Prose.astro';
-import { alternatesFor, type Lang } from '@/i18n/routes';
+import { alternatesFor, path, type Lang } from '@/i18n/routes';
 import { useTranslations, pick } from '@/i18n/ui';
 import { getLegal, getSettings, renderMarkdown } from '@/lib/content';
 import { formatDate } from '@/lib/dates';
@@ -16,8 +16,11 @@ const [doc, settings] = await Promise.all([getLegal(page), getSettings()]);
 const officer = settings.privacyOfficer;
 
 // {{privacyOfficer}} in the text is replaced by the person in charge (Law 25),
-// so the policy always shows the details from the site settings.
-const officerMd = `**${officer.name}**, ${officer.title[lang]}  \n[${officer.email}](mailto:${officer.email})`;
+// so the policy always shows the details from the site settings. Until a person is
+// named there, the policy points to the Contact page.
+const officerMd = officer
+  ? `**${officer.name}**, ${officer.title[lang]}  \n[${officer.email}](mailto:${officer.email})`
+  : t('legal.officerFallback', { href: path('contact', lang) });
 const body = doc.body[lang].replaceAll('{{privacyOfficer}}', officerMd);
 ---
 

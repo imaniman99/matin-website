@@ -22,7 +22,7 @@ const href = link('events', lang, slugOf(event, baseLang(lang)));
 ---
 
 <article
-  class="event-wide group relative grid overflow-hidden rounded-[var(--radius-card)] bg-white shadow-soft ring-1 ring-primary/10 transition duration-300 hover:-translate-y-0.5 hover:shadow-lift sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+  class="event-wide group relative grid overflow-hidden rounded-[var(--radius-card)] border border-line bg-white transition-colors duration-200 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
   data-event-end={past ? undefined : event.endDate.toISOString()}
 >
   <div class="relative aspect-[16/10] sm:aspect-auto sm:min-h-full">
@@ -40,7 +40,7 @@ const href = link('events', lang, slugOf(event, baseLang(lang)));
     )}
   </div>
   <div class="flex flex-col gap-3 p-6 sm:p-7">
-    <p class="flex items-start gap-2 text-base font-semibold text-gold-text">
+    <p class="flex items-start gap-2 text-base font-semibold text-gold-dark">
       <CalendarDays size={18} class="mt-1 shrink-0" aria-hidden="true" />
       <span>
         <time datetime={event.startDate.toISOString()}>
@@ -53,14 +53,14 @@ const href = link('events', lang, slugOf(event, baseLang(lang)));
     <h4 class="text-2xl leading-snug font-bold">
       <a
         href={href}
-        class="text-primary no-underline after:absolute after:inset-0 after:content-[''] group-hover:text-teal"
+        class="text-primary no-underline after:absolute after:inset-0 after:content-[''] group-hover:text-ink"
       >
         {pick(d.title, lang)}
       </a>
     </h4>
     <p class="text-[1.05rem] text-ink/85">{pick(d.summary, lang)}</p>
     <p class="mt-auto flex items-start gap-2 pt-1 text-[0.95rem] text-muted">
-      <MapPin size={17} class="mt-1 shrink-0 text-teal" aria-hidden="true" />
+      <MapPin size={17} class="mt-1 shrink-0 text-ink" aria-hidden="true" />
       <span>{d.location.name}</span>
     </p>
   </div>
