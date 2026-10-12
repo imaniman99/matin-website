@@ -1,11 +1,5 @@
 ---
-/**
- * Homepage hero: text on the left, the original round Matin logo on the right.
- * The logo is the untouched raster file, only cropped to a circle (nothing added
- * around it). On phones and tablets the text comes first, then the logo.
- */
-import { Picture } from 'astro:assets';
-import logo from '@/assets/brand/logo-circle.png';
+/** Homepage hero: label, headline, gold rule, paragraph and the two calls to action. */
 import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
@@ -17,7 +11,7 @@ const t = useTranslations(lang);
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="container-site hero__grid">
+  <div class="container-site hero__inner">
     <div class="hero__text">
       <p class="eyebrow hero__label">{t('home.heroEyebrow')}</p>
       <h1 id="hero-title" class="hero__title">
@@ -34,17 +28,6 @@ const t = useTranslations(lang);
         </a>
       </div>
     </div>
-    <div class="hero__logo">
-      <Picture
-        src={logo}
-        formats={['avif', 'webp']}
-        widths={[280, 440, 560, 800]}
-        sizes="(min-width: 64rem) 30rem, (min-width: 40rem) 22rem, 17rem"
-        alt={t('home.heroLogoAlt')}
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
   </div>
 </section>
 
@@ -53,17 +36,8 @@ const t = useTranslations(lang);
     background: white;
     border-block-end: 1px solid var(--color-line);
   }
-  .hero__grid {
-    display: grid;
-    gap: 3rem;
-    align-items: center;
+  .hero__inner {
     padding-block: clamp(3rem, 2rem + 4vw, 6.5rem);
-  }
-  @media (min-width: 64rem) {
-    .hero__grid {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-      gap: 4rem;
-    }
   }
   .hero__label {
     margin-block-end: 1.25rem;
@@ -100,28 +74,5 @@ const t = useTranslations(lang);
     .hero__actions .btn {
       width: 100%;
     }
-  }
-  .hero__logo {
-    justify-self: center;
-    width: min(100%, 17rem);
-  }
-  @media (min-width: 40rem) {
-    .hero__logo {
-      width: 22rem;
-    }
-  }
-  @media (min-width: 64rem) {
-    .hero__logo {
-      width: min(100%, 30rem);
-    }
-  }
-  /* Crop to a clean circle; nothing is drawn around the logo. */
-  .hero__logo :global(img) {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 50%;
   }
 </style>

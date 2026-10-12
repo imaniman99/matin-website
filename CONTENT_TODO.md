@@ -40,7 +40,7 @@ These details appear on many pages (footer, Contact, About, structured data for 
 
 ## 2. Brand
 
-- ☐ **Vector logo (SVG)** from a designer. The current logos are JPG images. The home hero shows the original round logo (`src/assets/brand/logo-circle.png`, cut from `assets/logo-circle.jpg`); the header recreates the wordmark in HTML, but an official SVG would make the favicon, footer logo and share image sharper and would allow a true monochrome version.
+- ☐ **Vector logo (SVG)** from a designer. The current logos are JPG images. The round logo (`src/assets/brand/logo-circle.png`) is cut from `assets/logo-circle.jpg`; the header recreates the wordmark in HTML, but an official SVG would make the favicon, footer logo and share image sharper and would allow a true monochrome version.
 - ☐ Once you have the final logo: replace `assets/logo-circle.jpg`, then run `npm run icons`.
 - ☐ Optional: a custom **share image** (`public/og-default.jpg`, 1200×630) with a real photo.
 
