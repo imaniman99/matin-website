@@ -1,4 +1,4 @@
-// Generates favicons, PWA icons, a transparent circular logo and the default
+// Generates favicons, PWA icons and the default
 // social-share (Open Graph) image from the original circular logo.
 // Usage: npm run icons
 import sharp from 'sharp';
@@ -14,7 +14,6 @@ const mask = Buffer.from(
 );
 
 await mkdir('public/icons', { recursive: true });
-await mkdir('src/assets/brand', { recursive: true });
 
 const circle = await sharp(SRC)
   .extract(CROP)
@@ -23,11 +22,6 @@ const circle = await sharp(SRC)
   .png()
   .toBuffer();
 
-// Transparent circle used by <Picture> in the footer / about page.
-await sharp(circle)
-  .resize(800)
-  .png({ compressionLevel: 9 })
-  .toFile('src/assets/brand/logo-circle.png');
 await sharp(circle)
   .resize(512)
   .png({ palette: true, quality: 92 })
