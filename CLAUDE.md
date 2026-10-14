@@ -76,3 +76,11 @@ When asked for another page (Programs, Events, News, Get Involved, Contact), wri
 - **Logo:** the original files are `assets/logo-circle.jpg` and `assets/logo-vertical.jpg`. `npm run icons` cuts the circle into `src/assets/brand/logo-circle.png` (not currently shown on any page) and the favicons. Never redraw, recolor or add rings around the logo.
 - **President photo:** add `src/assets/brand/president.jpg` (or .png / .webp) and it replaces the initials badge automatically.
 - **Windows note:** don't rewrite French source files with PowerShell `Get-Content | Set-Content` (it corrupts UTF-8); use the editor tools or Node.
+
+## Publishing
+
+- The site is published automatically by Netlify whenever changes are pushed to the `main` branch on GitHub.
+- The repo is public, so Netlify will build commits from any collaborator.
+- Never deploy to Netlify manually or with the Netlify CLI. Just push to `main`.
+- Always commit under the GitHub name `matincc` and email `matincc.mtl@gmail.com`, not `imaniman99`.
+- Group several edits into one push when possible, because each push uses Netlify build credits.
