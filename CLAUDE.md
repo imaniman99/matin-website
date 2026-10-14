@@ -73,6 +73,6 @@ When asked for another page (Programs, Events, News, Get Involved, Contact), wri
 - **Languages:** French (default) and English are complete; Persian (`fa`, RTL) covers Home, About (values only), Get Involved and Contact. Localized URLs are in `src/i18n/routes.ts`.
 - **Interface strings:** `src/i18n/fr.ts` (defines the type), `en.ts`, `fa.ts`.
 - **Editable content:** YAML in `src/content/` (schemas in `src/content.config.ts`). About page texts: `src/content/about/about.yaml`; mission and contact details: `src/content/settings/site.yaml`.
-- **Logo:** the original files are `assets/logo-circle.jpg` and `assets/logo-vertical.jpg`. `npm run icons` cuts the circle into `src/assets/brand/logo-circle.png` (used by the home hero) and the favicons. Never redraw, recolor or add rings around the logo.
+- **Logo:** the original files are `assets/logo-circle.jpg` and `assets/logo-vertical.jpg`. `npm run icons` cuts the circle into `src/assets/brand/logo-circle.png` (not currently shown on any page) and the favicons. Never redraw, recolor or add rings around the logo.
 - **President photo:** add `src/assets/brand/president.jpg` (or .png / .webp) and it replaces the initials badge automatically.
 - **Windows note:** don't rewrite French source files with PowerShell `Get-Content | Set-Content` (it corrupts UTF-8); use the editor tools or Node.
