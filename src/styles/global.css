@@ -5,12 +5,10 @@
  * every subset with a unicode-range, and the browser only downloads the subsets a
  * page actually uses (in practice: latin, which covers French é è ç à œ « »).
  */
-@import '@fontsource/playfair-display/700.css';
+@import '@fontsource-variable/nunito/index.css';
+@import '@fontsource-variable/nunito/wght-italic.css';
+/* Brand wordmark only ("Matin" in the header, footer and 404 page). */
 @import '@fontsource/playfair-display/800.css';
-@import '@fontsource/playfair-display/400-italic.css';
-@import '@fontsource/montserrat/400.css';
-@import '@fontsource/montserrat/600.css';
-@import '@fontsource/montserrat/700.css';
 /* Persian pages only: the browser fetches it just where Persian text appears. */
 @import '@fontsource-variable/vazirmatn/index.css';
 
@@ -38,8 +36,11 @@
   --color-president-gold: #f0cb74;
   --color-president-cream: #f2e8d5;
 
-  --font-display: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
-  --font-sans: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* One rounded, warm typeface for the whole site: headings and body. */
+  --font-display: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* The "Matin" wordmark keeps the logo's serif. */
+  --font-brand: 'Playfair Display', 'Georgia', 'Times New Roman', serif;
 
   /* No shadows on cards; only floating menus and dialogs get a faint one. */
   --shadow-soft: none;
@@ -78,11 +79,11 @@
     --font-sans: 'Vazirmatn Variable', Tahoma, 'Segoe UI', sans-serif;
     --font-display: 'Vazirmatn Variable', Tahoma, 'Segoe UI', sans-serif;
   }
-  /* Latin-script brand text inside Persian pages (e.g. the logo) keeps the brand fonts. */
+  /* Latin-script text inside Persian pages (e.g. the logo) keeps the Latin font. */
   html[lang='fa'] [lang^='fr'],
   html[lang='fa'] [lang^='en'] {
-    --font-sans: 'Montserrat', system-ui, sans-serif;
-    --font-display: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Nunito Variable', system-ui, sans-serif;
+    --font-display: 'Nunito Variable', system-ui, sans-serif;
   }
   html[lang='fa'] body {
     line-height: 1.9;

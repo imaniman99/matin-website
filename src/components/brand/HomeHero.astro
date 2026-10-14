@@ -1,10 +1,8 @@
 ---
 /**
  * Homepage hero: a single centered column of text (label, headline, gold rule,
- * paragraph and the two buttons), over a decorative banner of two overlapping
- * circles, turquoise and gold, drifting slowly toward each other ("cultures in
- * dialogue"). The lens where they overlap is the gold circle clipped by the
- * turquoise one, so it always matches the real overlap as they move.
+ * paragraph and the two buttons), with two small decorative circles, turquoise
+ * and gold, in opposite corners. They float gently and never touch.
  */
 import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
@@ -18,24 +16,8 @@ const t = useTranslations(lang);
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-art" aria-hidden="true">
-    <svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <defs>
-        <clipPath id="hero-art-teal-clip">
-          <circle class="orb-teal" cx="470" cy="300" r="240"></circle>
-        </clipPath>
-      </defs>
-      <g class="orb orb-teal">
-        <circle class="orb__fill" cx="470" cy="300" r="240"></circle>
-        <circle class="orb__ring" cx="470" cy="300" r="270"></circle>
-      </g>
-      <g class="orb orb-gold">
-        <circle class="orb__fill" cx="730" cy="300" r="240"></circle>
-        <circle class="orb__ring" cx="730" cy="300" r="270"></circle>
-      </g>
-      <g clip-path="url(#hero-art-teal-clip)">
-        <circle class="lens orb-gold" cx="730" cy="300" r="240"></circle>
-      </g>
-    </svg>
+    <span class="hero-dot hero-dot--teal"></span>
+    <span class="hero-dot hero-dot--gold"></span>
   </div>
   <div class="container-site hero__inner">
     <div class="hero__text">
@@ -66,58 +48,64 @@ const t = useTranslations(lang);
     border-block-end: 1px solid var(--color-line);
   }
 
-  /* Decorative banner behind the text. Fills stay light so the turquoise title
-     and gold-dark label keep at least 3:1 contrast even on the lens. */
+  /* Two small decorative circles in opposite corners, never overlapping. Fills
+     stay light so the text keeps its contrast where a circle sits behind it. */
   .hero-art {
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
   }
-  .hero-art svg {
-    display: block;
-    width: 100%;
-    height: 100%;
+  .hero-dot {
+    position: absolute;
+    border-radius: 50%;
   }
-  .orb-teal .orb__fill {
-    fill: var(--color-turquoise);
-    opacity: 0.08;
-  }
-  .orb-gold .orb__fill {
-    fill: var(--color-gold);
-    opacity: 0.12;
-  }
-  .orb__ring {
-    fill: none;
-    stroke-width: 1.5;
+  /* Thin ring around each circle. */
+  .hero-dot::after {
+    content: '';
+    position: absolute;
+    inset: -0.875rem;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
     opacity: 0.35;
   }
-  .orb-teal .orb__ring {
-    stroke: var(--color-turquoise);
+  .hero-dot--teal {
+    inset-block-start: 1rem;
+    inset-inline-start: -2.5rem;
+    width: clamp(6rem, 4.5rem + 6vw, 10.5rem);
+    aspect-ratio: 1;
+    color: var(--color-turquoise);
+    background: color-mix(in srgb, var(--color-turquoise) 9%, transparent);
   }
-  .orb-gold .orb__ring {
-    stroke: var(--color-gold);
+  .hero-dot--gold {
+    inset-block-end: -2.5rem;
+    inset-inline-end: -1.5rem;
+    width: clamp(5rem, 3.5rem + 5vw, 8.5rem);
+    aspect-ratio: 1;
+    color: var(--color-gold);
+    background: color-mix(in srgb, var(--color-gold) 14%, transparent);
   }
-  .lens {
-    fill: var(--color-gold);
-    opacity: 0.12;
+  @media (min-width: 64rem) {
+    .hero-dot--teal {
+      inset-block-start: 12%;
+      inset-inline-start: 5%;
+    }
+    .hero-dot--gold {
+      inset-block-end: 16%;
+      inset-inline-end: 7%;
+    }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .orb-teal {
-      animation: hero-drift-right 14s ease-in-out infinite alternate;
+    .hero-dot--teal {
+      animation: hero-float 12s ease-in-out infinite alternate;
     }
-    .orb-gold {
-      animation: hero-drift-left 14s ease-in-out infinite alternate;
-    }
-  }
-  @keyframes hero-drift-right {
-    to {
-      transform: translateX(18px);
+    .hero-dot--gold {
+      animation: hero-float 12s ease-in-out -6s infinite alternate-reverse;
     }
   }
-  @keyframes hero-drift-left {
+  @keyframes hero-float {
     to {
-      transform: translateX(-18px);
+      transform: translateY(12px);
     }
   }
 

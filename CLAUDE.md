@@ -16,9 +16,10 @@ These rules apply to every page, now and in the future. Read them before changin
 
 ## 2. Typography
 
-- **Playfair Display, bold:** page titles, section titles, card titles, headlines.
-- **Montserrat:** all body text, labels, buttons.
-- Both are self-hosted through `@fontsource` (imported in `src/styles/global.css`); the CSP blocks Google Fonts, so do not add a Google Fonts link.
+- **Nunito** (rounded, warm): the whole site, headings (bold) and body text, labels, buttons.
+- **Playfair Display, extra bold:** only the "Matin" wordmark (`Lockup.astro`, `Wordmark.astro`, via `--font-brand`), to match the logo.
+- **Vazirmatn:** Persian pages.
+- All are self-hosted through `@fontsource` (imported in `src/styles/global.css`); the CSP blocks Google Fonts, so do not add a Google Fonts link.
 - Desktop sizes: small-caps label about 22px; hero headline about 88px; hero paragraph about 22px. Scale down smoothly on tablet and mobile with `clamp()` so nothing overflows.
 
 ## 3. Colors: ONLY turquoise and gold, plus neutrals
