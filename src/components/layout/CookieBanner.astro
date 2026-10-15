@@ -169,11 +169,12 @@ const t = useTranslations(lang);
     padding: 1.25rem 1.5rem;
     border-radius: 1.25rem;
     color: var(--color-ink);
-    background: white;
+    background: var(--color-white);
     box-shadow: var(--shadow-lift);
     border: 1px solid var(--color-line);
   }
   .consent-dialog {
+    color: var(--color-ink);
     width: min(36rem, calc(100% - 2rem));
     margin: auto;
     border: 0;
@@ -182,7 +183,7 @@ const t = useTranslations(lang);
     box-shadow: var(--shadow-lift);
   }
   .consent-dialog::backdrop {
-    background: rgb(47 59 59 / 0.4);
+    background: color-mix(in srgb, var(--color-ink) 40%, transparent);
   }
   .pref {
     display: flex;
@@ -224,7 +225,7 @@ const t = useTranslations(lang);
     width: 1.35rem;
     height: 1.35rem;
     border-radius: 999px;
-    background: white;
+    background: var(--color-white);
     transition: transform 0.2s;
   }
   .switch:checked {

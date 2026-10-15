@@ -78,7 +78,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   <HomeHero lang={lang} />
 
   <!-- Who we are -->
-  <section id="who-we-are" class="scroll-mt-24 bg-white py-20 sm:py-24" aria-labelledby="who-title">
+  <section id="who-we-are" class="scroll-mt-24 bg-cream py-20 sm:py-24" aria-labelledby="who-title">
     <div class="container-site">
       <SectionHeader id="who-title" title={t('home.whoTitle')} class="mb-8" />
       <p class="mx-auto max-w-3xl text-center text-lg leading-relaxed sm:text-xl">
@@ -133,7 +133,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   </section>
 
   <!-- Events -->
-  <section class="bg-white py-20 sm:py-24" aria-labelledby="events-title">
+  <section class="bg-cream py-20 sm:py-24" aria-labelledby="events-title">
     <div class="container-site">
       <SectionHeader id="events-title" title={t('home.eventsTitle')} />
 
@@ -232,7 +232,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   </section>
 
   <!-- Get involved -->
-  <section class="bg-white py-20 sm:py-24" aria-labelledby="involved-title">
+  <section class="bg-cream py-20 sm:py-24" aria-labelledby="involved-title">
     <div class="container-site">
       <SectionHeader
         id="involved-title"
@@ -274,11 +274,11 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   </section>
 
   <!-- Interest call to action -->
-  <section class="bg-white py-20 sm:py-24" aria-labelledby="cta-title">
+  <section class="bg-cream py-20 sm:py-24" aria-labelledby="cta-title">
     <div class="container-site max-w-3xl text-center">
       <SectionHeader id="cta-title" title={t('home.ctaTitle')} class="mb-6" />
       <p class="mx-auto max-w-2xl text-lg leading-relaxed sm:text-xl">{t('home.ctaText')}</p>
-      <a href={interestHref} class="btn btn-gold mt-9">
+      <a href={interestHref} class="btn btn-primary mt-9">
         {t('home.ctaButton')}
       </a>
     </div>
@@ -336,7 +336,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     padding: 1.25rem 1.5rem;
     border-radius: 1rem;
     font-size: 1.1rem;
-    background: white;
+    background: var(--color-white);
     color: var(--color-ink);
     border: 1px solid var(--color-line);
     border-inline-start: 4px solid var(--color-gold);
@@ -384,7 +384,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   }
   .tab:hover {
     color: var(--color-ink);
-    background: white;
+    background: var(--color-white);
   }
   .tab[aria-selected='true'] {
     color: var(--color-ink);

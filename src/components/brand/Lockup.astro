@@ -10,7 +10,7 @@ import { href, type UiLang } from '@/i18n/routes';
 interface Props {
   lang: UiLang;
   /** Background the lockup sits on (the leaf is cut out of the rule with it). */
-  variant?: 'white' | 'tint';
+  variant?: 'white' | 'tint' | 'dark';
 }
 const { lang, variant = 'white' } = Astro.props;
 const t = useTranslations(lang);
@@ -21,7 +21,7 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
 
 <a
   href={href('home', lang)}
-  class:list={['lockup', variant === 'tint' && 'lockup--tint']}
+  class:list={['lockup', variant === 'tint' && 'lockup--tint', variant === 'dark' && 'lockup--dark']}
   dir="ltr"
 >
   <span class="lockup__word" lang={logoLang} dir="ltr">
@@ -66,7 +66,7 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
     left: 50%;
     transform: translate(-50%, -50%);
     color: var(--color-gold);
-    background: var(--lockup-bg, white);
+    background: var(--lockup-bg, var(--color-white));
     padding: 2px 0;
     width: 13px;
     height: 15px;
@@ -83,5 +83,15 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
   }
   .lockup--tint {
     --lockup-bg: var(--color-tint);
+  }
+  /* On the blue footer: white "Matin", cream institute name. */
+  .lockup--dark {
+    --lockup-bg: var(--color-primary);
+  }
+  .lockup--dark .lockup__word {
+    color: var(--color-white);
+  }
+  .lockup--dark .lockup__inst {
+    color: var(--color-cream);
   }
 </style>

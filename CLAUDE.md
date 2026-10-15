@@ -23,24 +23,26 @@ These rules apply to every page, now and in the future. Read them before changin
 - All are self-hosted through `@fontsource` (imported in `src/styles/global.css`); the CSP blocks Google Fonts, so do not add a Google Fonts link.
 - Desktop sizes: small-caps label about 22px; hero headline about 88px; hero paragraph about 22px. Scale down smoothly on tablet and mobile with `clamp()` so nothing overflows.
 
-## 3. Colors: dark blue and gold, plus turquoise accents and neutrals
+## 3. Colors: the Matin color system
 
-Defined as tokens in `src/styles/global.css` (`@theme`). Always use the tokens (`text-primary`, `bg-tint`, `var(--color-gold)`…), never raw hex values.
+Six variables, defined once in `:root` in `src/styles/global.css`. They are the ONLY colors on the site. The Tailwind tokens (`text-primary`, `bg-cream`, `bg-tint`, `var(--color-gold)`…) all point at them; use those tokens or the variables, never raw hex, rgb or named colors.
 
-| Token | Value | Use |
+| Variable | Value | Use |
 | --- | --- | --- |
-| `--color-turquoise` | `#14A3A0` | Turquoise accents |
-| `--color-primary` | `#073B4C` | Dark blue from the logo, the site's main color: headlines, the "Matin" wordmark, primary buttons, all text that used to be green |
-| `--color-gold` | `#D8A94B` | Gold: lines, maple leaves, gold buttons |
-| `--color-gold-dark` | `#A87412` | Darker gold: icons, and text that is large or bold |
-| `--color-ink` | `#2F3B3B` | Body text (neutral dark gray) |
-| `--color-muted` | `#5A6464` | Secondary text (neutral gray) |
-| `--color-tint` | `#EFF8F8` | Very light turquoise background |
-| `--color-line` | `#D6EBEA` | Card borders and dividers |
+| `--matin-blue` | `#123C59` | Primary brand color: headings, footer, President band, main buttons, links, icons, small labels (token `primary`) |
+| `--matin-gold` | `#C5A05A` | Accent only: thin lines, dividers, maple leaves, hover borders and underlines (token `gold`) |
+| `--matin-cream` | `#F8F5EF` | Main page background (token `cream`) |
+| `--matin-teal` | `#6BA8AC` | Secondary accent: light section backgrounds (`tint`), card borders (`line`), illustrations (token `turquoise`) |
+| `--matin-ink` | `#293442` | Body text, also secondary text (tokens `ink`, `muted`) |
+| `--matin-white` | `#FFFFFF` | Cards, inputs, text on blue (token `white`) |
 
-- Backgrounds: white or very light turquoise (`tint`) only.
-- Do NOT use dark green or any other color. Text that would be green or turquoise uses the dark blue (`primary`) instead.
-- **ONE EXCEPTION:** the "A word from our President" band on the About page keeps its deep teal background (`--color-president: #0A5C63`, with `--color-president-gold` and `--color-president-cream` for its text). No other place may use these three tokens.
+- Proportions: about 60% cream/white, 25% blue, 10% teal, 5% gold.
+- Page background is cream; cards are white on cream; alternate sections use the light teal `tint`. Long text is ink on cream or white.
+- The footer and the President band are blue with white or cream text (class `on-dark`).
+- **Gold is never a large background and never text on cream or white** (2.3:1, fails). Gold text is only allowed on blue (4.7:1). Teal is never text on cream or white either (2.5:1).
+- The old `gold-dark` token now maps to blue: use it (or `primary`) for small labels, dates and icons.
+- No green and no dark green anywhere.
+- Only exceptions to "variables only": `theme-color` in `BaseLayout.astro` and `site.webmanifest` (must be literal hex, `#123C59`), and the arrow color inside the select-box data URIs.
 
 ## 4. Style
 
@@ -52,11 +54,10 @@ Defined as tokens in `src/styles/global.css` (`@theme`). Always use the tokens (
 ## 5. Accessibility and responsiveness
 
 - Real heading hierarchy: one `h1` per page, then `h2`/`h3` in order.
-- Contrast: dark blue `#073B4C` passes AA everywhere (12:1 on white, also for white text on it). `#A87412` on white (4.1:1) only passes for large text. So:
-  - button text is bold and at least 19px (the `.btn` class does this);
-  - `gold-dark` colors only headings, large or bold-and-≥19px text, and icons;
-  - small text and links stay `ink` or `muted`.
-- Everything works with the keyboard, with visible focus styles (dark blue outline; light gold inside the President band).
+- Contrast (WCAG AA, checked): ink on cream 11.6, blue on cream 10.6, blue on white 11.6, white on blue 11.6, gold on blue 4.7. Never gold or teal text on cream or white.
+- Buttons: `.btn-primary` = blue with white text, darker blue on hover; `.btn-outline` = secondary, blue outline (white button on blue sections). Gold only as the hover border or underline.
+- Links: blue, gold underline on hover.
+- Everything works with the keyboard, with visible focus styles (blue outline; gold on blue sections).
 - Decorative icons, lines and maple leaves get `aria-hidden="true"`. Meaningful images get proper alt text in both languages.
 - Set the `lang` attribute correctly on each language version (`BaseLayout.astro` does this: `fr-CA`, `en-CA`, `fa`).
 - Fully responsive: desktop, tablet, mobile, with no horizontal scroll.

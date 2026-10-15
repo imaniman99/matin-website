@@ -68,7 +68,7 @@ const { formsEnabled } = await getSettings();
       class="newsletter__input"
       dir="auto"
     />
-    <button type="submit" class="btn btn-gold shrink-0">
+    <button type="submit" class="btn btn-primary shrink-0">
       {t('newsletter.submit')}
     </button>
   </div>
@@ -105,14 +105,14 @@ const { formsEnabled } = await getSettings();
   .newsletter__label {
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--color-ink);
+    color: inherit;
   }
   .newsletter__input {
     min-height: 3.1rem;
     width: 100%;
     border-radius: 999px;
     padding-inline: 1.25rem;
-    background: white;
+    background: var(--color-white);
     color: var(--color-ink);
     border: 1.5px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
@@ -137,6 +137,14 @@ const { formsEnabled } = await getSettings();
     flex-shrink: 0;
     accent-color: var(--color-primary);
   }
+  :global(.on-dark) .newsletter__consent input {
+    accent-color: var(--color-gold);
+  }
+  /* In the blue footer the submit button is white with blue text. */
+  :global(.on-dark) .newsletter__row .btn-primary {
+    background: var(--color-white);
+    color: var(--color-primary);
+  }
   .newsletter__consent a {
     color: inherit;
     font-weight: 700;
@@ -154,6 +162,6 @@ const { formsEnabled } = await getSettings();
     border-inline-start: 4px solid var(--color-gold);
   }
   .newsletter-closed--compact {
-    background: white;
+    background: var(--color-white);
   }
 </style>

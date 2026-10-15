@@ -96,7 +96,7 @@ const facts = [
           {d.registrationUrl ? (
             <a
               href={d.registrationUrl}
-              class="btn btn-gold w-full"
+              class="btn btn-primary w-full"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -105,7 +105,7 @@ const facts = [
               <span class="sr-only">{t('a11y.externalLink')}</span>
             </a>
           ) : (
-            <a href={path('contact', lang)} class="btn btn-gold w-full">
+            <a href={path('contact', lang)} class="btn btn-primary w-full">
               <Mail size={18} aria-hidden="true" />
               {t('programs.registerContact')}
             </a>

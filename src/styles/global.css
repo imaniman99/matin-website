@@ -13,29 +13,43 @@
 @import '@fontsource-variable/vazirmatn/index.css';
 
 /*
- * Brand tokens. The main colours are dark blue (from the logo) and gold, plus
- * turquoise accents and neutrals (see CLAUDE.md).
- * Contrast on white (checked): ink 11.6, muted 6.1, primary 12.1, gold-dark 4.1,
- * ink on gold 5.4, white on primary 12.1. Gold-dark therefore only colours large or
- * bold text (≥ 19px bold or ≥ 24px) and icons.
+ * Matin colour system. These six variables are the ONLY colours on the site (see
+ * CLAUDE.md). Everything else below points at them.
+ * Proportions: about 60% cream/white, 25% blue, 10% teal, 5% gold.
+ */
+:root {
+  --matin-blue: #123c59; /* primary brand colour: headings, footer, main buttons, links */
+  --matin-gold: #c5a05a; /* accent only: thin lines, dividers, icon details, hover borders */
+  --matin-cream: #f8f5ef; /* main page background */
+  --matin-teal: #6ba8ac; /* secondary accent: light section backgrounds, tags, illustrations */
+  --matin-ink: #293442; /* body text */
+  --matin-white: #ffffff; /* cards, text on blue */
+}
+
+/*
+ * Tailwind tokens, all mapped onto the six variables above.
+ * Contrast (checked): ink on cream 11.6, ink on white 12.6, blue on cream 10.6,
+ * blue on white 11.6, white on blue 11.6, gold on blue 4.7, ink/blue on tint 10+.
+ * Gold and teal on cream or white are only 2.3 to 2.7, so they are never used for
+ * text there: labels, dates and icons use blue instead.
  */
 @theme {
-  --color-turquoise: #14a3a0;
-  /* Dark blue of the logo: the site's main colour (headlines, primary buttons). */
-  --color-primary: #073b4c;
-  --color-gold: #d8a94b;
-  /* Icons and large or bold accent text only. */
-  --color-gold-dark: #a87412;
-  --color-ink: #2f3b3b;
-  --color-muted: #5a6464;
-  /* Very light turquoise: the only background besides white. */
-  --color-tint: #eff8f8;
-  /* Card borders and dividers. */
-  --color-line: #d6ebea;
-  /* The one exception: the "A word from our President" band on the About page. */
-  --color-president: #0a5c63;
-  --color-president-gold: #f0cb74;
-  --color-president-cream: #f2e8d5;
+  --color-primary: var(--matin-blue);
+  --color-gold: var(--matin-gold);
+  --color-cream: var(--matin-cream);
+  --color-turquoise: var(--matin-teal);
+  --color-ink: var(--matin-ink);
+  --color-white: var(--matin-white);
+  /* Small labels, dates and icons that used to be dark gold: blue for contrast. */
+  --color-gold-dark: var(--matin-blue);
+  /* Secondary text uses the body ink too (no extra grey in the palette). */
+  --color-muted: var(--matin-ink);
+  /* Very light teal: alternate section backgrounds. */
+  --color-tint: color-mix(in srgb, var(--matin-teal) 14%, var(--matin-white));
+  /* Card borders and dividers: light teal. */
+  --color-line: color-mix(in srgb, var(--matin-teal) 30%, var(--matin-white));
+  /* Primary button hover: slightly darker blue. */
+  --color-primary-hover: color-mix(in srgb, var(--matin-blue) 85%, black);
 
   /* One rounded, warm typeface for the whole site: headings and body. */
   --font-display: 'Nunito Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -45,7 +59,7 @@
 
   /* No shadows on cards; only floating menus and dialogs get a faint one. */
   --shadow-soft: none;
-  --shadow-lift: 0 8px 24px -12px rgb(47 59 59 / 0.18);
+  --shadow-lift: 0 8px 24px -12px color-mix(in srgb, var(--matin-ink) 18%, transparent);
 
   --radius-card: 1.25rem;
 
@@ -119,7 +133,7 @@
     }
   }
   body {
-    @apply bg-white font-sans text-ink antialiased;
+    @apply bg-cream font-sans text-ink antialiased;
     font-size: 1.0625rem;
     line-height: 1.7;
     text-rendering: optimizeLegibility;
@@ -132,18 +146,22 @@
     line-height: 1.15;
     text-wrap: balance;
   }
+  /* Links: blue, with a gold underline on hover. */
   a {
-    @apply text-ink underline-offset-4;
+    @apply text-primary underline-offset-4;
   }
-  /* Dark blue ring (12:1 on white, 11:1 on the tint) so focus is always visible. */
+  a:hover {
+    text-decoration-color: var(--color-gold);
+  }
+  /* Blue ring (10:1 or more on cream, white and tint) so focus is always visible. */
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 3px;
     border-radius: 4px;
   }
-  /* The President band (the only dark section) gets a light gold ring. */
+  /* On blue sections (footer, President band) the ring is gold (4.7:1 on blue). */
   .on-dark :focus-visible {
-    outline-color: var(--color-president-gold);
+    outline-color: var(--color-gold);
   }
   ::selection {
     background: var(--color-gold);
@@ -155,7 +173,7 @@
   .container-site {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
   }
-  /* Small-caps label: gold-dark only because it is bold and at least 19px. */
+  /* Small-caps label in blue (gold text would fail contrast on cream). */
   .eyebrow {
     @apply font-sans font-bold text-gold-dark uppercase;
     font-size: clamp(1.1875rem, 1.1rem + 0.4vw, 1.375rem);
@@ -167,24 +185,25 @@
   .lede {
     @apply text-lg text-muted;
   }
-  /* Button text is bold and at least 19px: white on primary (3.9:1) and primary on
-     white then count as large text for WCAG AA. Ink on gold is 5.4:1. */
+  /* Buttons: primary = blue with white text (11.6:1), secondary = blue outline.
+     Gold appears only as the hover border/underline accent. */
   .btn {
     @apply inline-flex min-h-13 items-center justify-center gap-2 rounded-full px-7 py-3 font-bold no-underline transition-colors duration-200;
     font-size: 1.1875rem;
     line-height: 1.3;
   }
   .btn:hover {
-    @apply underline decoration-2 underline-offset-4;
+    @apply underline decoration-gold decoration-2 underline-offset-4;
   }
   .btn-primary {
-    @apply bg-primary text-white;
-  }
-  .btn-gold {
-    @apply bg-gold text-ink;
+    @apply bg-primary text-white hover:bg-primary-hover;
   }
   .btn-outline {
-    @apply border-2 border-primary bg-white text-primary hover:bg-tint;
+    @apply border-2 border-primary bg-white text-primary hover:border-gold;
+  }
+  /* On blue sections: white button with blue text. */
+  .on-dark .btn-outline {
+    @apply border-white bg-white text-primary hover:border-gold;
   }
   /* Shared card style: white, softly rounded, very light border, no shadow. */
   .card {
@@ -250,22 +269,23 @@
     outline-offset: 1px;
   }
   .input[aria-invalid='true'] {
-    @apply border-2 border-gold-dark bg-tint;
+    @apply border-2 border-primary bg-tint;
   }
   textarea.input {
     @apply min-h-40 resize-y;
   }
   select.input {
     @apply appearance-none pr-10;
-    background: white
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%232F3B3B' stroke-width='2'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E")
+    /* The arrow's colour is --matin-ink (a data URI cannot read CSS variables). */
+    background: var(--color-white)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23293442' stroke-width='2'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E")
       no-repeat right 1rem center;
   }
   .field-error {
     @apply text-sm font-bold text-ink;
   }
   .error-summary {
-    @apply rounded-xl border-l-4 border-gold-dark bg-tint p-4 text-ink;
+    @apply rounded-xl border-l-4 border-gold bg-tint p-4 text-ink;
   }
   .error-summary a {
     @apply text-ink underline;
@@ -277,7 +297,7 @@
     @apply bg-tint text-ink;
   }
   .form-status.is-error {
-    @apply border-l-4 border-gold-dark bg-tint text-ink;
+    @apply border-l-4 border-gold bg-tint text-ink;
   }
   .sr-only-focusable:not(:focus):not(:focus-within) {
     @apply sr-only;
