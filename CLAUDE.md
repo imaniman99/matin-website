@@ -39,7 +39,7 @@ Six variables, defined once in `:root` in `src/styles/global.css`. They are the 
 - Proportions: about 60% cream/white, 25% blue, 10% teal, 5% gold.
 - Page background is cream; cards are white on cream; alternate sections use the light teal `tint`. Long text is ink on cream or white.
 - The footer and the President band are blue with white or cream text (class `on-dark`).
-- **Gold is never a large background and never text on cream or white** (2.3:1, fails). Gold text is only allowed on blue (4.7:1), plus one exception the owner asked for: the large label above the homepage hero title ("INSTITUT INTERCULTUREL MATIN") is gold on the photo. Teal is never text on cream or white either (2.5:1).
+- **Gold is never a large background and never text on cream or white** (2.3:1, fails). Gold text is only allowed on blue (4.7:1), e.g. the gold-on-blue pill label above the homepage hero title. Teal is never text on cream or white either (2.5:1).
 - The old `gold-dark` token now maps to blue: use it (or `primary`) for small labels, dates and icons.
 - No green and no dark green anywhere.
 - Only exceptions to "variables only": `theme-color` in `BaseLayout.astro` and `site.webmanifest` (must be literal hex, `#123C59`), and the arrow color inside the select-box data URIs.
