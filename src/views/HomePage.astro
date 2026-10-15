@@ -81,9 +81,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   <section id="who-we-are" class="scroll-mt-24 bg-cream py-20 sm:py-24" aria-labelledby="who-title">
     <div class="container-site">
       <SectionHeader id="who-title" title={t('home.whoTitle')} class="mb-8" />
-      <p class="who-text mx-auto text-center">
-        {t('home.whoText')}
-      </p>
+      <p class="who-text mx-auto text-center">{t('home.whoText')}</p>
       <nav aria-label={t('home.whoCardsLabel')} class="mt-12">
         <ul class="grid gap-5 sm:grid-cols-3">
           {whoCards.map((c) => (
