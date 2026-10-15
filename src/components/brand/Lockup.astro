@@ -11,8 +11,10 @@ interface Props {
   lang: UiLang;
   /** Background the lockup sits on (the leaf is cut out of the rule with it). */
   variant?: 'white' | 'tint' | 'dark';
+  /** 'large' is the size used in the site header. */
+  size?: 'default' | 'large';
 }
-const { lang, variant = 'white' } = Astro.props;
+const { lang, variant = 'white', size = 'default' } = Astro.props;
 const t = useTranslations(lang);
 // The logo keeps its French/English wording; on Persian pages it shows the French logo.
 const logoLang = lang === 'fa' ? 'fr' : lang;
@@ -21,7 +23,12 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
 
 <a
   href={href('home', lang)}
-  class:list={['lockup', variant === 'tint' && 'lockup--tint', variant === 'dark' && 'lockup--dark']}
+  class:list={[
+    'lockup',
+    variant === 'tint' && 'lockup--tint',
+    variant === 'dark' && 'lockup--dark',
+    size === 'large' && 'lockup--large',
+  ]}
   dir="ltr"
 >
   <span class="lockup__word" lang={logoLang} dir="ltr">
@@ -80,6 +87,15 @@ const [line1, ...rest] = useTranslations(logoLang)('brand.institute').split(' ')
     font-size: 0.72rem;
     letter-spacing: 0.04em;
     color: var(--color-ink);
+  }
+  .lockup--large {
+    gap: 0.85rem;
+  }
+  .lockup--large .lockup__word {
+    font-size: 2.6rem;
+  }
+  .lockup--large .lockup__inst {
+    font-size: 0.9rem;
   }
   .lockup--tint {
     --lockup-bg: var(--color-tint);
