@@ -2,13 +2,13 @@
 /**
  * Homepage hero: a full-width photo banner (Montréal skyline) right under the
  * header, with the institute's name, the tagline in gold italic, a thin gold
- * line, the paragraph and the two buttons centered on it. The photo is shown as
+ * line, and the paragraph centered on it. The photo is shown as
  * is, with no veil; the text is dark so it reads on the bright sky.
  */
 import '@fontsource/playfair-display/700-italic.css';
 import { Picture } from 'astro:assets';
 import banner from '@/assets/home/hero-banner.jpg';
-import { href, type UiLang } from '@/i18n/routes';
+import type { UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
 interface Props {
@@ -39,14 +39,6 @@ const t = useTranslations(lang);
       <p class="hero__tagline">{t('home.heroTitle')}</p>
       <span class="hero__rule" aria-hidden="true"></span>
       <p class="hero__paragraph">{t('home.heroText')}</p>
-      <div class="hero__actions">
-        <a href={href('about', lang)} class="btn btn-primary">
-          {t('home.heroCtaWho')}
-        </a>
-        <a href={href('getInvolved', lang)} class="btn btn-outline">
-          {t('home.heroCtaInvolved')}
-        </a>
-      </div>
     </div>
   </div>
 </section>
@@ -139,17 +131,5 @@ const t = useTranslations(lang);
       0 0 3px var(--color-white),
       0 0 8px var(--color-white),
       0 0 16px color-mix(in srgb, var(--color-white) 90%, transparent);
-  }
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.875rem;
-    margin-block-start: 2.5rem;
-  }
-  @media (max-width: 29.99rem) {
-    .hero__actions .btn {
-      width: 100%;
-    }
   }
 </style>

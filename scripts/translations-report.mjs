@@ -13,8 +13,6 @@ const frSupplied = new Set([
   'home.heroTitle',
   'home.heroLine1',
   'home.heroLine2',
-  'home.heroCtaWho',
-  'home.heroCtaInvolved',
   'home.whoTitle',
   'home.whoText',
   'brand.tagline',

@@ -59,8 +59,6 @@ const en: Dictionary = {
     heroTitle: 'Cultures in Dialogue',
     heroText:
       'A Montréal non-profit organization (NGO) where cultures meet, listen, and create together — rooted in Québec, open to the world.',
-    heroCtaWho: 'Who We Are',
-    heroCtaInvolved: 'Get Involved',
     whoTitle: 'Who We Are',
     whoText:
       'Matin Intercultural Institute is a Montréal-based non-profit working at the intersection of culture, dialogue, and social development. We bring together people and communities of all origins through intercultural exchange, the arts, research, and public engagement. Rooted in Québec and connected to Canada and the world, Matin works to build mutual understanding, equity, and a shared sense of belonging.',
