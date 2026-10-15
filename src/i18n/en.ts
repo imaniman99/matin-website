@@ -58,7 +58,7 @@ const en: Dictionary = {
     heroEyebrow: 'MATIN INTERCULTURAL INSTITUTE',
     heroTitle: 'Cultures in Dialogue',
     heroText:
-      'Matin Intercultural Institute is a Montréal-based non-profit where cultures meet in conversation. Through dialogue, the arts, research, and public engagement, we build understanding and a shared sense of belonging.',
+      'Matin Intercultural Institute is a Montréal-based non-profit organization (NGO) where cultures meet in conversation. Through dialogue, arts, research, and public engagement, we build understanding and a shared sense of belonging.',
     heroCtaWho: 'Who We Are',
     heroCtaInvolved: 'Get Involved',
     whoTitle: 'Who We Are',
