@@ -60,7 +60,7 @@ const fr = {
     heroEyebrow: 'Institut interculturel Matin',
     heroTitle: 'Cultures en dialogue',
     heroText:
-      "Un organisme montréalais où les cultures se rencontrent, s'écoutent et créent ensemble — enraciné au Québec, ouvert sur le monde.",
+      "Un organisme à but non lucratif montréalais (ONG) où les cultures se rencontrent, s'écoutent et créent ensemble — enraciné au Québec, ouvert sur le monde.",
     heroCtaWho: 'Qui sommes-nous',
     heroCtaInvolved: 'Nous rejoindre',
     whoTitle: 'Qui sommes-nous ?',
