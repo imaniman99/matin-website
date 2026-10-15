@@ -18,20 +18,21 @@
  * Proportions: about 60% cream/white, 25% blue, 10% teal, 5% gold.
  */
 :root {
-  --matin-blue: #123c59; /* primary brand colour: headings, footer, main buttons, links */
-  --matin-gold: #c5a05a; /* accent only: thin lines, dividers, icon details, hover borders */
-  --matin-cream: #f8f5ef; /* main page background */
+  --matin-blue: #103b59; /* deep petroleum blue: headings, navigation, buttons, links, footer */
+  --matin-gold: #c69c46; /* warm gold: highlights, decorative lines, the hero tagline */
+  --matin-cream: #f7f3ea; /* soft warm cream: page and section backgrounds */
   --matin-teal: #6ba8ac; /* secondary accent: light section backgrounds, tags, illustrations */
   --matin-ink: #293442; /* body text */
   --matin-white: #ffffff; /* cards, text on blue */
+  --matin-red: #b33b42; /* maple red: sparingly, only for the Canadian brand identity */
 }
 
 /*
  * Tailwind tokens, all mapped onto the six variables above.
- * Contrast (checked): ink on cream 11.6, ink on white 12.6, blue on cream 10.6,
- * blue on white 11.6, white on blue 11.6, gold on blue 4.7, ink/blue on tint 10+.
+ * Contrast (checked): ink on cream 11.4, blue on cream 10.6, blue on white 11.7,
+ * white on blue 11.7, gold on blue 4.6, maple red on white 5.8, ink/blue on tint 10+.
  * Gold and teal on cream or white are only 2.3 to 2.7, so they are never used for
- * text there: labels, dates and icons use blue instead.
+ * small text there: labels, dates and icons use blue instead.
  */
 @theme {
   --color-primary: var(--matin-blue);
@@ -40,6 +41,7 @@
   --color-turquoise: var(--matin-teal);
   --color-ink: var(--matin-ink);
   --color-white: var(--matin-white);
+  --color-maple: var(--matin-red);
   /* Small labels, dates and icons that used to be dark gold: blue for contrast. */
   --color-gold-dark: var(--matin-blue);
   /* Secondary text uses the body ink too (no extra grey in the palette). */
@@ -188,22 +190,36 @@
   /* Buttons: primary = blue with white text (11.6:1), secondary = blue outline.
      Gold appears only as the hover border/underline accent. */
   .btn {
-    @apply inline-flex min-h-13 items-center justify-center gap-2 rounded-full px-7 py-3 font-bold no-underline transition-colors duration-200;
+    @apply inline-flex min-h-13 items-center justify-center gap-2 rounded-full px-8 py-3 font-bold no-underline;
     font-size: 1.1875rem;
     line-height: 1.3;
+    letter-spacing: 0.01em;
+    transition:
+      background-color 0.2s,
+      border-color 0.2s,
+      color 0.2s,
+      transform 0.2s,
+      box-shadow 0.2s;
   }
+  /* Subtle lift on hover (the global reduced-motion rule removes the motion). */
   .btn:hover {
-    @apply underline decoration-gold decoration-2 underline-offset-4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--color-primary) 55%, transparent);
   }
+  .btn:active {
+    transform: none;
+  }
+  /* Primary: petroleum blue, white text (11.7:1). */
   .btn-primary {
     @apply bg-primary text-white hover:bg-primary-hover;
   }
+  /* Secondary: light background, thin gold border, blue text (11.7:1). */
   .btn-outline {
-    @apply border-2 border-primary bg-white text-primary hover:border-gold;
+    @apply border-[1.5px] border-gold bg-white text-primary hover:bg-cream;
   }
   /* On blue sections: white button with blue text. */
   .on-dark .btn-outline {
-    @apply border-white bg-white text-primary hover:border-gold;
+    @apply border-gold bg-white text-primary hover:bg-cream;
   }
   /* Shared card style: white, softly rounded, very light border, no shadow. */
   .card {

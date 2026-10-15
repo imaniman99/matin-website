@@ -284,18 +284,12 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     font-weight: 600;
     font-size: 1.25rem; /* 20px */
     white-space: nowrap;
-    color: var(--color-ink);
+    color: var(--color-primary);
     text-decoration: none;
     border-radius: 999px;
-    transition:
-      color 0.2s,
-      background 0.2s;
   }
-  .nav-link:hover {
-    background: var(--color-tint);
-    color: var(--color-primary);
-  }
-  .nav-link.is-active::after {
+  /* Thin gold underline: grows in on hover, stays on the current page. */
+  .nav-link::after {
     content: '';
     position: absolute;
     inset-inline: 0.75rem;
@@ -303,6 +297,12 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
     height: 2px;
     border-radius: 2px;
     background: var(--color-gold);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
   }
 
   .has-sub {
@@ -361,11 +361,17 @@ const isActive = (url: string) => !url.includes('?') && current.startsWith(url);
   .menu-btn {
     display: inline-grid;
     place-items: center;
-    width: 3.1rem;
-    height: 3.1rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 999px;
     color: var(--color-primary);
     cursor: pointer;
+  }
+  @media (min-width: 40rem) {
+    .menu-btn {
+      width: 3.1rem;
+      height: 3.1rem;
+    }
   }
   .menu-btn:hover {
     background: var(--color-tint);

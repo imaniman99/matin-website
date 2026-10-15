@@ -19,6 +19,7 @@ These rules apply to every page, now and in the future. Read them before changin
 
 - **Nunito** (rounded, warm): the whole site, headings (bold) and body text, labels, buttons.
 - **Playfair Display, extra bold:** only the "Matin" wordmark (`Lockup.astro`, `Wordmark.astro`, via `--font-brand`), to match the logo.
+- **Playfair Display, bold italic:** only the homepage tagline "Cultures in Dialogue" (gold). Persian pages use Vazirmatn bold for it.
 - **Vazirmatn:** Persian pages.
 - All are self-hosted through `@fontsource` (imported in `src/styles/global.css`); the CSP blocks Google Fonts, so do not add a Google Fonts link.
 - Desktop sizes: small-caps label about 22px; hero headline about 88px; hero paragraph about 22px. Scale down smoothly on tablet and mobile with `clamp()` so nothing overflows.
@@ -29,20 +30,21 @@ Six variables, defined once in `:root` in `src/styles/global.css`. They are the 
 
 | Variable | Value | Use |
 | --- | --- | --- |
-| `--matin-blue` | `#123C59` | Primary brand color: headings, footer, President band, main buttons, links, icons, small labels (token `primary`) |
-| `--matin-gold` | `#C5A05A` | Accent only: thin lines, dividers, maple leaves, hover borders and underlines (token `gold`) |
-| `--matin-cream` | `#F8F5EF` | Main page background (token `cream`) |
+| `--matin-blue` | `#103B59` | Deep petroleum blue, primary brand color: headings, footer, President band, main buttons, links, icons, small labels (token `primary`) |
+| `--matin-gold` | `#C69C46` | Warm gold: thin lines, dividers, maple leaves, secondary-button borders, hover and active underlines, the homepage tagline (token `gold`) |
+| `--matin-cream` | `#F7F3EA` | Soft warm cream: main page background (token `cream`) |
 | `--matin-teal` | `#6BA8AC` | Secondary accent: light section backgrounds (`tint`), card borders (`line`), illustrations (token `turquoise`) |
 | `--matin-ink` | `#293442` | Body text, also secondary text (tokens `ink`, `muted`) |
 | `--matin-white` | `#FFFFFF` | Cards, inputs, text on blue (token `white`) |
+| `--matin-red` | `#B33B42` | Maple red: use sparingly, only for the Canadian brand identity (token `maple`); not used yet |
 
 - Proportions: about 60% cream/white, 25% blue, 10% teal, 5% gold.
 - Page background is cream; cards are white on cream; alternate sections use the light teal `tint`. Long text is ink on cream or white.
 - The footer and the President band are blue with white or cream text (class `on-dark`).
-- **Gold is never a large background and never text on cream or white** (2.3:1, fails). Gold text is only allowed on blue (4.7:1), e.g. the gold-on-blue pill label above the homepage hero title. Teal is never text on cream or white either (2.5:1).
+- **Gold is never a large background and never text on cream or white** (2.3:1, fails). Gold text is only allowed on blue (4.6:1), plus the homepage tagline "Cultures in Dialogue" (large bold italic on the photo, at the owner's request). Teal is never text on cream or white either (2.5:1).
 - The old `gold-dark` token now maps to blue: use it (or `primary`) for small labels, dates and icons.
 - No green and no dark green anywhere.
-- Only exceptions to "variables only": `theme-color` in `BaseLayout.astro` and `site.webmanifest` (must be literal hex, `#123C59`), and the arrow color inside the select-box data URIs.
+- Only exceptions to "variables only": `theme-color` in `BaseLayout.astro` and `site.webmanifest` (must be literal hex, `#103B59`), and the arrow color inside the select-box data URIs.
 
 ## 4. Style
 
@@ -54,9 +56,9 @@ Six variables, defined once in `:root` in `src/styles/global.css`. They are the 
 ## 5. Accessibility and responsiveness
 
 - Real heading hierarchy: one `h1` per page, then `h2`/`h3` in order.
-- Contrast (WCAG AA, checked): ink on cream 11.6, blue on cream 10.6, blue on white 11.6, white on blue 11.6, gold on blue 4.7. Never gold or teal text on cream or white.
-- Buttons: `.btn-primary` = blue with white text, darker blue on hover; `.btn-outline` = secondary, blue outline (white button on blue sections). Gold only as the hover border or underline.
-- Links: blue, gold underline on hover.
+- Contrast (WCAG AA, checked): ink on cream 11.4, blue on cream 10.6, blue on white 11.7, white on blue 11.7, gold on blue 4.6. Never gold or teal small text on cream or white.
+- Buttons (pill-shaped, gentle lift on hover): `.btn-primary` = petroleum blue with white text, darker blue on hover; `.btn-outline` = secondary, light background with a thin gold border and blue text.
+- Links: blue, gold underline on hover. Header navigation: blue text, a thin gold underline grows in on hover and stays under the current page.
 - Everything works with the keyboard, with visible focus styles (blue outline; gold on blue sections).
 - Decorative icons, lines and maple leaves get `aria-hidden="true"`. Meaningful images get proper alt text in both languages.
 - Set the `lang` attribute correctly on each language version (`BaseLayout.astro` does this: `fr-CA`, `en-CA`, `fa`).
