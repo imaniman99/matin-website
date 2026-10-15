@@ -80,7 +80,7 @@ const t = useTranslations(lang);
     padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
   }
   .hero__text {
-    max-width: 56rem;
+    max-width: 72rem;
     margin-inline: auto;
     text-align: center;
   }
@@ -103,10 +103,12 @@ const t = useTranslations(lang);
     margin: 1.75rem auto;
     background: var(--color-gold);
   }
+  /* About 26px on desktop with long lines, so the paragraph fits in three lines
+     on screens 1280px and wider (all three languages). */
   .hero__paragraph {
-    max-width: 40rem;
+    max-width: 72rem;
     margin-inline: auto;
-    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    font-size: clamp(1.25rem, 1rem + 0.8vw, 1.625rem);
     line-height: 1.65;
     font-weight: 600;
     color: var(--color-ink);
