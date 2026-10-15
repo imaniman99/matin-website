@@ -1,9 +1,12 @@
 ---
 /**
- * Homepage hero: a single centered column of text (label, headline, gold rule,
- * paragraph and the two buttons), with two small decorative circles, turquoise
- * and gold, in opposite corners. They float gently and never touch.
+ * Homepage hero: a full-width photo banner (Montréal skyline) right under the
+ * header, with the label, headline, gold rule, paragraph and the two buttons
+ * centered on it. The photo is shown as is, with no veil; the text is dark so it
+ * reads on the bright sky.
  */
+import { Picture } from 'astro:assets';
+import banner from '@/assets/home/hero-banner.jpg';
 import { href, type UiLang } from '@/i18n/routes';
 import { useTranslations } from '@/i18n/ui';
 
@@ -15,9 +18,17 @@ const t = useTranslations(lang);
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero-art" aria-hidden="true">
-    <span class="hero-dot hero-dot--teal"></span>
-    <span class="hero-dot hero-dot--gold"></span>
+  <div class="hero__media" aria-hidden="true">
+    <Picture
+      src={banner}
+      formats={['avif', 'webp']}
+      fallbackFormat="jpg"
+      widths={[640, 960, 1280]}
+      sizes="100vw"
+      alt=""
+      loading="eager"
+      fetchpriority="high"
+    />
   </div>
   <div class="container-site hero__inner">
     <div class="hero__text">
@@ -42,75 +53,31 @@ const t = useTranslations(lang);
 <style>
   .hero {
     position: relative;
+    display: grid;
+    align-items: center;
+    min-height: clamp(34rem, 22rem + 30vw, 44rem);
     overflow: hidden;
     isolation: isolate;
     background: white;
     border-block-end: 1px solid var(--color-line);
   }
 
-  /* Two small decorative circles in opposite corners, never overlapping. Fills
-     stay light so the text keeps its contrast where a circle sits behind it. */
-  .hero-art {
+  /* Full-width photo behind the text. The skyline sits in the lower middle of
+     the photo, so that is the part kept in view when the sides are cropped. */
+  .hero__media {
     position: absolute;
     inset: 0;
     z-index: -1;
-    pointer-events: none;
   }
-  .hero-dot {
-    position: absolute;
-    border-radius: 50%;
+  .hero__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 65%;
   }
-  /* Thin ring around each circle. */
-  .hero-dot::after {
-    content: '';
-    position: absolute;
-    inset: -0.875rem;
-    border: 1.5px solid currentColor;
-    border-radius: 50%;
-    opacity: 0.35;
-  }
-  .hero-dot--teal {
-    inset-block-start: 1rem;
-    inset-inline-start: -2.5rem;
-    width: clamp(6rem, 4.5rem + 6vw, 10.5rem);
-    aspect-ratio: 1;
-    color: var(--color-turquoise);
-    background: color-mix(in srgb, var(--color-turquoise) 9%, transparent);
-  }
-  .hero-dot--gold {
-    inset-block-end: -2.5rem;
-    inset-inline-end: -1.5rem;
-    width: clamp(5rem, 3.5rem + 5vw, 8.5rem);
-    aspect-ratio: 1;
-    color: var(--color-gold);
-    background: color-mix(in srgb, var(--color-gold) 14%, transparent);
-  }
-  @media (min-width: 64rem) {
-    .hero-dot--teal {
-      inset-block-start: 12%;
-      inset-inline-start: 5%;
-    }
-    .hero-dot--gold {
-      inset-block-end: 16%;
-      inset-inline-end: 7%;
-    }
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-dot--teal {
-      animation: hero-float 12s ease-in-out infinite alternate;
-    }
-    .hero-dot--gold {
-      animation: hero-float 12s ease-in-out -6s infinite alternate-reverse;
-    }
-  }
-  @keyframes hero-float {
-    to {
-      transform: translateY(12px);
-    }
-  }
-
   .hero__inner {
-    padding-block: clamp(3rem, 2rem + 4vw, 6.5rem);
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
   }
   .hero__text {
     max-width: 56rem;
@@ -119,12 +86,12 @@ const t = useTranslations(lang);
   }
   .hero__label {
     margin-block-end: 1.25rem;
-    /* About 22px on desktop, never below 19px (bold, so gold-dark stays legible). */
-    font-size: clamp(1.1875rem, 1rem + 0.5vw, 1.375rem);
+    /* About 28px on desktop, never below 22px (bold, so gold-dark stays legible). */
+    font-size: clamp(1.375rem, 1.1rem + 0.8vw, 1.75rem);
   }
   .hero__title {
     font-size: clamp(2.75rem, 1.4rem + 5.4vw, 5.5rem);
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.04;
     color: var(--color-primary);
     overflow-wrap: break-word;
@@ -141,7 +108,14 @@ const t = useTranslations(lang);
     margin-inline: auto;
     font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
     line-height: 1.65;
+    font-weight: 600;
     color: var(--color-ink);
+    /* Soft white halo so the dark letters stay readable where the paragraph
+       crosses the darker buildings of the skyline. */
+    text-shadow:
+      0 0 3px white,
+      0 0 8px white,
+      0 0 16px rgb(255 255 255 / 0.9);
   }
   .hero__actions {
     display: flex;
