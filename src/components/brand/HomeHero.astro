@@ -86,8 +86,12 @@ const t = useTranslations(lang);
   }
   .hero__label {
     margin-block-end: 1.25rem;
-    /* About 28px on desktop, never below 22px. Blue: gold text would fail contrast. */
+    /* About 28px on desktop, never below 22px. Gold at the owner's request (the
+       one place gold is used as text); a faint dark shadow helps it read on the
+       bright sky. */
     font-size: clamp(1.375rem, 1.1rem + 0.8vw, 1.75rem);
+    color: var(--color-gold);
+    text-shadow: 0 1px 3px color-mix(in srgb, var(--color-ink) 45%, transparent);
   }
   .hero__title {
     font-size: clamp(2.75rem, 1.4rem + 5.4vw, 5.5rem);
