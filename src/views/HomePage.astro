@@ -81,7 +81,7 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
   <section id="who-we-are" class="scroll-mt-24 bg-cream py-20 sm:py-24" aria-labelledby="who-title">
     <div class="container-site">
       <SectionHeader id="who-title" title={t('home.whoTitle')} class="mb-8" />
-      <p class="mx-auto max-w-3xl text-center text-lg leading-relaxed sm:text-xl">
+      <p class="who-text mx-auto text-center">
         {t('home.whoText')}
       </p>
       <nav aria-label={t('home.whoCardsLabel')} class="mt-12">
@@ -341,6 +341,14 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     border: 1px solid var(--color-line);
     border-inline-start: 4px solid var(--color-gold);
   }
+  /* About 21px on desktop on a wide measure, so the paragraph fits in three
+     lines; about 17px on mobile. */
+  .who-text {
+    max-width: 1100px;
+    font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.3125rem);
+    line-height: 1.6;
+  }
+  /* Soft tint of the brand blue, a little deeper on hover. */
   .who-card {
     display: flex;
     align-items: center;
@@ -348,9 +356,13 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     height: 100%;
     padding: 1.5rem 1.75rem;
     text-decoration: none;
-    transition: border-color 0.2s;
+    background: color-mix(in srgb, var(--color-primary) 9%, var(--color-white));
+    transition:
+      background-color 0.2s,
+      border-color 0.2s;
   }
   .who-card:hover {
+    background: color-mix(in srgb, var(--color-primary) 16%, var(--color-white));
     border-color: var(--color-gold);
   }
   .area-card {
