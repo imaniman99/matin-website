@@ -12,6 +12,7 @@ These rules apply to every page, now and in the future. Read them before changin
 - Tone: professional and credible, but warm and human. Not stiff, not overly casual.
 - No food or party imagery.
 - Use the texts the institute provides **EXACTLY** as written: no rewording, no "improvements," same order, same punctuation (including French « » quotation marks and spaces before French colons and semicolons). `src/lib/frenchTypo.ts` only turns existing spaces into non-breaking ones; it never adds or removes punctuation.
+- **Keep the languages in sync:** whenever text changes in one language (English, French or Persian), make the equivalent change in the same place in the other languages, in the same edit. Persian only where that page or string has a Persian version.
 - No `[PLACEHOLDER]` tags and no placeholder or sample text anywhere. Content that is not provided yet is simply not shown (lists show a short empty-state message; optional settings such as address, phone, email and hours are hidden until set).
 
 ## 2. Typography
