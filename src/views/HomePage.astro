@@ -346,7 +346,8 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.3125rem);
     line-height: 1.6;
   }
-  /* Soft tint of the brand blue, a little deeper on hover. */
+  /* Light blue fill, a little deeper on hover (exact values requested by the
+     owner; an exception to the variables-only color rule). */
   .who-card {
     display: flex;
     align-items: center;
@@ -354,13 +355,13 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     height: 100%;
     padding: 1.5rem 1.75rem;
     text-decoration: none;
-    background: color-mix(in srgb, var(--color-primary) 9%, var(--color-white));
+    background: #e8f0fa;
     transition:
       background-color 0.2s,
       border-color 0.2s;
   }
   .who-card:hover {
-    background: color-mix(in srgb, var(--color-primary) 16%, var(--color-white));
+    background: #d6e4f5;
     border-color: var(--color-gold);
   }
   .area-card {
