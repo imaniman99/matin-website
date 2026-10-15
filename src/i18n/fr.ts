@@ -57,7 +57,7 @@ const fr = {
       'La recherche fonctionne une fois le site construit (npm run build, puis npm run preview).',
   },
   home: {
-    heroEyebrow: 'INSTITUT INTERCULTUREL MATIN',
+    heroEyebrow: 'Institut interculturel Matin',
     heroTitle: 'Cultures en dialogue',
     heroText:
       "L'Institut interculturel Matin est un organisme à but non lucratif montréalais (ONG) où les cultures se rencontrent dans la conversation. Par le dialogue, les arts, la recherche et l'engagement public, nous bâtissons la compréhension et un sentiment d'appartenance partagé.",
