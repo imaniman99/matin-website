@@ -23,14 +23,14 @@ These rules apply to every page, now and in the future. Read them before changin
 - All are self-hosted through `@fontsource` (imported in `src/styles/global.css`); the CSP blocks Google Fonts, so do not add a Google Fonts link.
 - Desktop sizes: small-caps label about 22px; hero headline about 88px; hero paragraph about 22px. Scale down smoothly on tablet and mobile with `clamp()` so nothing overflows.
 
-## 3. Colors: ONLY turquoise and gold, plus neutrals
+## 3. Colors: dark blue and gold, plus turquoise accents and neutrals
 
 Defined as tokens in `src/styles/global.css` (`@theme`). Always use the tokens (`text-primary`, `bg-tint`, `var(--color-gold)`…), never raw hex values.
 
 | Token | Value | Use |
 | --- | --- | --- |
 | `--color-turquoise` | `#14A3A0` | Turquoise accents |
-| `--color-primary` | `#0E8F8C` | Darker turquoise: headlines, primary buttons |
+| `--color-primary` | `#073B4C` | Dark blue from the logo, the site's main color: headlines, the "Matin" wordmark, primary buttons, all text that used to be green |
 | `--color-gold` | `#D8A94B` | Gold: lines, maple leaves, gold buttons |
 | `--color-gold-dark` | `#A87412` | Darker gold: icons, and text that is large or bold |
 | `--color-ink` | `#2F3B3B` | Body text (neutral dark gray) |
@@ -39,7 +39,7 @@ Defined as tokens in `src/styles/global.css` (`@theme`). Always use the tokens (
 | `--color-line` | `#D6EBEA` | Card borders and dividers |
 
 - Backgrounds: white or very light turquoise (`tint`) only.
-- Do NOT use dark green, navy, or any other color.
+- Do NOT use dark green or any other color. Text that would be green or turquoise uses the dark blue (`primary`) instead.
 - **ONE EXCEPTION:** the "A word from our President" band on the About page keeps its deep teal background (`--color-president: #0A5C63`, with `--color-president-gold` and `--color-president-cream` for its text). No other place may use these three tokens.
 
 ## 4. Style
@@ -52,11 +52,11 @@ Defined as tokens in `src/styles/global.css` (`@theme`). Always use the tokens (
 ## 5. Accessibility and responsiveness
 
 - Real heading hierarchy: one `h1` per page, then `h2`/`h3` in order.
-- Contrast: white on `#0E8F8C` (3.9:1) and `#0E8F8C` or `#A87412` on white (3.9:1, 4.1:1) only pass WCAG AA for large text. So:
+- Contrast: dark blue `#073B4C` passes AA everywhere (12:1 on white, also for white text on it). `#A87412` on white (4.1:1) only passes for large text. So:
   - button text is bold and at least 19px (the `.btn` class does this);
-  - `primary` and `gold-dark` color only headings, large or bold-and-≥19px text, and icons;
+  - `gold-dark` colors only headings, large or bold-and-≥19px text, and icons;
   - small text and links stay `ink` or `muted`.
-- Everything works with the keyboard, with visible focus styles (turquoise outline; light gold inside the President band).
+- Everything works with the keyboard, with visible focus styles (dark blue outline; light gold inside the President band).
 - Decorative icons, lines and maple leaves get `aria-hidden="true"`. Meaningful images get proper alt text in both languages.
 - Set the `lang` attribute correctly on each language version (`BaseLayout.astro` does this: `fr-CA`, `en-CA`, `fa`).
 - Fully responsive: desktop, tablet, mobile, with no horizontal scroll.

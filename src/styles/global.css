@@ -13,15 +13,16 @@
 @import '@fontsource-variable/vazirmatn/index.css';
 
 /*
- * Brand tokens. The site uses ONLY turquoise and gold plus neutrals (see CLAUDE.md).
- * Contrast on white (checked): ink 11.6, muted 6.1, primary 3.9, gold-dark 4.1,
- * ink on gold 5.4, white on primary 3.9. Primary and gold-dark therefore only colour
- * large or bold text (≥ 19px bold or ≥ 24px) and icons; small text stays ink/muted.
+ * Brand tokens. The main colours are dark blue (from the logo) and gold, plus
+ * turquoise accents and neutrals (see CLAUDE.md).
+ * Contrast on white (checked): ink 11.6, muted 6.1, primary 12.1, gold-dark 4.1,
+ * ink on gold 5.4, white on primary 12.1. Gold-dark therefore only colours large or
+ * bold text (≥ 19px bold or ≥ 24px) and icons.
  */
 @theme {
   --color-turquoise: #14a3a0;
-  /* Headlines and primary buttons. */
-  --color-primary: #0e8f8c;
+  /* Dark blue of the logo: the site's main colour (headlines, primary buttons). */
+  --color-primary: #073b4c;
   --color-gold: #d8a94b;
   /* Icons and large or bold accent text only. */
   --color-gold-dark: #a87412;
@@ -134,7 +135,7 @@
   a {
     @apply text-ink underline-offset-4;
   }
-  /* Turquoise ring (3.9:1 on white, 3.6:1 on the tint) so focus is always visible. */
+  /* Dark blue ring (12:1 on white, 11:1 on the tint) so focus is always visible. */
   :focus-visible {
     outline: 3px solid var(--color-primary);
     outline-offset: 3px;
