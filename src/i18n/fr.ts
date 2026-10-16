@@ -63,7 +63,7 @@ const fr = {
       "Un organisme à but non lucratif montréalais (ONG) où les cultures se rencontrent, s'écoutent et créent ensemble — enraciné au Québec, ouvert sur le monde.",
     whoTitle: 'Qui sommes-nous ?',
     whoText:
-      "L'Institut interculturel Matin est un organisme à but non lucratif montréalais qui œuvre à la croisée de la culture, du dialogue et du développement social. Nous rassemblons des personnes et des communautés de toutes origines grâce aux échanges interculturels, aux arts, à la recherche et à l'engagement public. Enraciné au Québec et connecté au Canada et au monde, Matin travaille à bâtir la compréhension mutuelle, l'équité et un sentiment d'appartenance partagé.",
+      "L'Institut interculturel Matin est un organisme à but non lucratif montréalais qui rassemble des personnes de toutes origines par le dialogue, les arts et la recherche, pour bâtir la compréhension mutuelle et un sentiment d'appartenance partagé.",
     whoCardsLabel: 'En savoir plus sur Matin',
     areasEyebrow: "Nos champs d'action",
     areasTitle: 'Comment Matin rapproche les cultures',
