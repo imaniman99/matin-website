@@ -86,15 +86,15 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
         <ul class="grid gap-5 sm:grid-cols-3">
           {whoCards.map((c) => (
             <li>
-              <a href={`${aboutHref}#${c.id}`} class="card who-card">
+              <a href={`${aboutHref}#${c.id}`} class="card who-card on-dark">
                 <c.icon
                   size={28}
                   stroke-width={1.25}
-                  class="shrink-0 text-gold-dark"
+                  class="shrink-0 text-gold"
                   aria-hidden="true"
                 />
-                <span class="flex-1 text-xl font-bold text-primary">{c.label}</span>
-                <ArrowRight size={20} class="flip-rtl shrink-0 text-gold-dark" aria-hidden="true" />
+                <span class="flex-1 text-xl font-bold text-white">{c.label}</span>
+                <ArrowRight size={20} class="flip-rtl shrink-0 text-gold" aria-hidden="true" />
               </a>
             </li>
           ))}
@@ -346,8 +346,8 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.3125rem);
     line-height: 1.6;
   }
-  /* Light blue fill, a little deeper on hover (exact values requested by the
-     owner; an exception to the variables-only color rule). */
+  /* Deep blue fill with white text and gold icons (requested by the owner),
+     a little darker on hover. */
   .who-card {
     display: flex;
     align-items: center;
@@ -355,13 +355,14 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     height: 100%;
     padding: 1.5rem 1.75rem;
     text-decoration: none;
-    background: #e8f0fa;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     transition:
       background-color 0.2s,
       border-color 0.2s;
   }
   .who-card:hover {
-    background: #d6e4f5;
+    background: var(--color-primary-hover);
     border-color: var(--color-gold);
   }
   .area-card {
