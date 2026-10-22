@@ -82,6 +82,14 @@ const interestHref = `${href('getInvolved', lang)}#interest`;
     <div class="container-site">
       <SectionHeader id="who-title" title={t('home.whoTitle')} class="mb-8" />
       <p class="who-text mx-auto text-center">{t('home.whoText')}</p>
+      {settings.legal && (
+        <p class="mx-auto mt-6 max-w-3xl text-center text-base">
+          {t('home.legalLine', { neq: settings.legal.neq })} ·{' '}
+          <a href={href('legalInfo', lang)} class="font-semibold underline">
+            {t('home.legalLink')}
+          </a>
+        </p>
+      )}
       <nav aria-label={t('home.whoCardsLabel')} class="mt-12">
         <ul class="grid gap-5 sm:grid-cols-3">
           {whoCards.map((c) => (
