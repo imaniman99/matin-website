@@ -27,7 +27,7 @@ const explore: RouteKey[] = [
   'faq',
   'contact',
 ];
-const legal: RouteKey[] = ['privacy', 'terms', 'accessibility'];
+const legal: RouteKey[] = ['legalInfo', 'privacy', 'terms', 'accessibility'];
 const year = new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-CA', {
   useGrouping: false,
 }).format(new Date().getFullYear());
@@ -92,7 +92,7 @@ const mission = lang !== 'fa' || s.mission.fa ? pick(s.mission, lang) : undefine
               {s.phone && (
                 <p class="flex gap-3">
                   <Phone size={18} class="mt-1 shrink-0 text-gold" aria-hidden="true" />
-                  <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="footer-link">
+                  <a href={`tel:${s.phone.replace(/[^\d+]/g, '')}`} class="footer-link" dir="ltr">
                     {s.phone}
                   </a>
                 </p>
@@ -135,6 +135,11 @@ const mission = lang !== 'fa' || s.mission.fa ? pick(s.mission, lang) : undefine
   <div class="container-site flex flex-col gap-4 py-7 text-sm md:flex-row md:items-center md:justify-between">
     <p>
       © {year} {t('meta.siteName')}. {t('footer.rights')}
+      {s.legal && (
+        <span class="block md:ms-1 md:inline" dir="ltr">
+          {t('footer.neq', { neq: s.legal.neq })}
+        </span>
+      )}
       {s.charityNumber && (
         <span class="block md:inline">
           {t('footer.charity')} {s.charityNumber}

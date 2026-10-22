@@ -15,12 +15,13 @@ Legend: ☐ to do · ⚠ important / legal
 These details appear on many pages (footer, Contact, About, structured data for Google).
 
 - ✔ **Mission** (FR + EN): supplied by the institute on 2026-10-11.
-- ☐ **Street address and postal code** (`address`). Hidden until set.
-- ☐ **Phone** (`phone`). Hidden until set.
-- ☐ **Public email** (`email`). Hidden until set.
+- ✔ **Registered address** (`legal.registeredAddress`): shown only on the Legal Information page; the Contact page links to it. `address` stays empty so it is not repeated in every footer.
+- ✔ **Phone** (`phone`): 263 378-9340.
+- ✔ **Official email** (`email`): admin@matincc.ca.
+- ✔ **Legal identity** (`legal`): official names (FR, EN, FA), NEQ, incorporation date, official statement. Shown on the Legal Information page, Home, About, footer and in Google's structured data.
 - ☐ **Opening hours** (`hours`, FR + EN). Hidden until set.
 - ✔ **Social media URLs:** YouTube, LinkedIn and Instagram point to the institute's pages.
-- ☐ **Registered charity number** (`charityNumber`). Leave empty if there is none.
+- ☐ **Registered charity number** (`charityNumber`). Leave empty: Matin is a Québec nonprofit (OSBL, NEQ), not a CRA-registered charity.
 - ✔ Donate button, membership and impact numbers were removed from the site.
 - ⚠ ☐ **Person in charge of personal information** (`privacyOfficer`: name, title, email). Law 25 requires this person to be named. Until it is set, the privacy policy points to the Contact page.
 

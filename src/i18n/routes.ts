@@ -23,6 +23,7 @@ export const routes = {
   privacy: { fr: 'confidentialite', en: 'privacy' },
   terms: { fr: 'conditions-utilisation', en: 'terms-of-use' },
   accessibility: { fr: 'accessibilite', en: 'accessibility' },
+  legalInfo: { fr: 'informations-legales', en: 'legal-information' },
   search: { fr: 'recherche', en: 'search' },
 } as const satisfies Record<string, Record<Lang, string>>;
 
@@ -68,6 +69,7 @@ export const faRoutes: Partial<Record<RouteKey, string>> = {
   about: 'about',
   getInvolved: 'get-involved',
   contact: 'contact',
+  legalInfo: 'legal-information',
 };
 
 export const isRtl = (lang: UiLang) => lang === 'fa';

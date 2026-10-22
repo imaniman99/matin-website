@@ -17,7 +17,7 @@ import {
 } from '@lucide/astro';
 import PageLayout from '@/layouts/PageLayout.astro';
 import SectionHeader from '@/components/ui/SectionHeader.astro';
-import { path, siteAlternates, type UiLang } from '@/i18n/routes';
+import { href, path, siteAlternates, type UiLang } from '@/i18n/routes';
 import { faAboutMore } from '@/i18n/fa';
 import { useTranslations, pick } from '@/i18n/ui';
 import { getSettings, getSingleton, initials } from '@/lib/content';
@@ -30,10 +30,30 @@ const t = useTranslations(lang);
 const full = lang !== 'fa';
 const [settings, about] = await Promise.all([getSettings(), getSingleton('about')]);
 
-const blocks = [
-  { id: 'who-we-are', title: t('about.whoWeAre'), text: t('home.whoText') },
-  { id: 'mission', title: t('about.mission'), text: pick(settings.mission, lang) },
-  { id: 'vision', title: t('about.vision'), text: pick(about.vision, lang) },
+const blocks: {
+  id: string;
+  title: string;
+  text: string;
+  link?: { href: string; label: string };
+}[] = [
+  ...(full
+    ? [
+        { id: 'who-we-are', title: t('about.whoWeAre'), text: t('home.whoText') },
+        { id: 'mission', title: t('about.mission'), text: pick(settings.mission, lang)! },
+        { id: 'vision', title: t('about.vision'), text: pick(about.vision, lang)! },
+      ]
+    : []),
+  // Shown in every language, including Persian.
+  ...(settings.legal
+    ? [
+        {
+          id: 'legal-status',
+          title: t('about.legalStatus'),
+          text: settings.legal.statement[lang],
+          link: { href: href('legalInfo', lang), label: t('about.legalMore') },
+        },
+      ]
+    : []),
 ];
 
 // Thin-line icons, all drawn at the same size and stroke width.
@@ -63,7 +83,7 @@ const president = about.president;
   lede={t('about.lede')}
   alternates={siteAlternates('about')}
 >
-  {full && (
+  {blocks.length > 0 && (
     <div class="container-site grid max-w-4xl gap-8 pb-20">
       {blocks.map((b) => (
         <section id={b.id} class="card scroll-mt-24 p-6 sm:p-12" aria-labelledby={`${b.id}-title`}>
@@ -71,6 +91,13 @@ const president = about.president;
             {b.title}
           </h2>
           <p class="text-lg leading-relaxed">{b.text}</p>
+          {b.link && (
+            <p class="mt-4">
+              <a href={b.link.href} class="font-semibold underline">
+                {b.link.label}
+              </a>
+            </p>
+          )}
         </section>
       ))}
     </div>
