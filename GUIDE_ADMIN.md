@@ -80,6 +80,21 @@ price:
     en: "$15 · $10 students"
 ```
 
+   Ajoutez aussi `amount: 15` (le plein tarif, en dollars canadiens, chiffre seulement) dans le bloc `price` : Google l'affiche dans ses résultats.
+
+5 bis. **Pour Google (facultatif) :** ajoutez ces lignes seulement si l'information est **réelle et connue**. Sinon, ne les mettez pas : n'inventez jamais une date, un nom ou un statut.
+
+```yaml
+registrationStatus: open # open = inscription ouverte · soldOut = complet · notYetOpen = pas encore ouverte
+registrationOpens: "2026-10-01T09:00" # date d'ouverture des inscriptions ou de la billetterie
+performers: # conférenciers, artistes ou groupes qui présentent (pas Matin, qui est l'organisateur)
+  - name: "Nom de la personne"
+    type: person # person = personne · group = groupe musical ou troupe · organization = organisme
+organizer: # seulement si l'événement est organisé par un autre organisme que Matin
+  name: "Nom de l'organisme"
+  url: https://exemple.org
+```
+
 6. Cliquez sur **Commit changes…**, puis de nouveau sur **Commit changes**.
 
 ### 2. Publier une actualité
@@ -304,6 +319,8 @@ This guide explains how to update the Matin website **without installing any sof
 2. Click **Add file → Create new file** and name the file, e.g. `cooking-workshop-2026.yaml`.
 3. Paste the **event template** from the French section above (the field names are the same in both languages) and replace the texts.
 4. For a **paid** event, use the `price` block with `free: false` and a `label`.
+   Also add `amount: 15` (the regular full price in Canadian dollars, number only) so Google can show it.
+   **For Google (optional):** `registrationStatus`, `registrationOpens`, `performers` and `organizer` (template in the French section, “5 bis”). Add them only when the information is real and known; never guess.
 5. Click **Commit changes…**, then **Commit changes** again.
 
 ### 2. Publish a news post

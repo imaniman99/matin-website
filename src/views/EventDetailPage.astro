@@ -17,7 +17,7 @@ import Lightbox from '@/components/ui/Lightbox.astro';
 import { path, type Lang } from '@/i18n/routes';
 import { useTranslations, pick } from '@/i18n/ui';
 import { renderMarkdown, slugOf, type EventEntry } from '@/lib/content';
-import { formatLongDate, formatTimeRange } from '@/lib/dates';
+import { formatLongDate, formatTimeRange, montrealTime } from '@/lib/dates';
 import { googleCalendarUrl, mapUrl } from '@/lib/calendar';
 
 interface Props {
@@ -48,31 +48,77 @@ const photos = await Promise.all(
 );
 const icsHref = `/ics/${event.id}-${lang}.ics`;
 
+// Structured data for Google: only real values from the event file, nothing guessed.
+const availability = {
+  open: 'https://schema.org/InStock',
+  soldOut: 'https://schema.org/SoldOut',
+  notYetOpen: 'https://schema.org/PreOrder',
+} as const;
+const performerType = {
+  person: 'Person',
+  group: 'PerformingGroup',
+  organization: 'Organization',
+} as const;
+const offerPrice = d.price.free ? 0 : d.price.amount;
+// An offer exists only when there is a registration link or a known ticket price
+// (a free event with nothing to register for has no offer).
+const offers =
+  d.registrationUrl || (!d.price.free && offerPrice !== undefined)
+    ? {
+        '@type': 'Offer',
+        url: d.registrationUrl ?? url,
+        ...(offerPrice !== undefined ? { price: offerPrice, priceCurrency: 'CAD' } : {}),
+        ...(d.registrationStatus ? { availability: availability[d.registrationStatus] } : {}),
+        ...(d.registrationOpens
+          ? { validFrom: montrealTime(d.registrationOpens).toISOString() }
+          : {}),
+      }
+    : undefined;
+const orgId = new URL('/#organization', site).href;
+const ldImage = d.image
+  ? new URL((await getImage({ src: d.image, width: 1200, format: 'jpg' })).src, site).href
+  : new URL('/og-default.jpg', site).href;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: title,
   description: pick(d.summary, lang),
   startDate: event.startDate.toISOString(),
-  endDate: event.endDate.toISOString(),
+  // No end time in the file: leave endDate out rather than guess one.
+  ...(d.end ? { endDate: event.endDate.toISOString() } : {}),
   eventStatus: 'https://schema.org/EventScheduled',
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   inLanguage: lang === 'fr' ? 'fr-CA' : 'en-CA',
   url,
-  image: [new URL('/og-default.jpg', site).href],
+  image: [ldImage],
   location: {
     '@type': 'Place',
     name: d.location.name,
     address: { '@type': 'PostalAddress', streetAddress: d.location.address, addressCountry: 'CA' },
   },
-  organizer: { '@id': new URL('/#organization', site).href },
-  offers: {
-    '@type': 'Offer',
-    price: d.price.free ? 0 : undefined,
-    priceCurrency: 'CAD',
-    availability: 'https://schema.org/InStock',
-    url: d.registrationUrl ?? url,
-  },
+  organizer: d.organizer
+    ? {
+        '@type': 'Organization',
+        name: d.organizer.name,
+        ...(d.organizer.url ? { url: d.organizer.url } : {}),
+      }
+    : {
+        '@type': 'NGO',
+        '@id': orgId,
+        name: lang === 'fr' ? 'Institut interculturel Matin' : 'Matin Intercultural Institute',
+        url: new URL(`/${lang}/`, site).href,
+      },
+  ...(d.performers.length
+    ? {
+        performer: d.performers.map((p) => ({
+          '@type': performerType[p.type],
+          name: p.name,
+          ...(p.url ? { url: p.url } : {}),
+        })),
+      }
+    : {}),
+  ...(offers ? { offers } : {}),
   isAccessibleForFree: d.price.free,
 };
 ---

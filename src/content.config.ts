@@ -79,11 +79,30 @@ const events = defineCollection({
           .object({
             free: z.boolean().default(true),
             label: biOpt, // e.g. « 15 $ / 10 $ étudiants »
+            /** Paid events: the regular full price in CAD, for search engines (e.g. 15). */
+            amount: z.number().nonnegative().optional(),
           })
           .default({ free: true }),
         image: image().optional(),
         imageAlt: biOpt,
         registrationUrl: z.url().optional(),
+        /* For search engines (Google). Fill in only what is actually known. */
+        /** Registration or ticket status: open, soldOut, or notYetOpen. */
+        registrationStatus: z.enum(['open', 'soldOut', 'notYetOpen']).optional(),
+        /** When registration or ticket sales open, Montréal time. */
+        registrationOpens: localDateTime.optional(),
+        /** Real speakers, artists or groups presenting at the event. */
+        performers: z
+          .array(
+            z.object({
+              name: z.string().min(1),
+              type: z.enum(['person', 'group', 'organization']).default('person'),
+              url: z.url().optional(),
+            }),
+          )
+          .default([]),
+        /** Only when someone other than Matin organizes the event (Matin is the default). */
+        organizer: z.object({ name: z.string().min(1), url: z.url().optional() }).optional(),
         /* After the event (each part is shown only when filled in): */
         report: biOpt, // full report, Markdown
         highlights: z.array(bi).default([]), // key highlights / outcomes
