@@ -29,6 +29,16 @@ location:
 price:
   free: true
 # registrationUrl: https://…            (optional)
+# --- For Google (optional): only real, known information, never guessed ---
+# price: { free: false, label: { fr: "15 $", en: "$15" }, amount: 15 }  (amount = full price in CAD)
+# registrationStatus: open              (open · soldOut · notYetOpen)
+# registrationOpens: "2027-03-01T09:00" (when registration / ticket sales open)
+# performers:                           (real speakers, artists or groups; not Matin)
+#   - name: "Full name"
+#     type: person                      (person · group · organization)
+# organizer:                            (only when another organization runs the event)
+#   name: "Organization name"
+#   url: https://…
 # image: ../../assets/uploads/events/photo.jpg   (optional, with imageAlt fr/en)
 
 # --- After the event (optional; each part appears only when filled in) ---
